@@ -18222,7 +18222,7 @@
                     if ((_b = (_a = parsedJson === null || parsedJson === void 0 ? void 0 : parsedJson.customizations) === null || _a === void 0 ? void 0 : _a.vscode) === null || _b === void 0 ? void 0 : _b.extensions) {
                         const extensionsList = parsedJson.customizations.vscode.extensions;
                         if (extensionsList && extensionsList.length > 0) {
-                            extensions = '\n## Extensions\n\n' + extensionsList.map((ext) => `- ${ext}`).join('\n');
+                            extensions = '## Extensions\n\n' + extensionsList.map((ext) => `- ${ext}`).join('\n');
                         }
                     }
                     let newReadme = readmeTemplate
