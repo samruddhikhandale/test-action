@@ -16,7 +16,9 @@ A hello world feature
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
 | greeting | Select a pre-made greeting, or enter your own | string | hey |
+## Extensions
 
+- ms-vscode.azurecli
 ## OS Support
 
 Supported on linux/debian.
