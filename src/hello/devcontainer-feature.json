@@ -18,5 +18,12 @@
     },
     "installsAfter": [
         "ghcr.io/devcontainers/features/common-utils"
-    ]
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.azurecli"
+            ]
+        }
+    }
 }
