@@ -17,7 +17,9 @@ A feature to remind you of your favorite color
 |-----|-----|-----|-----|
 | favorite | Choose your favorite color. | string | red |
 
+## OS Support
 
+Supported on linux/debian.
 
 ---
 
