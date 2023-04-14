@@ -18222,7 +18222,7 @@ function _generateDocumentation(basePath, readmeTemplate, metadataFile, ociRegis
                 if ((_b = (_a = parsedJson === null || parsedJson === void 0 ? void 0 : parsedJson.customizations) === null || _a === void 0 ? void 0 : _a.vscode) === null || _b === void 0 ? void 0 : _b.extensions) {
                     const extensionsList = parsedJson.customizations.vscode.extensions;
                     if (extensionsList && extensionsList.length > 0) {
-                        extensions = '\n## Customizations\n\n### VS Code\n\n' + extensionsList.map((ext) => `- ${ext}`).join('\n') + '\n';
+                        extensions = '\n## Customizations\n\n### VS Code Extensions\n\n' + extensionsList.map((ext) => `- ${ext}`).join('\n') + '\n';
                     }
                 }
                 let newReadme = readmeTemplate
