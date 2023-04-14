@@ -17,6 +17,12 @@ A hello world feature
 |-----|-----|-----|-----|
 | greeting | Select a pre-made greeting, or enter your own | string | hey |
 
+## Customizations
+
+### VS Code Extensions
+
+- `ms-vscode.azurecli`
+
 ## OS Support
 
 Supported on linux/debian.
