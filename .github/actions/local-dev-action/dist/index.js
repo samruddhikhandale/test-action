@@ -1149,8 +1149,8 @@ const timers_1 = __nccwpck_require__(9512);
 /* eslint-disable @typescript-eslint/unbound-method */
 const IS_WINDOWS = process.platform === 'win32';
 /*
-    * Class for running command line tools. Handles quoting and arg parsing in a platform agnostic way.
-    */
+ * Class for running command line tools. Handles quoting and arg parsing in a platform agnostic way.
+ */
 class ToolRunner extends events.EventEmitter {
     constructor(toolPath, args, options) {
         super();
@@ -3257,15 +3257,15 @@ const REGEX_IS_INSTALLATION_LEGACY = /^v1\./;
 const REGEX_IS_INSTALLATION = /^ghs_/;
 const REGEX_IS_USER_TO_SERVER = /^ghu_/;
 async function auth(token) {
-    const isApp = token.split(/\./).length === 3;
-    const isInstallation = REGEX_IS_INSTALLATION_LEGACY.test(token) || REGEX_IS_INSTALLATION.test(token);
-    const isUserToServer = REGEX_IS_USER_TO_SERVER.test(token);
-    const tokenType = isApp ? "app" : isInstallation ? "installation" : isUserToServer ? "user-to-server" : "oauth";
-    return {
+  const isApp = token.split(/\./).length === 3;
+  const isInstallation = REGEX_IS_INSTALLATION_LEGACY.test(token) || REGEX_IS_INSTALLATION.test(token);
+  const isUserToServer = REGEX_IS_USER_TO_SERVER.test(token);
+  const tokenType = isApp ? "app" : isInstallation ? "installation" : isUserToServer ? "user-to-server" : "oauth";
+  return {
     type: "token",
     token: token,
     tokenType
-    };
+  };
 }
 
 /**
@@ -3274,32 +3274,32 @@ async function auth(token) {
  * @param token OAuth token or JSON Web Token
  */
 function withAuthorizationPrefix(token) {
-    if (token.split(/\./).length === 3) {
+  if (token.split(/\./).length === 3) {
     return `bearer ${token}`;
-    }
+  }
 
-    return `token ${token}`;
+  return `token ${token}`;
 }
 
 async function hook(token, request, route, parameters) {
-    const endpoint = request.endpoint.merge(route, parameters);
-    endpoint.headers.authorization = withAuthorizationPrefix(token);
-    return request(endpoint);
+  const endpoint = request.endpoint.merge(route, parameters);
+  endpoint.headers.authorization = withAuthorizationPrefix(token);
+  return request(endpoint);
 }
 
 const createTokenAuth = function createTokenAuth(token) {
-    if (!token) {
+  if (!token) {
     throw new Error("[@octokit/auth-token] No token passed to createTokenAuth");
-    }
+  }
 
-    if (typeof token !== "string") {
+  if (typeof token !== "string") {
     throw new Error("[@octokit/auth-token] Token passed to createTokenAuth is not a string");
-    }
+  }
 
-    token = token.replace(/^(token|bearer) +/i, "");
-    return Object.assign(auth.bind(null, token), {
+  token = token.replace(/^(token|bearer) +/i, "");
+  return Object.assign(auth.bind(null, token), {
     hook: hook.bind(null, token)
-    });
+  });
 };
 
 exports.createTokenAuth = createTokenAuth;
@@ -3323,81 +3323,81 @@ var graphql = __nccwpck_require__(8467);
 var authToken = __nccwpck_require__(334);
 
 function _objectWithoutPropertiesLoose(source, excluded) {
-    if (source == null) return {};
-    var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i;
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
 
-    for (i = 0; i < sourceKeys.length; i++) {
+  for (i = 0; i < sourceKeys.length; i++) {
     key = sourceKeys[i];
     if (excluded.indexOf(key) >= 0) continue;
     target[key] = source[key];
-    }
+  }
 
-    return target;
+  return target;
 }
 
 function _objectWithoutProperties(source, excluded) {
-    if (source == null) return {};
+  if (source == null) return {};
 
-    var target = _objectWithoutPropertiesLoose(source, excluded);
+  var target = _objectWithoutPropertiesLoose(source, excluded);
 
-    var key, i;
+  var key, i;
 
-    if (Object.getOwnPropertySymbols) {
+  if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
 
     for (i = 0; i < sourceSymbolKeys.length; i++) {
-        key = sourceSymbolKeys[i];
-        if (excluded.indexOf(key) >= 0) continue;
-        if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-        target[key] = source[key];
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
     }
-    }
+  }
 
-    return target;
+  return target;
 }
 
 const VERSION = "3.6.0";
 
 const _excluded = ["authStrategy"];
 class Octokit {
-    constructor(options = {}) {
+  constructor(options = {}) {
     const hook = new beforeAfterHook.Collection();
     const requestDefaults = {
-        baseUrl: request.request.endpoint.DEFAULTS.baseUrl,
-        headers: {},
-        request: Object.assign({}, options.request, {
+      baseUrl: request.request.endpoint.DEFAULTS.baseUrl,
+      headers: {},
+      request: Object.assign({}, options.request, {
         // @ts-ignore internal usage only, no need to type
         hook: hook.bind(null, "request")
-        }),
-        mediaType: {
+      }),
+      mediaType: {
         previews: [],
         format: ""
-        }
+      }
     }; // prepend default user agent with `options.userAgent` if set
 
     requestDefaults.headers["user-agent"] = [options.userAgent, `octokit-core.js/${VERSION} ${universalUserAgent.getUserAgent()}`].filter(Boolean).join(" ");
 
     if (options.baseUrl) {
-        requestDefaults.baseUrl = options.baseUrl;
+      requestDefaults.baseUrl = options.baseUrl;
     }
 
     if (options.previews) {
-        requestDefaults.mediaType.previews = options.previews;
+      requestDefaults.mediaType.previews = options.previews;
     }
 
     if (options.timeZone) {
-        requestDefaults.headers["time-zone"] = options.timeZone;
+      requestDefaults.headers["time-zone"] = options.timeZone;
     }
 
     this.request = request.request.defaults(requestDefaults);
     this.graphql = graphql.withCustomRequest(this.request).defaults(requestDefaults);
     this.log = Object.assign({
-        debug: () => {},
-        info: () => {},
-        warn: console.warn.bind(console),
-        error: console.error.bind(console)
+      debug: () => {},
+      info: () => {},
+      warn: console.warn.bind(console),
+      error: console.error.bind(console)
     }, options.log);
     this.hook = hook; // (1) If neither `options.authStrategy` nor `options.auth` are set, the `octokit` instance
     //     is unauthenticated. The `this.auth()` method is a no-op and no request hook is registered.
@@ -3406,25 +3406,25 @@ class Octokit {
     // TODO: type `options.auth` based on `options.authStrategy`.
 
     if (!options.authStrategy) {
-        if (!options.auth) {
+      if (!options.auth) {
         // (1)
         this.auth = async () => ({
-            type: "unauthenticated"
+          type: "unauthenticated"
         });
-        } else {
+      } else {
         // (2)
         const auth = authToken.createTokenAuth(options.auth); // @ts-ignore  ¯\_(ツ)_/¯
 
         hook.wrap("request", auth.hook);
         this.auth = auth;
-        }
+      }
     } else {
-        const {
+      const {
         authStrategy
-        } = options,
+      } = options,
             otherOptions = _objectWithoutProperties(options, _excluded);
 
-        const auth = authStrategy(Object.assign({
+      const auth = authStrategy(Object.assign({
         request: this.request,
         log: this.log,
         // we pass the current octokit instance as well as its constructor options
@@ -3434,53 +3434,53 @@ class Octokit {
         // of https://github.com/probot/octokit-auth-probot.
         octokit: this,
         octokitOptions: otherOptions
-        }, options.auth)); // @ts-ignore  ¯\_(ツ)_/¯
+      }, options.auth)); // @ts-ignore  ¯\_(ツ)_/¯
 
-        hook.wrap("request", auth.hook);
-        this.auth = auth;
+      hook.wrap("request", auth.hook);
+      this.auth = auth;
     } // apply plugins
     // https://stackoverflow.com/a/16345172
 
 
     const classConstructor = this.constructor;
     classConstructor.plugins.forEach(plugin => {
-        Object.assign(this, plugin(this, options));
+      Object.assign(this, plugin(this, options));
     });
-    }
+  }
 
-    static defaults(defaults) {
+  static defaults(defaults) {
     const OctokitWithDefaults = class extends this {
-        constructor(...args) {
+      constructor(...args) {
         const options = args[0] || {};
 
         if (typeof defaults === "function") {
-            super(defaults(options));
-            return;
+          super(defaults(options));
+          return;
         }
 
         super(Object.assign({}, defaults, options, options.userAgent && defaults.userAgent ? {
-            userAgent: `${options.userAgent} ${defaults.userAgent}`
+          userAgent: `${options.userAgent} ${defaults.userAgent}`
         } : null));
-        }
+      }
 
     };
     return OctokitWithDefaults;
-    }
-    /**
-     * Attach a plugin (or many) to your Octokit instance.
-     *
-     * @example
-     * const API = Octokit.plugin(plugin1, plugin2, plugin3, ...)
-     */
+  }
+  /**
+   * Attach a plugin (or many) to your Octokit instance.
+   *
+   * @example
+   * const API = Octokit.plugin(plugin1, plugin2, plugin3, ...)
+   */
 
 
-    static plugin(...newPlugins) {
+  static plugin(...newPlugins) {
     var _a;
 
     const currentPlugins = this.plugins;
     const NewOctokit = (_a = class extends this {}, _a.plugins = currentPlugins.concat(newPlugins.filter(plugin => !currentPlugins.includes(plugin))), _a);
     return NewOctokit;
-    }
+  }
 
 }
 Octokit.VERSION = VERSION;
@@ -3504,108 +3504,108 @@ var isPlainObject = __nccwpck_require__(3287);
 var universalUserAgent = __nccwpck_require__(5030);
 
 function lowercaseKeys(object) {
-    if (!object) {
+  if (!object) {
     return {};
-    }
+  }
 
-    return Object.keys(object).reduce((newObj, key) => {
+  return Object.keys(object).reduce((newObj, key) => {
     newObj[key.toLowerCase()] = object[key];
     return newObj;
-    }, {});
+  }, {});
 }
 
 function mergeDeep(defaults, options) {
-    const result = Object.assign({}, defaults);
-    Object.keys(options).forEach(key => {
+  const result = Object.assign({}, defaults);
+  Object.keys(options).forEach(key => {
     if (isPlainObject.isPlainObject(options[key])) {
-        if (!(key in defaults)) Object.assign(result, {
+      if (!(key in defaults)) Object.assign(result, {
         [key]: options[key]
-        });else result[key] = mergeDeep(defaults[key], options[key]);
+      });else result[key] = mergeDeep(defaults[key], options[key]);
     } else {
-        Object.assign(result, {
+      Object.assign(result, {
         [key]: options[key]
-        });
+      });
     }
-    });
-    return result;
+  });
+  return result;
 }
 
 function removeUndefinedProperties(obj) {
-    for (const key in obj) {
+  for (const key in obj) {
     if (obj[key] === undefined) {
-        delete obj[key];
+      delete obj[key];
     }
-    }
+  }
 
-    return obj;
+  return obj;
 }
 
 function merge(defaults, route, options) {
-    if (typeof route === "string") {
+  if (typeof route === "string") {
     let [method, url] = route.split(" ");
     options = Object.assign(url ? {
-        method,
-        url
+      method,
+      url
     } : {
-        url: method
+      url: method
     }, options);
-    } else {
+  } else {
     options = Object.assign({}, route);
-    } // lowercase header names before merging with defaults to avoid duplicates
+  } // lowercase header names before merging with defaults to avoid duplicates
 
 
-    options.headers = lowercaseKeys(options.headers); // remove properties with undefined values before merging
+  options.headers = lowercaseKeys(options.headers); // remove properties with undefined values before merging
 
-    removeUndefinedProperties(options);
-    removeUndefinedProperties(options.headers);
-    const mergedOptions = mergeDeep(defaults || {}, options); // mediaType.previews arrays are merged, instead of overwritten
+  removeUndefinedProperties(options);
+  removeUndefinedProperties(options.headers);
+  const mergedOptions = mergeDeep(defaults || {}, options); // mediaType.previews arrays are merged, instead of overwritten
 
-    if (defaults && defaults.mediaType.previews.length) {
+  if (defaults && defaults.mediaType.previews.length) {
     mergedOptions.mediaType.previews = defaults.mediaType.previews.filter(preview => !mergedOptions.mediaType.previews.includes(preview)).concat(mergedOptions.mediaType.previews);
-    }
+  }
 
-    mergedOptions.mediaType.previews = mergedOptions.mediaType.previews.map(preview => preview.replace(/-preview/, ""));
-    return mergedOptions;
+  mergedOptions.mediaType.previews = mergedOptions.mediaType.previews.map(preview => preview.replace(/-preview/, ""));
+  return mergedOptions;
 }
 
 function addQueryParameters(url, parameters) {
-    const separator = /\?/.test(url) ? "&" : "?";
-    const names = Object.keys(parameters);
+  const separator = /\?/.test(url) ? "&" : "?";
+  const names = Object.keys(parameters);
 
-    if (names.length === 0) {
+  if (names.length === 0) {
     return url;
-    }
+  }
 
-    return url + separator + names.map(name => {
+  return url + separator + names.map(name => {
     if (name === "q") {
-        return "q=" + parameters.q.split("+").map(encodeURIComponent).join("+");
+      return "q=" + parameters.q.split("+").map(encodeURIComponent).join("+");
     }
 
     return `${name}=${encodeURIComponent(parameters[name])}`;
-    }).join("&");
+  }).join("&");
 }
 
 const urlVariableRegex = /\{[^}]+\}/g;
 
 function removeNonChars(variableName) {
-    return variableName.replace(/^\W+|\W+$/g, "").split(/,/);
+  return variableName.replace(/^\W+|\W+$/g, "").split(/,/);
 }
 
 function extractUrlVariableNames(url) {
-    const matches = url.match(urlVariableRegex);
+  const matches = url.match(urlVariableRegex);
 
-    if (!matches) {
+  if (!matches) {
     return [];
-    }
+  }
 
-    return matches.map(removeNonChars).reduce((a, b) => a.concat(b), []);
+  return matches.map(removeNonChars).reduce((a, b) => a.concat(b), []);
 }
 
 function omit(object, keysToOmit) {
-    return Object.keys(object).filter(option => !keysToOmit.includes(option)).reduce((obj, key) => {
+  return Object.keys(object).filter(option => !keysToOmit.includes(option)).reduce((obj, key) => {
     obj[key] = object[key];
     return obj;
-    }, {});
+  }, {});
 }
 
 // Based on https://github.com/bramstein/url-template, licensed under BSD
@@ -3636,232 +3636,232 @@ function omit(object, keysToOmit) {
 
 /* istanbul ignore file */
 function encodeReserved(str) {
-    return str.split(/(%[0-9A-Fa-f]{2})/g).map(function (part) {
+  return str.split(/(%[0-9A-Fa-f]{2})/g).map(function (part) {
     if (!/%[0-9A-Fa-f]/.test(part)) {
-        part = encodeURI(part).replace(/%5B/g, "[").replace(/%5D/g, "]");
+      part = encodeURI(part).replace(/%5B/g, "[").replace(/%5D/g, "]");
     }
 
     return part;
-    }).join("");
+  }).join("");
 }
 
 function encodeUnreserved(str) {
-    return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+  return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
     return "%" + c.charCodeAt(0).toString(16).toUpperCase();
-    });
+  });
 }
 
 function encodeValue(operator, value, key) {
-    value = operator === "+" || operator === "#" ? encodeReserved(value) : encodeUnreserved(value);
+  value = operator === "+" || operator === "#" ? encodeReserved(value) : encodeUnreserved(value);
 
-    if (key) {
+  if (key) {
     return encodeUnreserved(key) + "=" + value;
-    } else {
+  } else {
     return value;
-    }
+  }
 }
 
 function isDefined(value) {
-    return value !== undefined && value !== null;
+  return value !== undefined && value !== null;
 }
 
 function isKeyOperator(operator) {
-    return operator === ";" || operator === "&" || operator === "?";
+  return operator === ";" || operator === "&" || operator === "?";
 }
 
 function getValues(context, operator, key, modifier) {
-    var value = context[key],
-        result = [];
+  var value = context[key],
+      result = [];
 
-    if (isDefined(value) && value !== "") {
+  if (isDefined(value) && value !== "") {
     if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-        value = value.toString();
+      value = value.toString();
 
-        if (modifier && modifier !== "*") {
+      if (modifier && modifier !== "*") {
         value = value.substring(0, parseInt(modifier, 10));
-        }
+      }
 
-        result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : ""));
+      result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : ""));
     } else {
-        if (modifier === "*") {
+      if (modifier === "*") {
         if (Array.isArray(value)) {
-            value.filter(isDefined).forEach(function (value) {
+          value.filter(isDefined).forEach(function (value) {
             result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : ""));
-            });
+          });
         } else {
-            Object.keys(value).forEach(function (k) {
+          Object.keys(value).forEach(function (k) {
             if (isDefined(value[k])) {
-                result.push(encodeValue(operator, value[k], k));
+              result.push(encodeValue(operator, value[k], k));
             }
-            });
+          });
         }
-        } else {
+      } else {
         const tmp = [];
 
         if (Array.isArray(value)) {
-            value.filter(isDefined).forEach(function (value) {
+          value.filter(isDefined).forEach(function (value) {
             tmp.push(encodeValue(operator, value));
-            });
+          });
         } else {
-            Object.keys(value).forEach(function (k) {
+          Object.keys(value).forEach(function (k) {
             if (isDefined(value[k])) {
-                tmp.push(encodeUnreserved(k));
-                tmp.push(encodeValue(operator, value[k].toString()));
+              tmp.push(encodeUnreserved(k));
+              tmp.push(encodeValue(operator, value[k].toString()));
             }
-            });
+          });
         }
 
         if (isKeyOperator(operator)) {
-            result.push(encodeUnreserved(key) + "=" + tmp.join(","));
+          result.push(encodeUnreserved(key) + "=" + tmp.join(","));
         } else if (tmp.length !== 0) {
-            result.push(tmp.join(","));
+          result.push(tmp.join(","));
         }
-        }
+      }
     }
-    } else {
+  } else {
     if (operator === ";") {
-        if (isDefined(value)) {
+      if (isDefined(value)) {
         result.push(encodeUnreserved(key));
-        }
+      }
     } else if (value === "" && (operator === "&" || operator === "?")) {
-        result.push(encodeUnreserved(key) + "=");
+      result.push(encodeUnreserved(key) + "=");
     } else if (value === "") {
-        result.push("");
+      result.push("");
     }
-    }
+  }
 
-    return result;
+  return result;
 }
 
 function parseUrl(template) {
-    return {
+  return {
     expand: expand.bind(null, template)
-    };
+  };
 }
 
 function expand(template, context) {
-    var operators = ["+", "#", ".", "/", ";", "?", "&"];
-    return template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (_, expression, literal) {
+  var operators = ["+", "#", ".", "/", ";", "?", "&"];
+  return template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (_, expression, literal) {
     if (expression) {
-        let operator = "";
-        const values = [];
+      let operator = "";
+      const values = [];
 
-        if (operators.indexOf(expression.charAt(0)) !== -1) {
+      if (operators.indexOf(expression.charAt(0)) !== -1) {
         operator = expression.charAt(0);
         expression = expression.substr(1);
-        }
+      }
 
-        expression.split(/,/g).forEach(function (variable) {
+      expression.split(/,/g).forEach(function (variable) {
         var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
         values.push(getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
-        });
+      });
 
-        if (operator && operator !== "+") {
+      if (operator && operator !== "+") {
         var separator = ",";
 
         if (operator === "?") {
-            separator = "&";
+          separator = "&";
         } else if (operator !== "#") {
-            separator = operator;
+          separator = operator;
         }
 
         return (values.length !== 0 ? operator : "") + values.join(separator);
-        } else {
+      } else {
         return values.join(",");
-        }
+      }
     } else {
-        return encodeReserved(literal);
+      return encodeReserved(literal);
     }
-    });
+  });
 }
 
 function parse(options) {
-    // https://fetch.spec.whatwg.org/#methods
-    let method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
+  // https://fetch.spec.whatwg.org/#methods
+  let method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
 
-    let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
-    let headers = Object.assign({}, options.headers);
-    let body;
-    let parameters = omit(options, ["method", "baseUrl", "url", "headers", "request", "mediaType"]); // extract variable names from URL to calculate remaining variables later
+  let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
+  let headers = Object.assign({}, options.headers);
+  let body;
+  let parameters = omit(options, ["method", "baseUrl", "url", "headers", "request", "mediaType"]); // extract variable names from URL to calculate remaining variables later
 
-    const urlVariableNames = extractUrlVariableNames(url);
-    url = parseUrl(url).expand(parameters);
+  const urlVariableNames = extractUrlVariableNames(url);
+  url = parseUrl(url).expand(parameters);
 
-    if (!/^http/.test(url)) {
+  if (!/^http/.test(url)) {
     url = options.baseUrl + url;
-    }
+  }
 
-    const omittedParameters = Object.keys(options).filter(option => urlVariableNames.includes(option)).concat("baseUrl");
-    const remainingParameters = omit(parameters, omittedParameters);
-    const isBinaryRequest = /application\/octet-stream/i.test(headers.accept);
+  const omittedParameters = Object.keys(options).filter(option => urlVariableNames.includes(option)).concat("baseUrl");
+  const remainingParameters = omit(parameters, omittedParameters);
+  const isBinaryRequest = /application\/octet-stream/i.test(headers.accept);
 
-    if (!isBinaryRequest) {
+  if (!isBinaryRequest) {
     if (options.mediaType.format) {
-        // e.g. application/vnd.github.v3+json => application/vnd.github.v3.raw
-        headers.accept = headers.accept.split(/,/).map(preview => preview.replace(/application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/, `application/vnd$1$2.${options.mediaType.format}`)).join(",");
+      // e.g. application/vnd.github.v3+json => application/vnd.github.v3.raw
+      headers.accept = headers.accept.split(/,/).map(preview => preview.replace(/application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/, `application/vnd$1$2.${options.mediaType.format}`)).join(",");
     }
 
     if (options.mediaType.previews.length) {
-        const previewsFromAcceptHeader = headers.accept.match(/[\w-]+(?=-preview)/g) || [];
-        headers.accept = previewsFromAcceptHeader.concat(options.mediaType.previews).map(preview => {
+      const previewsFromAcceptHeader = headers.accept.match(/[\w-]+(?=-preview)/g) || [];
+      headers.accept = previewsFromAcceptHeader.concat(options.mediaType.previews).map(preview => {
         const format = options.mediaType.format ? `.${options.mediaType.format}` : "+json";
         return `application/vnd.github.${preview}-preview${format}`;
-        }).join(",");
+      }).join(",");
     }
-    } // for GET/HEAD requests, set URL query parameters from remaining parameters
-    // for PATCH/POST/PUT/DELETE requests, set request body from remaining parameters
+  } // for GET/HEAD requests, set URL query parameters from remaining parameters
+  // for PATCH/POST/PUT/DELETE requests, set request body from remaining parameters
 
 
-    if (["GET", "HEAD"].includes(method)) {
+  if (["GET", "HEAD"].includes(method)) {
     url = addQueryParameters(url, remainingParameters);
-    } else {
+  } else {
     if ("data" in remainingParameters) {
-        body = remainingParameters.data;
+      body = remainingParameters.data;
     } else {
-        if (Object.keys(remainingParameters).length) {
+      if (Object.keys(remainingParameters).length) {
         body = remainingParameters;
-        } else {
+      } else {
         headers["content-length"] = 0;
-        }
+      }
     }
-    } // default content-type for JSON if body is set
+  } // default content-type for JSON if body is set
 
 
-    if (!headers["content-type"] && typeof body !== "undefined") {
+  if (!headers["content-type"] && typeof body !== "undefined") {
     headers["content-type"] = "application/json; charset=utf-8";
-    } // GitHub expects 'content-length: 0' header for PUT/PATCH requests without body.
-    // fetch does not allow to set `content-length` header, but we can set body to an empty string
+  } // GitHub expects 'content-length: 0' header for PUT/PATCH requests without body.
+  // fetch does not allow to set `content-length` header, but we can set body to an empty string
 
 
-    if (["PATCH", "PUT"].includes(method) && typeof body === "undefined") {
+  if (["PATCH", "PUT"].includes(method) && typeof body === "undefined") {
     body = "";
-    } // Only return body/request keys if present
+  } // Only return body/request keys if present
 
 
-    return Object.assign({
+  return Object.assign({
     method,
     url,
     headers
-    }, typeof body !== "undefined" ? {
+  }, typeof body !== "undefined" ? {
     body
-    } : null, options.request ? {
+  } : null, options.request ? {
     request: options.request
-    } : null);
+  } : null);
 }
 
 function endpointWithDefaults(defaults, route, options) {
-    return parse(merge(defaults, route, options));
+  return parse(merge(defaults, route, options));
 }
 
 function withDefaults(oldDefaults, newDefaults) {
-    const DEFAULTS = merge(oldDefaults, newDefaults);
-    const endpoint = endpointWithDefaults.bind(null, DEFAULTS);
-    return Object.assign(endpoint, {
+  const DEFAULTS = merge(oldDefaults, newDefaults);
+  const endpoint = endpointWithDefaults.bind(null, DEFAULTS);
+  return Object.assign(endpoint, {
     DEFAULTS,
     defaults: withDefaults.bind(null, DEFAULTS),
     merge: merge.bind(null, DEFAULTS),
     parse
-    });
+  });
 }
 
 const VERSION = "6.0.12";
@@ -3870,16 +3870,16 @@ const userAgent = `octokit-endpoint.js/${VERSION} ${universalUserAgent.getUserAg
 // So we use RequestParameters and add method as additional required property.
 
 const DEFAULTS = {
-    method: "GET",
-    baseUrl: "https://api.github.com",
-    headers: {
+  method: "GET",
+  baseUrl: "https://api.github.com",
+  headers: {
     accept: "application/vnd.github.v3+json",
     "user-agent": userAgent
-    },
-    mediaType: {
+  },
+  mediaType: {
     format: "",
     previews: []
-    }
+  }
 };
 
 const endpoint = withDefaults(null, DEFAULTS);
@@ -3904,11 +3904,11 @@ var universalUserAgent = __nccwpck_require__(5030);
 const VERSION = "4.8.0";
 
 function _buildMessageForResponseErrors(data) {
-    return `Request failed due to following response errors:\n` + data.errors.map(e => ` - ${e.message}`).join("\n");
+  return `Request failed due to following response errors:\n` + data.errors.map(e => ` - ${e.message}`).join("\n");
 }
 
 class GraphqlResponseError extends Error {
-    constructor(request, headers, response) {
+  constructor(request, headers, response) {
     super(_buildMessageForResponseErrors(response));
     this.request = request;
     this.headers = headers;
@@ -3921,9 +3921,9 @@ class GraphqlResponseError extends Error {
     /* istanbul ignore next */
 
     if (Error.captureStackTrace) {
-        Error.captureStackTrace(this, this.constructor);
+      Error.captureStackTrace(this, this.constructor);
     }
-    }
+  }
 
 }
 
@@ -3931,81 +3931,81 @@ const NON_VARIABLE_OPTIONS = ["method", "baseUrl", "url", "headers", "request", 
 const FORBIDDEN_VARIABLE_OPTIONS = ["query", "method", "url"];
 const GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
 function graphql(request, query, options) {
-    if (options) {
+  if (options) {
     if (typeof query === "string" && "query" in options) {
-        return Promise.reject(new Error(`[@octokit/graphql] "query" cannot be used as variable name`));
+      return Promise.reject(new Error(`[@octokit/graphql] "query" cannot be used as variable name`));
     }
 
     for (const key in options) {
-        if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
-        return Promise.reject(new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`));
+      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
+      return Promise.reject(new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`));
     }
-    }
+  }
 
-    const parsedOptions = typeof query === "string" ? Object.assign({
+  const parsedOptions = typeof query === "string" ? Object.assign({
     query
-    }, options) : query;
-    const requestOptions = Object.keys(parsedOptions).reduce((result, key) => {
+  }, options) : query;
+  const requestOptions = Object.keys(parsedOptions).reduce((result, key) => {
     if (NON_VARIABLE_OPTIONS.includes(key)) {
-        result[key] = parsedOptions[key];
-        return result;
+      result[key] = parsedOptions[key];
+      return result;
     }
 
     if (!result.variables) {
-        result.variables = {};
+      result.variables = {};
     }
 
     result.variables[key] = parsedOptions[key];
     return result;
-    }, {}); // workaround for GitHub Enterprise baseUrl set with /api/v3 suffix
-    // https://github.com/octokit/auth-app.js/issues/111#issuecomment-657610451
+  }, {}); // workaround for GitHub Enterprise baseUrl set with /api/v3 suffix
+  // https://github.com/octokit/auth-app.js/issues/111#issuecomment-657610451
 
-    const baseUrl = parsedOptions.baseUrl || request.endpoint.DEFAULTS.baseUrl;
+  const baseUrl = parsedOptions.baseUrl || request.endpoint.DEFAULTS.baseUrl;
 
-    if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
+  if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
     requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
-    }
+  }
 
-    return request(requestOptions).then(response => {
+  return request(requestOptions).then(response => {
     if (response.data.errors) {
-        const headers = {};
+      const headers = {};
 
-        for (const key of Object.keys(response.headers)) {
+      for (const key of Object.keys(response.headers)) {
         headers[key] = response.headers[key];
-        }
+      }
 
-        throw new GraphqlResponseError(requestOptions, headers, response.data);
+      throw new GraphqlResponseError(requestOptions, headers, response.data);
     }
 
     return response.data.data;
-    });
+  });
 }
 
 function withDefaults(request$1, newDefaults) {
-    const newRequest = request$1.defaults(newDefaults);
+  const newRequest = request$1.defaults(newDefaults);
 
-    const newApi = (query, options) => {
+  const newApi = (query, options) => {
     return graphql(newRequest, query, options);
-    };
+  };
 
-    return Object.assign(newApi, {
+  return Object.assign(newApi, {
     defaults: withDefaults.bind(null, newRequest),
     endpoint: request.request.endpoint
-    });
+  });
 }
 
 const graphql$1 = withDefaults(request.request, {
-    headers: {
+  headers: {
     "user-agent": `octokit-graphql.js/${VERSION} ${universalUserAgent.getUserAgent()}`
-    },
-    method: "POST",
-    url: "/graphql"
+  },
+  method: "POST",
+  url: "/graphql"
 });
 function withCustomRequest(customRequest) {
-    return withDefaults(customRequest, {
+  return withDefaults(customRequest, {
     method: "POST",
     url: "/graphql"
-    });
+  });
 }
 
 exports.GraphqlResponseError = GraphqlResponseError;
@@ -4027,44 +4027,44 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const VERSION = "2.21.3";
 
 function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
+  var keys = Object.keys(object);
 
-    if (Object.getOwnPropertySymbols) {
+  if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
     enumerableOnly && (symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
     })), keys.push.apply(keys, symbols);
-    }
+  }
 
-    return keys;
+  return keys;
 }
 
 function _objectSpread2(target) {
-    for (var i = 1; i < arguments.length; i++) {
+  for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
+      _defineProperty(target, key, source[key]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
     });
-    }
+  }
 
-    return target;
+  return target;
 }
 
 function _defineProperty(obj, key, value) {
-    if (key in obj) {
+  if (key in obj) {
     Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
     });
-    } else {
+  } else {
     obj[key] = value;
-    }
+  }
 
-    return obj;
+  return obj;
 }
 
 /**
@@ -4084,126 +4084,126 @@ function _defineProperty(obj, key, value) {
  * otherwise match: https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
  */
 function normalizePaginatedListResponse(response) {
-    // endpoints can respond with 204 if repository is empty
-    if (!response.data) {
+  // endpoints can respond with 204 if repository is empty
+  if (!response.data) {
     return _objectSpread2(_objectSpread2({}, response), {}, {
-        data: []
+      data: []
     });
-    }
+  }
 
-    const responseNeedsNormalization = "total_count" in response.data && !("url" in response.data);
-    if (!responseNeedsNormalization) return response; // keep the additional properties intact as there is currently no other way
-    // to retrieve the same information.
+  const responseNeedsNormalization = "total_count" in response.data && !("url" in response.data);
+  if (!responseNeedsNormalization) return response; // keep the additional properties intact as there is currently no other way
+  // to retrieve the same information.
 
-    const incompleteResults = response.data.incomplete_results;
-    const repositorySelection = response.data.repository_selection;
-    const totalCount = response.data.total_count;
-    delete response.data.incomplete_results;
-    delete response.data.repository_selection;
-    delete response.data.total_count;
-    const namespaceKey = Object.keys(response.data)[0];
-    const data = response.data[namespaceKey];
-    response.data = data;
+  const incompleteResults = response.data.incomplete_results;
+  const repositorySelection = response.data.repository_selection;
+  const totalCount = response.data.total_count;
+  delete response.data.incomplete_results;
+  delete response.data.repository_selection;
+  delete response.data.total_count;
+  const namespaceKey = Object.keys(response.data)[0];
+  const data = response.data[namespaceKey];
+  response.data = data;
 
-    if (typeof incompleteResults !== "undefined") {
+  if (typeof incompleteResults !== "undefined") {
     response.data.incomplete_results = incompleteResults;
-    }
+  }
 
-    if (typeof repositorySelection !== "undefined") {
+  if (typeof repositorySelection !== "undefined") {
     response.data.repository_selection = repositorySelection;
-    }
+  }
 
-    response.data.total_count = totalCount;
-    return response;
+  response.data.total_count = totalCount;
+  return response;
 }
 
 function iterator(octokit, route, parameters) {
-    const options = typeof route === "function" ? route.endpoint(parameters) : octokit.request.endpoint(route, parameters);
-    const requestMethod = typeof route === "function" ? route : octokit.request;
-    const method = options.method;
-    const headers = options.headers;
-    let url = options.url;
-    return {
+  const options = typeof route === "function" ? route.endpoint(parameters) : octokit.request.endpoint(route, parameters);
+  const requestMethod = typeof route === "function" ? route : octokit.request;
+  const method = options.method;
+  const headers = options.headers;
+  let url = options.url;
+  return {
     [Symbol.asyncIterator]: () => ({
-        async next() {
+      async next() {
         if (!url) return {
-            done: true
+          done: true
         };
 
         try {
-            const response = await requestMethod({
+          const response = await requestMethod({
             method,
             url,
             headers
-            });
-            const normalizedResponse = normalizePaginatedListResponse(response); // `response.headers.link` format:
-            // '<https://api.github.com/users/aseemk/followers?page=2>; rel="next", <https://api.github.com/users/aseemk/followers?page=2>; rel="last"'
-            // sets `url` to undefined if "next" URL is not present or `link` header is not set
+          });
+          const normalizedResponse = normalizePaginatedListResponse(response); // `response.headers.link` format:
+          // '<https://api.github.com/users/aseemk/followers?page=2>; rel="next", <https://api.github.com/users/aseemk/followers?page=2>; rel="last"'
+          // sets `url` to undefined if "next" URL is not present or `link` header is not set
 
-            url = ((normalizedResponse.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
-            return {
+          url = ((normalizedResponse.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
+          return {
             value: normalizedResponse
-            };
+          };
         } catch (error) {
-            if (error.status !== 409) throw error;
-            url = "";
-            return {
+          if (error.status !== 409) throw error;
+          url = "";
+          return {
             value: {
-                status: 200,
-                headers: {},
-                data: []
+              status: 200,
+              headers: {},
+              data: []
             }
-            };
+          };
         }
-        }
+      }
 
     })
-    };
+  };
 }
 
 function paginate(octokit, route, parameters, mapFn) {
-    if (typeof parameters === "function") {
+  if (typeof parameters === "function") {
     mapFn = parameters;
     parameters = undefined;
-    }
+  }
 
-    return gather(octokit, [], iterator(octokit, route, parameters)[Symbol.asyncIterator](), mapFn);
+  return gather(octokit, [], iterator(octokit, route, parameters)[Symbol.asyncIterator](), mapFn);
 }
 
 function gather(octokit, results, iterator, mapFn) {
-    return iterator.next().then(result => {
+  return iterator.next().then(result => {
     if (result.done) {
-        return results;
+      return results;
     }
 
     let earlyExit = false;
 
     function done() {
-        earlyExit = true;
+      earlyExit = true;
     }
 
     results = results.concat(mapFn ? mapFn(result.value, done) : result.value.data);
 
     if (earlyExit) {
-        return results;
+      return results;
     }
 
     return gather(octokit, results, iterator, mapFn);
-    });
+  });
 }
 
 const composePaginateRest = Object.assign(paginate, {
-    iterator
+  iterator
 });
 
 const paginatingEndpoints = ["GET /app/hook/deliveries", "GET /app/installations", "GET /applications/grants", "GET /authorizations", "GET /enterprises/{enterprise}/actions/permissions/organizations", "GET /enterprises/{enterprise}/actions/runner-groups", "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/organizations", "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/runners", "GET /enterprises/{enterprise}/actions/runners", "GET /enterprises/{enterprise}/audit-log", "GET /enterprises/{enterprise}/secret-scanning/alerts", "GET /enterprises/{enterprise}/settings/billing/advanced-security", "GET /events", "GET /gists", "GET /gists/public", "GET /gists/starred", "GET /gists/{gist_id}/comments", "GET /gists/{gist_id}/commits", "GET /gists/{gist_id}/forks", "GET /installation/repositories", "GET /issues", "GET /licenses", "GET /marketplace_listing/plans", "GET /marketplace_listing/plans/{plan_id}/accounts", "GET /marketplace_listing/stubbed/plans", "GET /marketplace_listing/stubbed/plans/{plan_id}/accounts", "GET /networks/{owner}/{repo}/events", "GET /notifications", "GET /organizations", "GET /orgs/{org}/actions/cache/usage-by-repository", "GET /orgs/{org}/actions/permissions/repositories", "GET /orgs/{org}/actions/runner-groups", "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories", "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners", "GET /orgs/{org}/actions/runners", "GET /orgs/{org}/actions/secrets", "GET /orgs/{org}/actions/secrets/{secret_name}/repositories", "GET /orgs/{org}/audit-log", "GET /orgs/{org}/blocks", "GET /orgs/{org}/code-scanning/alerts", "GET /orgs/{org}/codespaces", "GET /orgs/{org}/credential-authorizations", "GET /orgs/{org}/dependabot/secrets", "GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories", "GET /orgs/{org}/events", "GET /orgs/{org}/external-groups", "GET /orgs/{org}/failed_invitations", "GET /orgs/{org}/hooks", "GET /orgs/{org}/hooks/{hook_id}/deliveries", "GET /orgs/{org}/installations", "GET /orgs/{org}/invitations", "GET /orgs/{org}/invitations/{invitation_id}/teams", "GET /orgs/{org}/issues", "GET /orgs/{org}/members", "GET /orgs/{org}/migrations", "GET /orgs/{org}/migrations/{migration_id}/repositories", "GET /orgs/{org}/outside_collaborators", "GET /orgs/{org}/packages", "GET /orgs/{org}/packages/{package_type}/{package_name}/versions", "GET /orgs/{org}/projects", "GET /orgs/{org}/public_members", "GET /orgs/{org}/repos", "GET /orgs/{org}/secret-scanning/alerts", "GET /orgs/{org}/settings/billing/advanced-security", "GET /orgs/{org}/team-sync/groups", "GET /orgs/{org}/teams", "GET /orgs/{org}/teams/{team_slug}/discussions", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions", "GET /orgs/{org}/teams/{team_slug}/invitations", "GET /orgs/{org}/teams/{team_slug}/members", "GET /orgs/{org}/teams/{team_slug}/projects", "GET /orgs/{org}/teams/{team_slug}/repos", "GET /orgs/{org}/teams/{team_slug}/teams", "GET /projects/columns/{column_id}/cards", "GET /projects/{project_id}/collaborators", "GET /projects/{project_id}/columns", "GET /repos/{owner}/{repo}/actions/artifacts", "GET /repos/{owner}/{repo}/actions/caches", "GET /repos/{owner}/{repo}/actions/runners", "GET /repos/{owner}/{repo}/actions/runs", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs", "GET /repos/{owner}/{repo}/actions/secrets", "GET /repos/{owner}/{repo}/actions/workflows", "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs", "GET /repos/{owner}/{repo}/assignees", "GET /repos/{owner}/{repo}/branches", "GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations", "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs", "GET /repos/{owner}/{repo}/code-scanning/alerts", "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances", "GET /repos/{owner}/{repo}/code-scanning/analyses", "GET /repos/{owner}/{repo}/codespaces", "GET /repos/{owner}/{repo}/codespaces/devcontainers", "GET /repos/{owner}/{repo}/codespaces/secrets", "GET /repos/{owner}/{repo}/collaborators", "GET /repos/{owner}/{repo}/comments", "GET /repos/{owner}/{repo}/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/commits", "GET /repos/{owner}/{repo}/commits/{commit_sha}/comments", "GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls", "GET /repos/{owner}/{repo}/commits/{ref}/check-runs", "GET /repos/{owner}/{repo}/commits/{ref}/check-suites", "GET /repos/{owner}/{repo}/commits/{ref}/status", "GET /repos/{owner}/{repo}/commits/{ref}/statuses", "GET /repos/{owner}/{repo}/contributors", "GET /repos/{owner}/{repo}/dependabot/secrets", "GET /repos/{owner}/{repo}/deployments", "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses", "GET /repos/{owner}/{repo}/environments", "GET /repos/{owner}/{repo}/events", "GET /repos/{owner}/{repo}/forks", "GET /repos/{owner}/{repo}/git/matching-refs/{ref}", "GET /repos/{owner}/{repo}/hooks", "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries", "GET /repos/{owner}/{repo}/invitations", "GET /repos/{owner}/{repo}/issues", "GET /repos/{owner}/{repo}/issues/comments", "GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/issues/events", "GET /repos/{owner}/{repo}/issues/{issue_number}/comments", "GET /repos/{owner}/{repo}/issues/{issue_number}/events", "GET /repos/{owner}/{repo}/issues/{issue_number}/labels", "GET /repos/{owner}/{repo}/issues/{issue_number}/reactions", "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline", "GET /repos/{owner}/{repo}/keys", "GET /repos/{owner}/{repo}/labels", "GET /repos/{owner}/{repo}/milestones", "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels", "GET /repos/{owner}/{repo}/notifications", "GET /repos/{owner}/{repo}/pages/builds", "GET /repos/{owner}/{repo}/projects", "GET /repos/{owner}/{repo}/pulls", "GET /repos/{owner}/{repo}/pulls/comments", "GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/pulls/{pull_number}/comments", "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits", "GET /repos/{owner}/{repo}/pulls/{pull_number}/files", "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers", "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews", "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments", "GET /repos/{owner}/{repo}/releases", "GET /repos/{owner}/{repo}/releases/{release_id}/assets", "GET /repos/{owner}/{repo}/releases/{release_id}/reactions", "GET /repos/{owner}/{repo}/secret-scanning/alerts", "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations", "GET /repos/{owner}/{repo}/stargazers", "GET /repos/{owner}/{repo}/subscribers", "GET /repos/{owner}/{repo}/tags", "GET /repos/{owner}/{repo}/teams", "GET /repos/{owner}/{repo}/topics", "GET /repositories", "GET /repositories/{repository_id}/environments/{environment_name}/secrets", "GET /search/code", "GET /search/commits", "GET /search/issues", "GET /search/labels", "GET /search/repositories", "GET /search/topics", "GET /search/users", "GET /teams/{team_id}/discussions", "GET /teams/{team_id}/discussions/{discussion_number}/comments", "GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions", "GET /teams/{team_id}/discussions/{discussion_number}/reactions", "GET /teams/{team_id}/invitations", "GET /teams/{team_id}/members", "GET /teams/{team_id}/projects", "GET /teams/{team_id}/repos", "GET /teams/{team_id}/teams", "GET /user/blocks", "GET /user/codespaces", "GET /user/codespaces/secrets", "GET /user/emails", "GET /user/followers", "GET /user/following", "GET /user/gpg_keys", "GET /user/installations", "GET /user/installations/{installation_id}/repositories", "GET /user/issues", "GET /user/keys", "GET /user/marketplace_purchases", "GET /user/marketplace_purchases/stubbed", "GET /user/memberships/orgs", "GET /user/migrations", "GET /user/migrations/{migration_id}/repositories", "GET /user/orgs", "GET /user/packages", "GET /user/packages/{package_type}/{package_name}/versions", "GET /user/public_emails", "GET /user/repos", "GET /user/repository_invitations", "GET /user/starred", "GET /user/subscriptions", "GET /user/teams", "GET /users", "GET /users/{username}/events", "GET /users/{username}/events/orgs/{org}", "GET /users/{username}/events/public", "GET /users/{username}/followers", "GET /users/{username}/following", "GET /users/{username}/gists", "GET /users/{username}/gpg_keys", "GET /users/{username}/keys", "GET /users/{username}/orgs", "GET /users/{username}/packages", "GET /users/{username}/projects", "GET /users/{username}/received_events", "GET /users/{username}/received_events/public", "GET /users/{username}/repos", "GET /users/{username}/starred", "GET /users/{username}/subscriptions"];
 
 function isPaginatingEndpoint(arg) {
-    if (typeof arg === "string") {
+  if (typeof arg === "string") {
     return paginatingEndpoints.includes(arg);
-    } else {
+  } else {
     return false;
-    }
+  }
 }
 
 /**
@@ -4212,11 +4212,11 @@ function isPaginatingEndpoint(arg) {
  */
 
 function paginateRest(octokit) {
-    return {
+  return {
     paginate: Object.assign(paginate.bind(null, octokit), {
-        iterator: iterator.bind(null, octokit)
+      iterator: iterator.bind(null, octokit)
     })
-    };
+  };
 }
 paginateRest.VERSION = VERSION;
 
@@ -4238,60 +4238,60 @@ exports.paginatingEndpoints = paginatingEndpoints;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
+  var keys = Object.keys(object);
 
-    if (Object.getOwnPropertySymbols) {
+  if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
 
     if (enumerableOnly) {
-        symbols = symbols.filter(function (sym) {
+      symbols = symbols.filter(function (sym) {
         return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-        });
+      });
     }
 
     keys.push.apply(keys, symbols);
-    }
+  }
 
-    return keys;
+  return keys;
 }
 
 function _objectSpread2(target) {
-    for (var i = 1; i < arguments.length; i++) {
+  for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i] != null ? arguments[i] : {};
 
     if (i % 2) {
-        ownKeys(Object(source), true).forEach(function (key) {
+      ownKeys(Object(source), true).forEach(function (key) {
         _defineProperty(target, key, source[key]);
-        });
+      });
     } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
     } else {
-        ownKeys(Object(source)).forEach(function (key) {
+      ownKeys(Object(source)).forEach(function (key) {
         Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
+      });
     }
-    }
+  }
 
-    return target;
+  return target;
 }
 
 function _defineProperty(obj, key, value) {
-    if (key in obj) {
+  if (key in obj) {
     Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
     });
-    } else {
+  } else {
     obj[key] = value;
-    }
+  }
 
-    return obj;
+  return obj;
 }
 
 const Endpoints = {
-    actions: {
+  actions: {
     addCustomLabelsToSelfHostedRunnerForOrg: ["POST /orgs/{org}/actions/runners/{runner_id}/labels"],
     addCustomLabelsToSelfHostedRunnerForRepo: ["POST /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
     addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
@@ -4343,7 +4343,7 @@ const Endpoints = {
     getOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}"],
     getPendingDeploymentsForRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"],
     getRepoPermissions: ["GET /repos/{owner}/{repo}/actions/permissions", {}, {
-        renamed: ["actions", "getGithubActionsPermissionsRepository"]
+      renamed: ["actions", "getGithubActionsPermissionsRepository"]
     }],
     getRepoPublicKey: ["GET /repos/{owner}/{repo}/actions/secrets/public-key"],
     getRepoSecret: ["GET /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
@@ -4395,8 +4395,8 @@ const Endpoints = {
     setSelectedReposForOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"],
     setSelectedRepositoriesEnabledGithubActionsOrganization: ["PUT /orgs/{org}/actions/permissions/repositories"],
     setWorkflowAccessToRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/access"]
-    },
-    activity: {
+  },
+  activity: {
     checkRepoIsStarredByAuthenticatedUser: ["GET /user/starred/{owner}/{repo}"],
     deleteRepoSubscription: ["DELETE /repos/{owner}/{repo}/subscription"],
     deleteThreadSubscription: ["DELETE /notifications/threads/{thread_id}/subscription"],
@@ -4428,10 +4428,10 @@ const Endpoints = {
     setThreadSubscription: ["PUT /notifications/threads/{thread_id}/subscription"],
     starRepoForAuthenticatedUser: ["PUT /user/starred/{owner}/{repo}"],
     unstarRepoForAuthenticatedUser: ["DELETE /user/starred/{owner}/{repo}"]
-    },
-    apps: {
+  },
+  apps: {
     addRepoToInstallation: ["PUT /user/installations/{installation_id}/repositories/{repository_id}", {}, {
-        renamed: ["apps", "addRepoToInstallationForAuthenticatedUser"]
+      renamed: ["apps", "addRepoToInstallationForAuthenticatedUser"]
     }],
     addRepoToInstallationForAuthenticatedUser: ["PUT /user/installations/{installation_id}/repositories/{repository_id}"],
     checkToken: ["POST /applications/{client_id}/token"],
@@ -4463,7 +4463,7 @@ const Endpoints = {
     listWebhookDeliveries: ["GET /app/hook/deliveries"],
     redeliverWebhookDelivery: ["POST /app/hook/deliveries/{delivery_id}/attempts"],
     removeRepoFromInstallation: ["DELETE /user/installations/{installation_id}/repositories/{repository_id}", {}, {
-        renamed: ["apps", "removeRepoFromInstallationForAuthenticatedUser"]
+      renamed: ["apps", "removeRepoFromInstallationForAuthenticatedUser"]
     }],
     removeRepoFromInstallationForAuthenticatedUser: ["DELETE /user/installations/{installation_id}/repositories/{repository_id}"],
     resetToken: ["PATCH /applications/{client_id}/token"],
@@ -4472,8 +4472,8 @@ const Endpoints = {
     suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
     unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"],
     updateWebhookConfigForApp: ["PATCH /app/hook/config"]
-    },
-    billing: {
+  },
+  billing: {
     getGithubActionsBillingOrg: ["GET /orgs/{org}/settings/billing/actions"],
     getGithubActionsBillingUser: ["GET /users/{username}/settings/billing/actions"],
     getGithubAdvancedSecurityBillingGhe: ["GET /enterprises/{enterprise}/settings/billing/advanced-security"],
@@ -4482,8 +4482,8 @@ const Endpoints = {
     getGithubPackagesBillingUser: ["GET /users/{username}/settings/billing/packages"],
     getSharedStorageBillingOrg: ["GET /orgs/{org}/settings/billing/shared-storage"],
     getSharedStorageBillingUser: ["GET /users/{username}/settings/billing/shared-storage"]
-    },
-    checks: {
+  },
+  checks: {
     create: ["POST /repos/{owner}/{repo}/check-runs"],
     createSuite: ["POST /repos/{owner}/{repo}/check-suites"],
     get: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}"],
@@ -4496,13 +4496,13 @@ const Endpoints = {
     rerequestSuite: ["POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest"],
     setSuitesPreferences: ["PATCH /repos/{owner}/{repo}/check-suites/preferences"],
     update: ["PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}"]
-    },
-    codeScanning: {
+  },
+  codeScanning: {
     deleteAnalysis: ["DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}{?confirm_delete}"],
     getAlert: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}", {}, {
-        renamedParameters: {
+      renamedParameters: {
         alert_id: "alert_number"
-        }
+      }
     }],
     getAnalysis: ["GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"],
     getSarif: ["GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"],
@@ -4510,17 +4510,17 @@ const Endpoints = {
     listAlertsForOrg: ["GET /orgs/{org}/code-scanning/alerts"],
     listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
     listAlertsInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances", {}, {
-        renamed: ["codeScanning", "listAlertInstances"]
+      renamed: ["codeScanning", "listAlertInstances"]
     }],
     listRecentAnalyses: ["GET /repos/{owner}/{repo}/code-scanning/analyses"],
     updateAlert: ["PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"],
     uploadSarif: ["POST /repos/{owner}/{repo}/code-scanning/sarifs"]
-    },
-    codesOfConduct: {
+  },
+  codesOfConduct: {
     getAllCodesOfConduct: ["GET /codes_of_conduct"],
     getConductCode: ["GET /codes_of_conduct/{key}"]
-    },
-    codespaces: {
+  },
+  codespaces: {
     addRepositoryForSecretForAuthenticatedUser: ["PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"],
     codespaceMachinesForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}/machines"],
     createForAuthenticatedUser: ["POST /user/codespaces"],
@@ -4542,9 +4542,9 @@ const Endpoints = {
     listDevcontainersInRepositoryForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces/devcontainers"],
     listForAuthenticatedUser: ["GET /user/codespaces"],
     listInOrganization: ["GET /orgs/{org}/codespaces", {}, {
-        renamedParameters: {
+      renamedParameters: {
         org_id: "org"
-        }
+      }
     }],
     listInRepositoryForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces"],
     listRepoSecrets: ["GET /repos/{owner}/{repo}/codespaces/secrets"],
@@ -4557,8 +4557,8 @@ const Endpoints = {
     stopForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/stop"],
     stopInOrganization: ["POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop"],
     updateForAuthenticatedUser: ["PATCH /user/codespaces/{codespace_name}"]
-    },
-    dependabot: {
+  },
+  dependabot: {
     addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"],
     createOrUpdateOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}"],
     createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"],
@@ -4573,15 +4573,15 @@ const Endpoints = {
     listSelectedReposForOrgSecret: ["GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories"],
     removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"],
     setSelectedReposForOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories"]
-    },
-    dependencyGraph: {
+  },
+  dependencyGraph: {
     createRepositorySnapshot: ["POST /repos/{owner}/{repo}/dependency-graph/snapshots"],
     diffRange: ["GET /repos/{owner}/{repo}/dependency-graph/compare/{basehead}"]
-    },
-    emojis: {
+  },
+  emojis: {
     get: ["GET /emojis"]
-    },
-    enterpriseAdmin: {
+  },
+  enterpriseAdmin: {
     addCustomLabelsToSelfHostedRunnerForEnterprise: ["POST /enterprises/{enterprise}/actions/runners/{runner_id}/labels"],
     disableSelectedOrganizationGithubActionsEnterprise: ["DELETE /enterprises/{enterprise}/actions/permissions/organizations/{org_id}"],
     enableSelectedOrganizationGithubActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/organizations/{org_id}"],
@@ -4596,8 +4596,8 @@ const Endpoints = {
     setCustomLabelsForSelfHostedRunnerForEnterprise: ["PUT /enterprises/{enterprise}/actions/runners/{runner_id}/labels"],
     setGithubActionsPermissionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions"],
     setSelectedOrganizationsEnabledGithubActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/organizations"]
-    },
-    gists: {
+  },
+  gists: {
     checkIsStarred: ["GET /gists/{gist_id}/star"],
     create: ["POST /gists"],
     createComment: ["POST /gists/{gist_id}/comments"],
@@ -4618,8 +4618,8 @@ const Endpoints = {
     unstar: ["DELETE /gists/{gist_id}/star"],
     update: ["PATCH /gists/{gist_id}"],
     updateComment: ["PATCH /gists/{gist_id}/comments/{comment_id}"]
-    },
-    git: {
+  },
+  git: {
     createBlob: ["POST /repos/{owner}/{repo}/git/blobs"],
     createCommit: ["POST /repos/{owner}/{repo}/git/commits"],
     createRef: ["POST /repos/{owner}/{repo}/git/refs"],
@@ -4633,32 +4633,32 @@ const Endpoints = {
     getTree: ["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"],
     listMatchingRefs: ["GET /repos/{owner}/{repo}/git/matching-refs/{ref}"],
     updateRef: ["PATCH /repos/{owner}/{repo}/git/refs/{ref}"]
-    },
-    gitignore: {
+  },
+  gitignore: {
     getAllTemplates: ["GET /gitignore/templates"],
     getTemplate: ["GET /gitignore/templates/{name}"]
-    },
-    interactions: {
+  },
+  interactions: {
     getRestrictionsForAuthenticatedUser: ["GET /user/interaction-limits"],
     getRestrictionsForOrg: ["GET /orgs/{org}/interaction-limits"],
     getRestrictionsForRepo: ["GET /repos/{owner}/{repo}/interaction-limits"],
     getRestrictionsForYourPublicRepos: ["GET /user/interaction-limits", {}, {
-        renamed: ["interactions", "getRestrictionsForAuthenticatedUser"]
+      renamed: ["interactions", "getRestrictionsForAuthenticatedUser"]
     }],
     removeRestrictionsForAuthenticatedUser: ["DELETE /user/interaction-limits"],
     removeRestrictionsForOrg: ["DELETE /orgs/{org}/interaction-limits"],
     removeRestrictionsForRepo: ["DELETE /repos/{owner}/{repo}/interaction-limits"],
     removeRestrictionsForYourPublicRepos: ["DELETE /user/interaction-limits", {}, {
-        renamed: ["interactions", "removeRestrictionsForAuthenticatedUser"]
+      renamed: ["interactions", "removeRestrictionsForAuthenticatedUser"]
     }],
     setRestrictionsForAuthenticatedUser: ["PUT /user/interaction-limits"],
     setRestrictionsForOrg: ["PUT /orgs/{org}/interaction-limits"],
     setRestrictionsForRepo: ["PUT /repos/{owner}/{repo}/interaction-limits"],
     setRestrictionsForYourPublicRepos: ["PUT /user/interaction-limits", {}, {
-        renamed: ["interactions", "setRestrictionsForAuthenticatedUser"]
+      renamed: ["interactions", "setRestrictionsForAuthenticatedUser"]
     }]
-    },
-    issues: {
+  },
+  issues: {
     addAssignees: ["POST /repos/{owner}/{repo}/issues/{issue_number}/assignees"],
     addLabels: ["POST /repos/{owner}/{repo}/issues/{issue_number}/labels"],
     checkUserCanBeAssigned: ["GET /repos/{owner}/{repo}/assignees/{assignee}"],
@@ -4698,27 +4698,27 @@ const Endpoints = {
     updateComment: ["PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}"],
     updateLabel: ["PATCH /repos/{owner}/{repo}/labels/{name}"],
     updateMilestone: ["PATCH /repos/{owner}/{repo}/milestones/{milestone_number}"]
-    },
-    licenses: {
+  },
+  licenses: {
     get: ["GET /licenses/{license}"],
     getAllCommonlyUsed: ["GET /licenses"],
     getForRepo: ["GET /repos/{owner}/{repo}/license"]
-    },
-    markdown: {
+  },
+  markdown: {
     render: ["POST /markdown"],
     renderRaw: ["POST /markdown/raw", {
-        headers: {
+      headers: {
         "content-type": "text/plain; charset=utf-8"
-        }
+      }
     }]
-    },
-    meta: {
+  },
+  meta: {
     get: ["GET /meta"],
     getOctocat: ["GET /octocat"],
     getZen: ["GET /zen"],
     root: ["GET /"]
-    },
-    migrations: {
+  },
+  migrations: {
     cancelImport: ["DELETE /repos/{owner}/{repo}/import"],
     deleteArchiveForAuthenticatedUser: ["DELETE /user/migrations/{migration_id}/archive"],
     deleteArchiveForOrg: ["DELETE /orgs/{org}/migrations/{migration_id}/archive"],
@@ -4734,7 +4734,7 @@ const Endpoints = {
     listReposForAuthenticatedUser: ["GET /user/migrations/{migration_id}/repositories"],
     listReposForOrg: ["GET /orgs/{org}/migrations/{migration_id}/repositories"],
     listReposForUser: ["GET /user/migrations/{migration_id}/repositories", {}, {
-        renamed: ["migrations", "listReposForAuthenticatedUser"]
+      renamed: ["migrations", "listReposForAuthenticatedUser"]
     }],
     mapCommitAuthor: ["PATCH /repos/{owner}/{repo}/import/authors/{author_id}"],
     setLfsPreference: ["PATCH /repos/{owner}/{repo}/import/lfs"],
@@ -4744,8 +4744,8 @@ const Endpoints = {
     unlockRepoForAuthenticatedUser: ["DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock"],
     unlockRepoForOrg: ["DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock"],
     updateImport: ["PATCH /repos/{owner}/{repo}/import"]
-    },
-    orgs: {
+  },
+  orgs: {
     blockUser: ["PUT /orgs/{org}/blocks/{username}"],
     cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
     checkBlockedUser: ["GET /orgs/{org}/blocks/{username}"],
@@ -4789,8 +4789,8 @@ const Endpoints = {
     updateMembershipForAuthenticatedUser: ["PATCH /user/memberships/orgs/{org}"],
     updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"],
     updateWebhookConfigForOrg: ["PATCH /orgs/{org}/hooks/{hook_id}/config"]
-    },
-    packages: {
+  },
+  packages: {
     deletePackageForAuthenticatedUser: ["DELETE /user/packages/{package_type}/{package_name}"],
     deletePackageForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}"],
     deletePackageForUser: ["DELETE /users/{username}/packages/{package_type}/{package_name}"],
@@ -4798,10 +4798,10 @@ const Endpoints = {
     deletePackageVersionForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
     deletePackageVersionForUser: ["DELETE /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
     getAllPackageVersionsForAPackageOwnedByAnOrg: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions", {}, {
-        renamed: ["packages", "getAllPackageVersionsForPackageOwnedByOrg"]
+      renamed: ["packages", "getAllPackageVersionsForPackageOwnedByOrg"]
     }],
     getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions", {}, {
-        renamed: ["packages", "getAllPackageVersionsForPackageOwnedByAuthenticatedUser"]
+      renamed: ["packages", "getAllPackageVersionsForPackageOwnedByAuthenticatedUser"]
     }],
     getAllPackageVersionsForPackageOwnedByAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions"],
     getAllPackageVersionsForPackageOwnedByOrg: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions"],
@@ -4821,8 +4821,8 @@ const Endpoints = {
     restorePackageVersionForAuthenticatedUser: ["POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"],
     restorePackageVersionForOrg: ["POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"],
     restorePackageVersionForUser: ["POST /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"]
-    },
-    projects: {
+  },
+  projects: {
     addCollaborator: ["PUT /projects/{project_id}/collaborators/{username}"],
     createCard: ["POST /projects/columns/{column_id}/cards"],
     createColumn: ["POST /projects/{project_id}/columns"],
@@ -4848,8 +4848,8 @@ const Endpoints = {
     update: ["PATCH /projects/{project_id}"],
     updateCard: ["PATCH /projects/columns/cards/{card_id}"],
     updateColumn: ["PATCH /projects/columns/{column_id}"]
-    },
-    pulls: {
+  },
+  pulls: {
     checkIfMerged: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
     create: ["POST /repos/{owner}/{repo}/pulls"],
     createReplyForReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies"],
@@ -4877,11 +4877,11 @@ const Endpoints = {
     updateBranch: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch"],
     updateReview: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
     updateReviewComment: ["PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}"]
-    },
-    rateLimit: {
+  },
+  rateLimit: {
     get: ["GET /rate_limit"]
-    },
-    reactions: {
+  },
+  reactions: {
     createForCommitComment: ["POST /repos/{owner}/{repo}/comments/{comment_id}/reactions"],
     createForIssue: ["POST /repos/{owner}/{repo}/issues/{issue_number}/reactions"],
     createForIssueComment: ["POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions"],
@@ -4903,24 +4903,24 @@ const Endpoints = {
     listForRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}/reactions"],
     listForTeamDiscussionCommentInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions"],
     listForTeamDiscussionInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions"]
-    },
-    repos: {
+  },
+  repos: {
     acceptInvitation: ["PATCH /user/repository_invitations/{invitation_id}", {}, {
-        renamed: ["repos", "acceptInvitationForAuthenticatedUser"]
+      renamed: ["repos", "acceptInvitationForAuthenticatedUser"]
     }],
     acceptInvitationForAuthenticatedUser: ["PATCH /user/repository_invitations/{invitation_id}"],
     addAppAccessRestrictions: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps", {}, {
-        mapToData: "apps"
+      mapToData: "apps"
     }],
     addCollaborator: ["PUT /repos/{owner}/{repo}/collaborators/{username}"],
     addStatusCheckContexts: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts", {}, {
-        mapToData: "contexts"
+      mapToData: "contexts"
     }],
     addTeamAccessRestrictions: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams", {}, {
-        mapToData: "teams"
+      mapToData: "teams"
     }],
     addUserAccessRestrictions: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users", {}, {
-        mapToData: "users"
+      mapToData: "users"
     }],
     checkCollaborator: ["GET /repos/{owner}/{repo}/collaborators/{username}"],
     checkVulnerabilityAlerts: ["GET /repos/{owner}/{repo}/vulnerability-alerts"],
@@ -4946,7 +4946,7 @@ const Endpoints = {
     createUsingTemplate: ["POST /repos/{template_owner}/{template_repo}/generate"],
     createWebhook: ["POST /repos/{owner}/{repo}/hooks"],
     declineInvitation: ["DELETE /user/repository_invitations/{invitation_id}", {}, {
-        renamed: ["repos", "declineInvitationForAuthenticatedUser"]
+      renamed: ["repos", "declineInvitationForAuthenticatedUser"]
     }],
     declineInvitationForAuthenticatedUser: ["DELETE /user/repository_invitations/{invitation_id}"],
     delete: ["DELETE /repos/{owner}/{repo}"],
@@ -4971,7 +4971,7 @@ const Endpoints = {
     disableLfsForRepo: ["DELETE /repos/{owner}/{repo}/lfs"],
     disableVulnerabilityAlerts: ["DELETE /repos/{owner}/{repo}/vulnerability-alerts"],
     downloadArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}", {}, {
-        renamed: ["repos", "downloadZipballArchive"]
+      renamed: ["repos", "downloadZipballArchive"]
     }],
     downloadTarballArchive: ["GET /repos/{owner}/{repo}/tarball/{ref}"],
     downloadZipballArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}"],
@@ -5060,34 +5060,34 @@ const Endpoints = {
     pingWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/pings"],
     redeliverWebhookDelivery: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"],
     removeAppAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps", {}, {
-        mapToData: "apps"
+      mapToData: "apps"
     }],
     removeCollaborator: ["DELETE /repos/{owner}/{repo}/collaborators/{username}"],
     removeStatusCheckContexts: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts", {}, {
-        mapToData: "contexts"
+      mapToData: "contexts"
     }],
     removeStatusCheckProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
     removeTeamAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams", {}, {
-        mapToData: "teams"
+      mapToData: "teams"
     }],
     removeUserAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users", {}, {
-        mapToData: "users"
+      mapToData: "users"
     }],
     renameBranch: ["POST /repos/{owner}/{repo}/branches/{branch}/rename"],
     replaceAllTopics: ["PUT /repos/{owner}/{repo}/topics"],
     requestPagesBuild: ["POST /repos/{owner}/{repo}/pages/builds"],
     setAdminBranchProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
     setAppAccessRestrictions: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps", {}, {
-        mapToData: "apps"
+      mapToData: "apps"
     }],
     setStatusCheckContexts: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts", {}, {
-        mapToData: "contexts"
+      mapToData: "contexts"
     }],
     setTeamAccessRestrictions: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams", {}, {
-        mapToData: "teams"
+      mapToData: "teams"
     }],
     setUserAccessRestrictions: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users", {}, {
-        mapToData: "users"
+      mapToData: "users"
     }],
     testPushWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/tests"],
     transfer: ["POST /repos/{owner}/{repo}/transfer"],
@@ -5100,16 +5100,16 @@ const Endpoints = {
     updateRelease: ["PATCH /repos/{owner}/{repo}/releases/{release_id}"],
     updateReleaseAsset: ["PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}"],
     updateStatusCheckPotection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks", {}, {
-        renamed: ["repos", "updateStatusCheckProtection"]
+      renamed: ["repos", "updateStatusCheckProtection"]
     }],
     updateStatusCheckProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
     updateWebhook: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}"],
     updateWebhookConfigForRepo: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config"],
     uploadReleaseAsset: ["POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}", {
-        baseUrl: "https://uploads.github.com"
+      baseUrl: "https://uploads.github.com"
     }]
-    },
-    search: {
+  },
+  search: {
     code: ["GET /search/code"],
     commits: ["GET /search/commits"],
     issuesAndPullRequests: ["GET /search/issues"],
@@ -5117,16 +5117,16 @@ const Endpoints = {
     repos: ["GET /search/repositories"],
     topics: ["GET /search/topics"],
     users: ["GET /search/users"]
-    },
-    secretScanning: {
+  },
+  secretScanning: {
     getAlert: ["GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"],
     listAlertsForEnterprise: ["GET /enterprises/{enterprise}/secret-scanning/alerts"],
     listAlertsForOrg: ["GET /orgs/{org}/secret-scanning/alerts"],
     listAlertsForRepo: ["GET /repos/{owner}/{repo}/secret-scanning/alerts"],
     listLocationsForAlert: ["GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations"],
     updateAlert: ["PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"]
-    },
-    teams: {
+  },
+  teams: {
     addOrUpdateMembershipForUserInOrg: ["PUT /orgs/{org}/teams/{team_slug}/memberships/{username}"],
     addOrUpdateProjectPermissionsInOrg: ["PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}"],
     addOrUpdateRepoPermissionsInOrg: ["PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
@@ -5157,10 +5157,10 @@ const Endpoints = {
     updateDiscussionCommentInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
     updateDiscussionInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
     updateInOrg: ["PATCH /orgs/{org}/teams/{team_slug}"]
-    },
-    users: {
+  },
+  users: {
     addEmailForAuthenticated: ["POST /user/emails", {}, {
-        renamed: ["users", "addEmailForAuthenticatedUser"]
+      renamed: ["users", "addEmailForAuthenticatedUser"]
     }],
     addEmailForAuthenticatedUser: ["POST /user/emails"],
     block: ["PUT /user/blocks/{username}"],
@@ -5168,23 +5168,23 @@ const Endpoints = {
     checkFollowingForUser: ["GET /users/{username}/following/{target_user}"],
     checkPersonIsFollowedByAuthenticated: ["GET /user/following/{username}"],
     createGpgKeyForAuthenticated: ["POST /user/gpg_keys", {}, {
-        renamed: ["users", "createGpgKeyForAuthenticatedUser"]
+      renamed: ["users", "createGpgKeyForAuthenticatedUser"]
     }],
     createGpgKeyForAuthenticatedUser: ["POST /user/gpg_keys"],
     createPublicSshKeyForAuthenticated: ["POST /user/keys", {}, {
-        renamed: ["users", "createPublicSshKeyForAuthenticatedUser"]
+      renamed: ["users", "createPublicSshKeyForAuthenticatedUser"]
     }],
     createPublicSshKeyForAuthenticatedUser: ["POST /user/keys"],
     deleteEmailForAuthenticated: ["DELETE /user/emails", {}, {
-        renamed: ["users", "deleteEmailForAuthenticatedUser"]
+      renamed: ["users", "deleteEmailForAuthenticatedUser"]
     }],
     deleteEmailForAuthenticatedUser: ["DELETE /user/emails"],
     deleteGpgKeyForAuthenticated: ["DELETE /user/gpg_keys/{gpg_key_id}", {}, {
-        renamed: ["users", "deleteGpgKeyForAuthenticatedUser"]
+      renamed: ["users", "deleteGpgKeyForAuthenticatedUser"]
     }],
     deleteGpgKeyForAuthenticatedUser: ["DELETE /user/gpg_keys/{gpg_key_id}"],
     deletePublicSshKeyForAuthenticated: ["DELETE /user/keys/{key_id}", {}, {
-        renamed: ["users", "deletePublicSshKeyForAuthenticatedUser"]
+      renamed: ["users", "deletePublicSshKeyForAuthenticatedUser"]
     }],
     deletePublicSshKeyForAuthenticatedUser: ["DELETE /user/keys/{key_id}"],
     follow: ["PUT /user/following/{username}"],
@@ -5192,148 +5192,148 @@ const Endpoints = {
     getByUsername: ["GET /users/{username}"],
     getContextForUser: ["GET /users/{username}/hovercard"],
     getGpgKeyForAuthenticated: ["GET /user/gpg_keys/{gpg_key_id}", {}, {
-        renamed: ["users", "getGpgKeyForAuthenticatedUser"]
+      renamed: ["users", "getGpgKeyForAuthenticatedUser"]
     }],
     getGpgKeyForAuthenticatedUser: ["GET /user/gpg_keys/{gpg_key_id}"],
     getPublicSshKeyForAuthenticated: ["GET /user/keys/{key_id}", {}, {
-        renamed: ["users", "getPublicSshKeyForAuthenticatedUser"]
+      renamed: ["users", "getPublicSshKeyForAuthenticatedUser"]
     }],
     getPublicSshKeyForAuthenticatedUser: ["GET /user/keys/{key_id}"],
     list: ["GET /users"],
     listBlockedByAuthenticated: ["GET /user/blocks", {}, {
-        renamed: ["users", "listBlockedByAuthenticatedUser"]
+      renamed: ["users", "listBlockedByAuthenticatedUser"]
     }],
     listBlockedByAuthenticatedUser: ["GET /user/blocks"],
     listEmailsForAuthenticated: ["GET /user/emails", {}, {
-        renamed: ["users", "listEmailsForAuthenticatedUser"]
+      renamed: ["users", "listEmailsForAuthenticatedUser"]
     }],
     listEmailsForAuthenticatedUser: ["GET /user/emails"],
     listFollowedByAuthenticated: ["GET /user/following", {}, {
-        renamed: ["users", "listFollowedByAuthenticatedUser"]
+      renamed: ["users", "listFollowedByAuthenticatedUser"]
     }],
     listFollowedByAuthenticatedUser: ["GET /user/following"],
     listFollowersForAuthenticatedUser: ["GET /user/followers"],
     listFollowersForUser: ["GET /users/{username}/followers"],
     listFollowingForUser: ["GET /users/{username}/following"],
     listGpgKeysForAuthenticated: ["GET /user/gpg_keys", {}, {
-        renamed: ["users", "listGpgKeysForAuthenticatedUser"]
+      renamed: ["users", "listGpgKeysForAuthenticatedUser"]
     }],
     listGpgKeysForAuthenticatedUser: ["GET /user/gpg_keys"],
     listGpgKeysForUser: ["GET /users/{username}/gpg_keys"],
     listPublicEmailsForAuthenticated: ["GET /user/public_emails", {}, {
-        renamed: ["users", "listPublicEmailsForAuthenticatedUser"]
+      renamed: ["users", "listPublicEmailsForAuthenticatedUser"]
     }],
     listPublicEmailsForAuthenticatedUser: ["GET /user/public_emails"],
     listPublicKeysForUser: ["GET /users/{username}/keys"],
     listPublicSshKeysForAuthenticated: ["GET /user/keys", {}, {
-        renamed: ["users", "listPublicSshKeysForAuthenticatedUser"]
+      renamed: ["users", "listPublicSshKeysForAuthenticatedUser"]
     }],
     listPublicSshKeysForAuthenticatedUser: ["GET /user/keys"],
     setPrimaryEmailVisibilityForAuthenticated: ["PATCH /user/email/visibility", {}, {
-        renamed: ["users", "setPrimaryEmailVisibilityForAuthenticatedUser"]
+      renamed: ["users", "setPrimaryEmailVisibilityForAuthenticatedUser"]
     }],
     setPrimaryEmailVisibilityForAuthenticatedUser: ["PATCH /user/email/visibility"],
     unblock: ["DELETE /user/blocks/{username}"],
     unfollow: ["DELETE /user/following/{username}"],
     updateAuthenticated: ["PATCH /user"]
-    }
+  }
 };
 
 const VERSION = "5.16.2";
 
 function endpointsToMethods(octokit, endpointsMap) {
-    const newMethods = {};
+  const newMethods = {};
 
-    for (const [scope, endpoints] of Object.entries(endpointsMap)) {
+  for (const [scope, endpoints] of Object.entries(endpointsMap)) {
     for (const [methodName, endpoint] of Object.entries(endpoints)) {
-        const [route, defaults, decorations] = endpoint;
-        const [method, url] = route.split(/ /);
-        const endpointDefaults = Object.assign({
+      const [route, defaults, decorations] = endpoint;
+      const [method, url] = route.split(/ /);
+      const endpointDefaults = Object.assign({
         method,
         url
-        }, defaults);
+      }, defaults);
 
-        if (!newMethods[scope]) {
+      if (!newMethods[scope]) {
         newMethods[scope] = {};
-        }
+      }
 
-        const scopeMethods = newMethods[scope];
+      const scopeMethods = newMethods[scope];
 
-        if (decorations) {
+      if (decorations) {
         scopeMethods[methodName] = decorate(octokit, scope, methodName, endpointDefaults, decorations);
         continue;
-        }
+      }
 
-        scopeMethods[methodName] = octokit.request.defaults(endpointDefaults);
+      scopeMethods[methodName] = octokit.request.defaults(endpointDefaults);
     }
-    }
+  }
 
-    return newMethods;
+  return newMethods;
 }
 
 function decorate(octokit, scope, methodName, defaults, decorations) {
-    const requestWithDefaults = octokit.request.defaults(defaults);
-    /* istanbul ignore next */
+  const requestWithDefaults = octokit.request.defaults(defaults);
+  /* istanbul ignore next */
 
-    function withDecorations(...args) {
+  function withDecorations(...args) {
     // @ts-ignore https://github.com/microsoft/TypeScript/issues/25488
     let options = requestWithDefaults.endpoint.merge(...args); // There are currently no other decorations than `.mapToData`
 
     if (decorations.mapToData) {
-        options = Object.assign({}, options, {
+      options = Object.assign({}, options, {
         data: options[decorations.mapToData],
         [decorations.mapToData]: undefined
-        });
-        return requestWithDefaults(options);
+      });
+      return requestWithDefaults(options);
     }
 
     if (decorations.renamed) {
-        const [newScope, newMethodName] = decorations.renamed;
-        octokit.log.warn(`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`);
+      const [newScope, newMethodName] = decorations.renamed;
+      octokit.log.warn(`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`);
     }
 
     if (decorations.deprecated) {
-        octokit.log.warn(decorations.deprecated);
+      octokit.log.warn(decorations.deprecated);
     }
 
     if (decorations.renamedParameters) {
-        // @ts-ignore https://github.com/microsoft/TypeScript/issues/25488
-        const options = requestWithDefaults.endpoint.merge(...args);
+      // @ts-ignore https://github.com/microsoft/TypeScript/issues/25488
+      const options = requestWithDefaults.endpoint.merge(...args);
 
-        for (const [name, alias] of Object.entries(decorations.renamedParameters)) {
+      for (const [name, alias] of Object.entries(decorations.renamedParameters)) {
         if (name in options) {
-            octokit.log.warn(`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`);
+          octokit.log.warn(`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`);
 
-            if (!(alias in options)) {
+          if (!(alias in options)) {
             options[alias] = options[name];
-            }
+          }
 
-            delete options[name];
+          delete options[name];
         }
-        }
+      }
 
-        return requestWithDefaults(options);
+      return requestWithDefaults(options);
     } // @ts-ignore https://github.com/microsoft/TypeScript/issues/25488
 
 
     return requestWithDefaults(...args);
-    }
+  }
 
-    return Object.assign(withDecorations, requestWithDefaults);
+  return Object.assign(withDecorations, requestWithDefaults);
 }
 
 function restEndpointMethods(octokit) {
-    const api = endpointsToMethods(octokit, Endpoints);
-    return {
+  const api = endpointsToMethods(octokit, Endpoints);
+  return {
     rest: api
-    };
+  };
 }
 restEndpointMethods.VERSION = VERSION;
 function legacyRestEndpointMethods(octokit) {
-    const api = endpointsToMethods(octokit, Endpoints);
-    return _objectSpread2(_objectSpread2({}, api), {}, {
+  const api = endpointsToMethods(octokit, Endpoints);
+  return _objectSpread2(_objectSpread2({}, api), {}, {
     rest: api
-    });
+  });
 }
 legacyRestEndpointMethods.VERSION = VERSION;
 
@@ -5364,13 +5364,13 @@ const logOnceHeaders = once(deprecation => console.warn(deprecation));
  */
 
 class RequestError extends Error {
-    constructor(message, statusCode, options) {
+  constructor(message, statusCode, options) {
     super(message); // Maintains proper stack trace (only available on V8)
 
     /* istanbul ignore next */
 
     if (Error.captureStackTrace) {
-        Error.captureStackTrace(this, this.constructor);
+      Error.captureStackTrace(this, this.constructor);
     }
 
     this.name = "HttpError";
@@ -5378,21 +5378,21 @@ class RequestError extends Error {
     let headers;
 
     if ("headers" in options && typeof options.headers !== "undefined") {
-        headers = options.headers;
+      headers = options.headers;
     }
 
     if ("response" in options) {
-        this.response = options.response;
-        headers = options.response.headers;
+      this.response = options.response;
+      headers = options.response.headers;
     } // redact request credentials without mutating original request options
 
 
     const requestCopy = Object.assign({}, options.request);
 
     if (options.request.headers.authorization) {
-        requestCopy.headers = Object.assign({}, options.request.headers, {
+      requestCopy.headers = Object.assign({}, options.request.headers, {
         authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]")
-        });
+      });
     }
 
     requestCopy.url = requestCopy.url // client_id & client_secret can be passed as URL query parameters to increase rate limit
@@ -5403,20 +5403,20 @@ class RequestError extends Error {
     this.request = requestCopy; // deprecations
 
     Object.defineProperty(this, "code", {
-        get() {
+      get() {
         logOnceCode(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
         return statusCode;
-        }
+      }
 
     });
     Object.defineProperty(this, "headers", {
-        get() {
+      get() {
         logOnceHeaders(new deprecation.Deprecation("[@octokit/request-error] `error.headers` is deprecated, use `error.response.headers`."));
         return headers || {};
-        }
+      }
 
     });
-    }
+  }
 
 }
 
@@ -5445,164 +5445,164 @@ var requestError = __nccwpck_require__(537);
 const VERSION = "5.6.3";
 
 function getBufferResponse(response) {
-    return response.arrayBuffer();
+  return response.arrayBuffer();
 }
 
 function fetchWrapper(requestOptions) {
-    const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
+  const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
 
-    if (isPlainObject.isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
+  if (isPlainObject.isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
     requestOptions.body = JSON.stringify(requestOptions.body);
-    }
+  }
 
-    let headers = {};
-    let status;
-    let url;
-    const fetch = requestOptions.request && requestOptions.request.fetch || nodeFetch;
-    return fetch(requestOptions.url, Object.assign({
+  let headers = {};
+  let status;
+  let url;
+  const fetch = requestOptions.request && requestOptions.request.fetch || nodeFetch;
+  return fetch(requestOptions.url, Object.assign({
     method: requestOptions.method,
     body: requestOptions.body,
     headers: requestOptions.headers,
     redirect: requestOptions.redirect
-    }, // `requestOptions.request.agent` type is incompatible
-    // see https://github.com/octokit/types.ts/pull/264
-    requestOptions.request)).then(async response => {
+  }, // `requestOptions.request.agent` type is incompatible
+  // see https://github.com/octokit/types.ts/pull/264
+  requestOptions.request)).then(async response => {
     url = response.url;
     status = response.status;
 
     for (const keyAndValue of response.headers) {
-        headers[keyAndValue[0]] = keyAndValue[1];
+      headers[keyAndValue[0]] = keyAndValue[1];
     }
 
     if ("deprecation" in headers) {
-        const matches = headers.link && headers.link.match(/<([^>]+)>; rel="deprecation"/);
-        const deprecationLink = matches && matches.pop();
-        log.warn(`[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`);
+      const matches = headers.link && headers.link.match(/<([^>]+)>; rel="deprecation"/);
+      const deprecationLink = matches && matches.pop();
+      log.warn(`[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`);
     }
 
     if (status === 204 || status === 205) {
-        return;
+      return;
     } // GitHub API returns 200 for HEAD requests
 
 
     if (requestOptions.method === "HEAD") {
-        if (status < 400) {
+      if (status < 400) {
         return;
-        }
+      }
 
-        throw new requestError.RequestError(response.statusText, status, {
+      throw new requestError.RequestError(response.statusText, status, {
         response: {
-            url,
-            status,
-            headers,
-            data: undefined
+          url,
+          status,
+          headers,
+          data: undefined
         },
         request: requestOptions
-        });
+      });
     }
 
     if (status === 304) {
-        throw new requestError.RequestError("Not modified", status, {
+      throw new requestError.RequestError("Not modified", status, {
         response: {
-            url,
-            status,
-            headers,
-            data: await getResponseData(response)
+          url,
+          status,
+          headers,
+          data: await getResponseData(response)
         },
         request: requestOptions
-        });
+      });
     }
 
     if (status >= 400) {
-        const data = await getResponseData(response);
-        const error = new requestError.RequestError(toErrorMessage(data), status, {
+      const data = await getResponseData(response);
+      const error = new requestError.RequestError(toErrorMessage(data), status, {
         response: {
-            url,
-            status,
-            headers,
-            data
+          url,
+          status,
+          headers,
+          data
         },
         request: requestOptions
-        });
-        throw error;
+      });
+      throw error;
     }
 
     return getResponseData(response);
-    }).then(data => {
+  }).then(data => {
     return {
-        status,
-        url,
-        headers,
-        data
+      status,
+      url,
+      headers,
+      data
     };
-    }).catch(error => {
+  }).catch(error => {
     if (error instanceof requestError.RequestError) throw error;
     throw new requestError.RequestError(error.message, 500, {
-        request: requestOptions
+      request: requestOptions
     });
-    });
+  });
 }
 
 async function getResponseData(response) {
-    const contentType = response.headers.get("content-type");
+  const contentType = response.headers.get("content-type");
 
-    if (/application\/json/.test(contentType)) {
+  if (/application\/json/.test(contentType)) {
     return response.json();
-    }
+  }
 
-    if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
+  if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
     return response.text();
-    }
+  }
 
-    return getBufferResponse(response);
+  return getBufferResponse(response);
 }
 
 function toErrorMessage(data) {
-    if (typeof data === "string") return data; // istanbul ignore else - just in case
+  if (typeof data === "string") return data; // istanbul ignore else - just in case
 
-    if ("message" in data) {
+  if ("message" in data) {
     if (Array.isArray(data.errors)) {
-        return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
     }
 
     return data.message;
-    } // istanbul ignore next - just in case
+  } // istanbul ignore next - just in case
 
 
-    return `Unknown error: ${JSON.stringify(data)}`;
+  return `Unknown error: ${JSON.stringify(data)}`;
 }
 
 function withDefaults(oldEndpoint, newDefaults) {
-    const endpoint = oldEndpoint.defaults(newDefaults);
+  const endpoint = oldEndpoint.defaults(newDefaults);
 
-    const newApi = function (route, parameters) {
+  const newApi = function (route, parameters) {
     const endpointOptions = endpoint.merge(route, parameters);
 
     if (!endpointOptions.request || !endpointOptions.request.hook) {
-        return fetchWrapper(endpoint.parse(endpointOptions));
+      return fetchWrapper(endpoint.parse(endpointOptions));
     }
 
     const request = (route, parameters) => {
-        return fetchWrapper(endpoint.parse(endpoint.merge(route, parameters)));
+      return fetchWrapper(endpoint.parse(endpoint.merge(route, parameters)));
     };
 
     Object.assign(request, {
-        endpoint,
-        defaults: withDefaults.bind(null, endpoint)
+      endpoint,
+      defaults: withDefaults.bind(null, endpoint)
     });
     return endpointOptions.request.hook(request, endpointOptions);
-    };
+  };
 
-    return Object.assign(newApi, {
+  return Object.assign(newApi, {
     endpoint,
     defaults: withDefaults.bind(null, endpoint)
-    });
+  });
 }
 
 const request = withDefaults(endpoint.endpoint, {
-    headers: {
+  headers: {
     "user-agent": `octokit-request.js/${VERSION} ${universalUserAgent.getUserAgent()}`
-    }
+  }
 });
 
 exports.request = request;
@@ -7677,13 +7677,13 @@ function coerceData(it, types, coerceTo) {
             case "number":
                 gen
                     .elseIf((0, codegen_1._) `${dataType} == "boolean" || ${data} === null
-                || (${dataType} == "string" && ${data} && ${data} == +${data})`)
+              || (${dataType} == "string" && ${data} && ${data} == +${data})`)
                     .assign(coerced, (0, codegen_1._) `+${data}`);
                 return;
             case "integer":
                 gen
                     .elseIf((0, codegen_1._) `${dataType} === "boolean" || ${data} === null
-                || (${dataType} === "string" && ${data} && ${data} == +${data} && !(${data} % 1))`)
+              || (${dataType} === "string" && ${data} && ${data} == +${data} && !(${data} % 1))`)
                     .assign(coerced, (0, codegen_1._) `+${data}`);
                 return;
             case "boolean":
@@ -7700,7 +7700,7 @@ function coerceData(it, types, coerceTo) {
             case "array":
                 gen
                     .elseIf((0, codegen_1._) `${dataType} === "string" || ${dataType} === "number"
-                || ${dataType} === "boolean" || ${data} === null`)
+              || ${dataType} === "boolean" || ${data} === null`)
                     .assign(coerced, (0, codegen_1._) `[${data}]`);
         }
     }
@@ -11305,44 +11305,44 @@ var bind = Function.bind
 var bindable = bind.bind(bind)
 
 function bindApi (hook, state, name) {
-    var removeHookRef = bindable(removeHook, null).apply(null, name ? [state, name] : [state])
-    hook.api = { remove: removeHookRef }
-    hook.remove = removeHookRef
+  var removeHookRef = bindable(removeHook, null).apply(null, name ? [state, name] : [state])
+  hook.api = { remove: removeHookRef }
+  hook.remove = removeHookRef
 
-    ;['before', 'error', 'after', 'wrap'].forEach(function (kind) {
+  ;['before', 'error', 'after', 'wrap'].forEach(function (kind) {
     var args = name ? [state, kind, name] : [state, kind]
     hook[kind] = hook.api[kind] = bindable(addHook, null).apply(null, args)
-    })
+  })
 }
 
 function HookSingular () {
-    var singularHookName = 'h'
-    var singularHookState = {
+  var singularHookName = 'h'
+  var singularHookState = {
     registry: {}
-    }
-    var singularHook = register.bind(null, singularHookState, singularHookName)
-    bindApi(singularHook, singularHookState, singularHookName)
-    return singularHook
+  }
+  var singularHook = register.bind(null, singularHookState, singularHookName)
+  bindApi(singularHook, singularHookState, singularHookName)
+  return singularHook
 }
 
 function HookCollection () {
-    var state = {
+  var state = {
     registry: {}
-    }
+  }
 
-    var hook = register.bind(null, state)
-    bindApi(hook, state)
+  var hook = register.bind(null, state)
+  bindApi(hook, state)
 
-    return hook
+  return hook
 }
 
 var collectionHookDeprecationMessageDisplayed = false
 function Hook () {
-    if (!collectionHookDeprecationMessageDisplayed) {
+  if (!collectionHookDeprecationMessageDisplayed) {
     console.warn('[before-after-hook]: "Hook()" repurposing warning, use "Hook.Collection()". Read more: https://git.io/upgrade-before-after-hook-to-1.4')
     collectionHookDeprecationMessageDisplayed = true
-    }
-    return HookCollection()
+  }
+  return HookCollection()
 }
 
 Hook.Singular = HookSingular.bind()
@@ -11363,48 +11363,48 @@ module.exports.Collection = Hook.Collection
 module.exports = addHook;
 
 function addHook(state, kind, name, hook) {
-    var orig = hook;
-    if (!state.registry[name]) {
+  var orig = hook;
+  if (!state.registry[name]) {
     state.registry[name] = [];
-    }
+  }
 
-    if (kind === "before") {
+  if (kind === "before") {
     hook = function (method, options) {
-        return Promise.resolve()
+      return Promise.resolve()
         .then(orig.bind(null, options))
         .then(method.bind(null, options));
     };
-    }
+  }
 
-    if (kind === "after") {
+  if (kind === "after") {
     hook = function (method, options) {
-        var result;
-        return Promise.resolve()
+      var result;
+      return Promise.resolve()
         .then(method.bind(null, options))
         .then(function (result_) {
-            result = result_;
-            return orig(result, options);
+          result = result_;
+          return orig(result, options);
         })
         .then(function () {
-            return result;
+          return result;
         });
     };
-    }
+  }
 
-    if (kind === "error") {
+  if (kind === "error") {
     hook = function (method, options) {
-        return Promise.resolve()
+      return Promise.resolve()
         .then(method.bind(null, options))
         .catch(function (error) {
-            return orig(error, options);
+          return orig(error, options);
         });
     };
-    }
+  }
 
-    state.registry[name].push({
+  state.registry[name].push({
     hook: hook,
     orig: orig,
-    });
+  });
 }
 
 
@@ -11416,29 +11416,29 @@ function addHook(state, kind, name, hook) {
 module.exports = register;
 
 function register(state, name, method, options) {
-    if (typeof method !== "function") {
+  if (typeof method !== "function") {
     throw new Error("method for before hook must be a function");
-    }
+  }
 
-    if (!options) {
+  if (!options) {
     options = {};
-    }
+  }
 
-    if (Array.isArray(name)) {
+  if (Array.isArray(name)) {
     return name.reverse().reduce(function (callback, name) {
-        return register.bind(null, state, name, callback, options);
+      return register.bind(null, state, name, callback, options);
     }, method)();
-    }
+  }
 
-    return Promise.resolve().then(function () {
+  return Promise.resolve().then(function () {
     if (!state.registry[name]) {
-        return method(options);
+      return method(options);
     }
 
     return state.registry[name].reduce(function (method, registered) {
-        return registered.hook.bind(null, method, options);
+      return registered.hook.bind(null, method, options);
     }, method)();
-    });
+  });
 }
 
 
@@ -11450,21 +11450,21 @@ function register(state, name, method, options) {
 module.exports = removeHook;
 
 function removeHook(state, name, method) {
-    if (!state.registry[name]) {
+  if (!state.registry[name]) {
     return;
-    }
+  }
 
-    var index = state.registry[name]
+  var index = state.registry[name]
     .map(function (registered) {
-        return registered.orig;
+      return registered.orig;
     })
     .indexOf(method);
 
-    if (index === -1) {
+  if (index === -1) {
     return;
-    }
+  }
 
-    state.registry[name].splice(index, 1);
+  state.registry[name].splice(index, 1);
 }
 
 
@@ -11479,17 +11479,17 @@ function removeHook(state, name, method) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 class Deprecation extends Error {
-    constructor(message) {
+  constructor(message) {
     super(message); // Maintains proper stack trace (only available on V8)
 
     /* istanbul ignore next */
 
     if (Error.captureStackTrace) {
-        Error.captureStackTrace(this, this.constructor);
+      Error.captureStackTrace(this, this.constructor);
     }
 
     this.name = 'Deprecation';
-    }
+  }
 
 }
 
@@ -11509,18 +11509,18 @@ exports.Deprecation = Deprecation;
 
 
 module.exports = function equal(a, b) {
-    if (a === b) return true;
+  if (a === b) return true;
 
-    if (a && b && typeof a == 'object' && typeof b == 'object') {
+  if (a && b && typeof a == 'object' && typeof b == 'object') {
     if (a.constructor !== b.constructor) return false;
 
     var length, i, keys;
     if (Array.isArray(a)) {
-        length = a.length;
-        if (length != b.length) return false;
-        for (i = length; i-- !== 0;)
+      length = a.length;
+      if (length != b.length) return false;
+      for (i = length; i-- !== 0;)
         if (!equal(a[i], b[i])) return false;
-        return true;
+      return true;
     }
 
 
@@ -11534,19 +11534,19 @@ module.exports = function equal(a, b) {
     if (length !== Object.keys(b).length) return false;
 
     for (i = length; i-- !== 0;)
-        if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
 
     for (i = length; i-- !== 0;) {
-        var key = keys[i];
+      var key = keys[i];
 
-        if (!equal(a[key], b[key])) return false;
+      if (!equal(a[key], b[key])) return false;
     }
 
     return true;
-    }
+  }
 
-    // true if both NaN, false otherwise
-    return a!==a && b!==b;
+  // true if both NaN, false otherwise
+  return a!==a && b!==b;
 };
 
 
@@ -11561,36 +11561,36 @@ module.exports = function equal(a, b) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 /*!
-    * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
-    *
-    * Copyright (c) 2014-2017, Jon Schlinkert.
-    * Released under the MIT License.
-    */
+ * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
 
 function isObject(o) {
-    return Object.prototype.toString.call(o) === '[object Object]';
+  return Object.prototype.toString.call(o) === '[object Object]';
 }
 
 function isPlainObject(o) {
-    var ctor,prot;
+  var ctor,prot;
 
-    if (isObject(o) === false) return false;
+  if (isObject(o) === false) return false;
 
-    // If has modified constructor
-    ctor = o.constructor;
-    if (ctor === undefined) return true;
+  // If has modified constructor
+  ctor = o.constructor;
+  if (ctor === undefined) return true;
 
-    // If has modified prototype
-    prot = ctor.prototype;
-    if (isObject(prot) === false) return false;
+  // If has modified prototype
+  prot = ctor.prototype;
+  if (isObject(prot) === false) return false;
 
-    // If constructor does not have an Object-specific method
-    if (prot.hasOwnProperty('isPrototypeOf') === false) {
+  // If constructor does not have an Object-specific method
+  if (prot.hasOwnProperty('isPrototypeOf') === false) {
     return false;
-    }
+  }
 
-    // Most likely a plain Object
-    return true;
+  // Most likely a plain Object
+  return true;
 }
 
 exports.isPlainObject = isPlainObject;
@@ -11605,95 +11605,95 @@ exports.isPlainObject = isPlainObject;
 
 
 var traverse = module.exports = function (schema, opts, cb) {
-    // Legacy support for v0.3.1 and earlier.
-    if (typeof opts == 'function') {
+  // Legacy support for v0.3.1 and earlier.
+  if (typeof opts == 'function') {
     cb = opts;
     opts = {};
-    }
+  }
 
-    cb = opts.cb || cb;
-    var pre = (typeof cb == 'function') ? cb : cb.pre || function() {};
-    var post = cb.post || function() {};
+  cb = opts.cb || cb;
+  var pre = (typeof cb == 'function') ? cb : cb.pre || function() {};
+  var post = cb.post || function() {};
 
-    _traverse(opts, pre, post, schema, '', schema);
+  _traverse(opts, pre, post, schema, '', schema);
 };
 
 
 traverse.keywords = {
-    additionalItems: true,
-    items: true,
-    contains: true,
-    additionalProperties: true,
-    propertyNames: true,
-    not: true,
-    if: true,
-    then: true,
-    else: true
+  additionalItems: true,
+  items: true,
+  contains: true,
+  additionalProperties: true,
+  propertyNames: true,
+  not: true,
+  if: true,
+  then: true,
+  else: true
 };
 
 traverse.arrayKeywords = {
-    items: true,
-    allOf: true,
-    anyOf: true,
-    oneOf: true
+  items: true,
+  allOf: true,
+  anyOf: true,
+  oneOf: true
 };
 
 traverse.propsKeywords = {
-    $defs: true,
-    definitions: true,
-    properties: true,
-    patternProperties: true,
-    dependencies: true
+  $defs: true,
+  definitions: true,
+  properties: true,
+  patternProperties: true,
+  dependencies: true
 };
 
 traverse.skipKeywords = {
-    default: true,
-    enum: true,
-    const: true,
-    required: true,
-    maximum: true,
-    minimum: true,
-    exclusiveMaximum: true,
-    exclusiveMinimum: true,
-    multipleOf: true,
-    maxLength: true,
-    minLength: true,
-    pattern: true,
-    format: true,
-    maxItems: true,
-    minItems: true,
-    uniqueItems: true,
-    maxProperties: true,
-    minProperties: true
+  default: true,
+  enum: true,
+  const: true,
+  required: true,
+  maximum: true,
+  minimum: true,
+  exclusiveMaximum: true,
+  exclusiveMinimum: true,
+  multipleOf: true,
+  maxLength: true,
+  minLength: true,
+  pattern: true,
+  format: true,
+  maxItems: true,
+  minItems: true,
+  uniqueItems: true,
+  maxProperties: true,
+  minProperties: true
 };
 
 
 function _traverse(opts, pre, post, schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex) {
-    if (schema && typeof schema == 'object' && !Array.isArray(schema)) {
+  if (schema && typeof schema == 'object' && !Array.isArray(schema)) {
     pre(schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex);
     for (var key in schema) {
-        var sch = schema[key];
-        if (Array.isArray(sch)) {
+      var sch = schema[key];
+      if (Array.isArray(sch)) {
         if (key in traverse.arrayKeywords) {
-            for (var i=0; i<sch.length; i++)
+          for (var i=0; i<sch.length; i++)
             _traverse(opts, pre, post, sch[i], jsonPtr + '/' + key + '/' + i, rootSchema, jsonPtr, key, schema, i);
         }
-        } else if (key in traverse.propsKeywords) {
+      } else if (key in traverse.propsKeywords) {
         if (sch && typeof sch == 'object') {
-            for (var prop in sch)
+          for (var prop in sch)
             _traverse(opts, pre, post, sch[prop], jsonPtr + '/' + key + '/' + escapeJsonPtr(prop), rootSchema, jsonPtr, key, schema, prop);
         }
-        } else if (key in traverse.keywords || (opts.allKeys && !(key in traverse.skipKeywords))) {
+      } else if (key in traverse.keywords || (opts.allKeys && !(key in traverse.skipKeywords))) {
         _traverse(opts, pre, post, sch, jsonPtr + '/' + key, rootSchema, jsonPtr, key, schema);
-        }
+      }
     }
     post(schema, jsonPtr, rootSchema, parentJsonPtr, parentKeyword, parentSchema, keyIndex);
-    }
+  }
 }
 
 
 function escapeJsonPtr(str) {
-    return str.replace(/~/g, '~0').replace(/\//g, '~1');
+  return str.replace(/~/g, '~0').replace(/\//g, '~1');
 }
 
 
@@ -11725,109 +11725,109 @@ const BUFFER = Symbol('buffer');
 const TYPE = Symbol('type');
 
 class Blob {
-    constructor() {
-        this[TYPE] = '';
+	constructor() {
+		this[TYPE] = '';
 
-        const blobParts = arguments[0];
-        const options = arguments[1];
+		const blobParts = arguments[0];
+		const options = arguments[1];
 
-        const buffers = [];
-        let size = 0;
+		const buffers = [];
+		let size = 0;
 
-        if (blobParts) {
-            const a = blobParts;
-            const length = Number(a.length);
-            for (let i = 0; i < length; i++) {
-                const element = a[i];
-                let buffer;
-                if (element instanceof Buffer) {
-                    buffer = element;
-                } else if (ArrayBuffer.isView(element)) {
-                    buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
-                } else if (element instanceof ArrayBuffer) {
-                    buffer = Buffer.from(element);
-                } else if (element instanceof Blob) {
-                    buffer = element[BUFFER];
-                } else {
-                    buffer = Buffer.from(typeof element === 'string' ? element : String(element));
-                }
-                size += buffer.length;
-                buffers.push(buffer);
-            }
-        }
+		if (blobParts) {
+			const a = blobParts;
+			const length = Number(a.length);
+			for (let i = 0; i < length; i++) {
+				const element = a[i];
+				let buffer;
+				if (element instanceof Buffer) {
+					buffer = element;
+				} else if (ArrayBuffer.isView(element)) {
+					buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
+				} else if (element instanceof ArrayBuffer) {
+					buffer = Buffer.from(element);
+				} else if (element instanceof Blob) {
+					buffer = element[BUFFER];
+				} else {
+					buffer = Buffer.from(typeof element === 'string' ? element : String(element));
+				}
+				size += buffer.length;
+				buffers.push(buffer);
+			}
+		}
 
-        this[BUFFER] = Buffer.concat(buffers);
+		this[BUFFER] = Buffer.concat(buffers);
 
-        let type = options && options.type !== undefined && String(options.type).toLowerCase();
-        if (type && !/[^\u0020-\u007E]/.test(type)) {
-            this[TYPE] = type;
-        }
-    }
-    get size() {
-        return this[BUFFER].length;
-    }
-    get type() {
-        return this[TYPE];
-    }
-    text() {
-        return Promise.resolve(this[BUFFER].toString());
-    }
-    arrayBuffer() {
-        const buf = this[BUFFER];
-        const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-        return Promise.resolve(ab);
-    }
-    stream() {
-        const readable = new Readable();
-        readable._read = function () {};
-        readable.push(this[BUFFER]);
-        readable.push(null);
-        return readable;
-    }
-    toString() {
-        return '[object Blob]';
-    }
-    slice() {
-        const size = this.size;
+		let type = options && options.type !== undefined && String(options.type).toLowerCase();
+		if (type && !/[^\u0020-\u007E]/.test(type)) {
+			this[TYPE] = type;
+		}
+	}
+	get size() {
+		return this[BUFFER].length;
+	}
+	get type() {
+		return this[TYPE];
+	}
+	text() {
+		return Promise.resolve(this[BUFFER].toString());
+	}
+	arrayBuffer() {
+		const buf = this[BUFFER];
+		const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+		return Promise.resolve(ab);
+	}
+	stream() {
+		const readable = new Readable();
+		readable._read = function () {};
+		readable.push(this[BUFFER]);
+		readable.push(null);
+		return readable;
+	}
+	toString() {
+		return '[object Blob]';
+	}
+	slice() {
+		const size = this.size;
 
-        const start = arguments[0];
-        const end = arguments[1];
-        let relativeStart, relativeEnd;
-        if (start === undefined) {
-            relativeStart = 0;
-        } else if (start < 0) {
-            relativeStart = Math.max(size + start, 0);
-        } else {
-            relativeStart = Math.min(start, size);
-        }
-        if (end === undefined) {
-            relativeEnd = size;
-        } else if (end < 0) {
-            relativeEnd = Math.max(size + end, 0);
-        } else {
-            relativeEnd = Math.min(end, size);
-        }
-        const span = Math.max(relativeEnd - relativeStart, 0);
+		const start = arguments[0];
+		const end = arguments[1];
+		let relativeStart, relativeEnd;
+		if (start === undefined) {
+			relativeStart = 0;
+		} else if (start < 0) {
+			relativeStart = Math.max(size + start, 0);
+		} else {
+			relativeStart = Math.min(start, size);
+		}
+		if (end === undefined) {
+			relativeEnd = size;
+		} else if (end < 0) {
+			relativeEnd = Math.max(size + end, 0);
+		} else {
+			relativeEnd = Math.min(end, size);
+		}
+		const span = Math.max(relativeEnd - relativeStart, 0);
 
-        const buffer = this[BUFFER];
-        const slicedBuffer = buffer.slice(relativeStart, relativeStart + span);
-        const blob = new Blob([], { type: arguments[2] });
-        blob[BUFFER] = slicedBuffer;
-        return blob;
-    }
+		const buffer = this[BUFFER];
+		const slicedBuffer = buffer.slice(relativeStart, relativeStart + span);
+		const blob = new Blob([], { type: arguments[2] });
+		blob[BUFFER] = slicedBuffer;
+		return blob;
+	}
 }
 
 Object.defineProperties(Blob.prototype, {
-    size: { enumerable: true },
-    type: { enumerable: true },
-    slice: { enumerable: true }
+	size: { enumerable: true },
+	type: { enumerable: true },
+	slice: { enumerable: true }
 });
 
 Object.defineProperty(Blob.prototype, Symbol.toStringTag, {
-    value: 'Blob',
-    writable: false,
-    enumerable: false,
-    configurable: true
+	value: 'Blob',
+	writable: false,
+	enumerable: false,
+	configurable: true
 });
 
 /**
@@ -11845,18 +11845,18 @@ Object.defineProperty(Blob.prototype, Symbol.toStringTag, {
  * @return  FetchError
  */
 function FetchError(message, type, systemError) {
-    Error.call(this, message);
+  Error.call(this, message);
 
-    this.message = message;
-    this.type = type;
+  this.message = message;
+  this.type = type;
 
-    // when err.type is `system`, err.code contains system error code
-    if (systemError) {
+  // when err.type is `system`, err.code contains system error code
+  if (systemError) {
     this.code = this.errno = systemError.code;
-    }
+  }
 
-    // hide custom error implementation details from end-users
-    Error.captureStackTrace(this, this.constructor);
+  // hide custom error implementation details from end-users
+  Error.captureStackTrace(this, this.constructor);
 }
 
 FetchError.prototype = Object.create(Error.prototype);
@@ -11865,7 +11865,7 @@ FetchError.prototype.name = 'FetchError';
 
 let convert;
 try {
-    convert = (__nccwpck_require__(2877).convert);
+	convert = (__nccwpck_require__(2877).convert);
 } catch (e) {}
 
 const INTERNALS = Symbol('Body internals');
@@ -11883,156 +11883,156 @@ const PassThrough = Stream.PassThrough;
  * @return  Void
  */
 function Body(body) {
-    var _this = this;
+	var _this = this;
 
-    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-        _ref$size = _ref.size;
+	var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+	    _ref$size = _ref.size;
 
-    let size = _ref$size === undefined ? 0 : _ref$size;
-    var _ref$timeout = _ref.timeout;
-    let timeout = _ref$timeout === undefined ? 0 : _ref$timeout;
+	let size = _ref$size === undefined ? 0 : _ref$size;
+	var _ref$timeout = _ref.timeout;
+	let timeout = _ref$timeout === undefined ? 0 : _ref$timeout;
 
-    if (body == null) {
-        // body is undefined or null
-        body = null;
-    } else if (isURLSearchParams(body)) {
-        // body is a URLSearchParams
-        body = Buffer.from(body.toString());
-    } else if (isBlob(body)) ; else if (Buffer.isBuffer(body)) ; else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-        // body is ArrayBuffer
-        body = Buffer.from(body);
-    } else if (ArrayBuffer.isView(body)) {
-        // body is ArrayBufferView
-        body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
-    } else if (body instanceof Stream) ; else {
-        // none of the above
-        // coerce to string then buffer
-        body = Buffer.from(String(body));
-    }
-    this[INTERNALS] = {
-        body,
-        disturbed: false,
-        error: null
-    };
-    this.size = size;
-    this.timeout = timeout;
+	if (body == null) {
+		// body is undefined or null
+		body = null;
+	} else if (isURLSearchParams(body)) {
+		// body is a URLSearchParams
+		body = Buffer.from(body.toString());
+	} else if (isBlob(body)) ; else if (Buffer.isBuffer(body)) ; else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
+		// body is ArrayBuffer
+		body = Buffer.from(body);
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
+		body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
+	} else if (body instanceof Stream) ; else {
+		// none of the above
+		// coerce to string then buffer
+		body = Buffer.from(String(body));
+	}
+	this[INTERNALS] = {
+		body,
+		disturbed: false,
+		error: null
+	};
+	this.size = size;
+	this.timeout = timeout;
 
-    if (body instanceof Stream) {
-        body.on('error', function (err) {
-            const error = err.name === 'AbortError' ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, 'system', err);
-            _this[INTERNALS].error = error;
-        });
-    }
+	if (body instanceof Stream) {
+		body.on('error', function (err) {
+			const error = err.name === 'AbortError' ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, 'system', err);
+			_this[INTERNALS].error = error;
+		});
+	}
 }
 
 Body.prototype = {
-    get body() {
-        return this[INTERNALS].body;
-    },
+	get body() {
+		return this[INTERNALS].body;
+	},
 
-    get bodyUsed() {
-        return this[INTERNALS].disturbed;
-    },
+	get bodyUsed() {
+		return this[INTERNALS].disturbed;
+	},
 
-    /**
-     * Decode response as ArrayBuffer
-     *
-     * @return  Promise
-     */
-    arrayBuffer() {
-        return consumeBody.call(this).then(function (buf) {
-            return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-        });
-    },
+	/**
+  * Decode response as ArrayBuffer
+  *
+  * @return  Promise
+  */
+	arrayBuffer() {
+		return consumeBody.call(this).then(function (buf) {
+			return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+		});
+	},
 
-    /**
-     * Return raw response as Blob
-     *
-     * @return Promise
-     */
-    blob() {
-        let ct = this.headers && this.headers.get('content-type') || '';
-        return consumeBody.call(this).then(function (buf) {
-            return Object.assign(
-            // Prevent copying
-            new Blob([], {
-                type: ct.toLowerCase()
-            }), {
-                [BUFFER]: buf
-            });
-        });
-    },
+	/**
+  * Return raw response as Blob
+  *
+  * @return Promise
+  */
+	blob() {
+		let ct = this.headers && this.headers.get('content-type') || '';
+		return consumeBody.call(this).then(function (buf) {
+			return Object.assign(
+			// Prevent copying
+			new Blob([], {
+				type: ct.toLowerCase()
+			}), {
+				[BUFFER]: buf
+			});
+		});
+	},
 
-    /**
-     * Decode response as json
-     *
-     * @return  Promise
-     */
-    json() {
-        var _this2 = this;
+	/**
+  * Decode response as json
+  *
+  * @return  Promise
+  */
+	json() {
+		var _this2 = this;
 
-        return consumeBody.call(this).then(function (buffer) {
-            try {
-                return JSON.parse(buffer.toString());
-            } catch (err) {
-                return Body.Promise.reject(new FetchError(`invalid json response body at ${_this2.url} reason: ${err.message}`, 'invalid-json'));
-            }
-        });
-    },
+		return consumeBody.call(this).then(function (buffer) {
+			try {
+				return JSON.parse(buffer.toString());
+			} catch (err) {
+				return Body.Promise.reject(new FetchError(`invalid json response body at ${_this2.url} reason: ${err.message}`, 'invalid-json'));
+			}
+		});
+	},
 
-    /**
-     * Decode response as text
-     *
-     * @return  Promise
-     */
-    text() {
-        return consumeBody.call(this).then(function (buffer) {
-            return buffer.toString();
-        });
-    },
+	/**
+  * Decode response as text
+  *
+  * @return  Promise
+  */
+	text() {
+		return consumeBody.call(this).then(function (buffer) {
+			return buffer.toString();
+		});
+	},
 
-    /**
-     * Decode response as buffer (non-spec api)
-     *
-     * @return  Promise
-     */
-    buffer() {
-        return consumeBody.call(this);
-    },
+	/**
+  * Decode response as buffer (non-spec api)
+  *
+  * @return  Promise
+  */
+	buffer() {
+		return consumeBody.call(this);
+	},
 
-    /**
-     * Decode response as text, while automatically detecting the encoding and
-     * trying to decode to UTF-8 (non-spec api)
-     *
-     * @return  Promise
-     */
-    textConverted() {
-        var _this3 = this;
+	/**
+  * Decode response as text, while automatically detecting the encoding and
+  * trying to decode to UTF-8 (non-spec api)
+  *
+  * @return  Promise
+  */
+	textConverted() {
+		var _this3 = this;
 
-        return consumeBody.call(this).then(function (buffer) {
-            return convertBody(buffer, _this3.headers);
-        });
-    }
+		return consumeBody.call(this).then(function (buffer) {
+			return convertBody(buffer, _this3.headers);
+		});
+	}
 };
 
 // In browsers, all properties are enumerable.
 Object.defineProperties(Body.prototype, {
-    body: { enumerable: true },
-    bodyUsed: { enumerable: true },
-    arrayBuffer: { enumerable: true },
-    blob: { enumerable: true },
-    json: { enumerable: true },
-    text: { enumerable: true }
+	body: { enumerable: true },
+	bodyUsed: { enumerable: true },
+	arrayBuffer: { enumerable: true },
+	blob: { enumerable: true },
+	json: { enumerable: true },
+	text: { enumerable: true }
 });
 
 Body.mixIn = function (proto) {
-    for (const name of Object.getOwnPropertyNames(Body.prototype)) {
-        // istanbul ignore else: future proof
-        if (!(name in proto)) {
-            const desc = Object.getOwnPropertyDescriptor(Body.prototype, name);
-            Object.defineProperty(proto, name, desc);
-        }
-    }
+	for (const name of Object.getOwnPropertyNames(Body.prototype)) {
+		// istanbul ignore else: future proof
+		if (!(name in proto)) {
+			const desc = Object.getOwnPropertyDescriptor(Body.prototype, name);
+			Object.defineProperty(proto, name, desc);
+		}
+	}
 };
 
 /**
@@ -12043,99 +12043,99 @@ Body.mixIn = function (proto) {
  * @return  Promise
  */
 function consumeBody() {
-    var _this4 = this;
+	var _this4 = this;
 
-    if (this[INTERNALS].disturbed) {
-        return Body.Promise.reject(new TypeError(`body used already for: ${this.url}`));
-    }
+	if (this[INTERNALS].disturbed) {
+		return Body.Promise.reject(new TypeError(`body used already for: ${this.url}`));
+	}
 
-    this[INTERNALS].disturbed = true;
+	this[INTERNALS].disturbed = true;
 
-    if (this[INTERNALS].error) {
-        return Body.Promise.reject(this[INTERNALS].error);
-    }
+	if (this[INTERNALS].error) {
+		return Body.Promise.reject(this[INTERNALS].error);
+	}
 
-    let body = this.body;
+	let body = this.body;
 
-    // body is null
-    if (body === null) {
-        return Body.Promise.resolve(Buffer.alloc(0));
-    }
+	// body is null
+	if (body === null) {
+		return Body.Promise.resolve(Buffer.alloc(0));
+	}
 
-    // body is blob
-    if (isBlob(body)) {
-        body = body.stream();
-    }
+	// body is blob
+	if (isBlob(body)) {
+		body = body.stream();
+	}
 
-    // body is buffer
-    if (Buffer.isBuffer(body)) {
-        return Body.Promise.resolve(body);
-    }
+	// body is buffer
+	if (Buffer.isBuffer(body)) {
+		return Body.Promise.resolve(body);
+	}
 
-    // istanbul ignore if: should never happen
-    if (!(body instanceof Stream)) {
-        return Body.Promise.resolve(Buffer.alloc(0));
-    }
+	// istanbul ignore if: should never happen
+	if (!(body instanceof Stream)) {
+		return Body.Promise.resolve(Buffer.alloc(0));
+	}
 
-    // body is stream
-    // get ready to actually consume the body
-    let accum = [];
-    let accumBytes = 0;
-    let abort = false;
+	// body is stream
+	// get ready to actually consume the body
+	let accum = [];
+	let accumBytes = 0;
+	let abort = false;
 
-    return new Body.Promise(function (resolve, reject) {
-        let resTimeout;
+	return new Body.Promise(function (resolve, reject) {
+		let resTimeout;
 
-        // allow timeout on slow response body
-        if (_this4.timeout) {
-            resTimeout = setTimeout(function () {
-                abort = true;
-                reject(new FetchError(`Response timeout while trying to fetch ${_this4.url} (over ${_this4.timeout}ms)`, 'body-timeout'));
-            }, _this4.timeout);
-        }
+		// allow timeout on slow response body
+		if (_this4.timeout) {
+			resTimeout = setTimeout(function () {
+				abort = true;
+				reject(new FetchError(`Response timeout while trying to fetch ${_this4.url} (over ${_this4.timeout}ms)`, 'body-timeout'));
+			}, _this4.timeout);
+		}
 
-        // handle stream errors
-        body.on('error', function (err) {
-            if (err.name === 'AbortError') {
-                // if the request was aborted, reject with this Error
-                abort = true;
-                reject(err);
-            } else {
-                // other errors, such as incorrect content-encoding
-                reject(new FetchError(`Invalid response body while trying to fetch ${_this4.url}: ${err.message}`, 'system', err));
-            }
-        });
+		// handle stream errors
+		body.on('error', function (err) {
+			if (err.name === 'AbortError') {
+				// if the request was aborted, reject with this Error
+				abort = true;
+				reject(err);
+			} else {
+				// other errors, such as incorrect content-encoding
+				reject(new FetchError(`Invalid response body while trying to fetch ${_this4.url}: ${err.message}`, 'system', err));
+			}
+		});
 
-        body.on('data', function (chunk) {
-            if (abort || chunk === null) {
-                return;
-            }
+		body.on('data', function (chunk) {
+			if (abort || chunk === null) {
+				return;
+			}
 
-            if (_this4.size && accumBytes + chunk.length > _this4.size) {
-                abort = true;
-                reject(new FetchError(`content size at ${_this4.url} over limit: ${_this4.size}`, 'max-size'));
-                return;
-            }
+			if (_this4.size && accumBytes + chunk.length > _this4.size) {
+				abort = true;
+				reject(new FetchError(`content size at ${_this4.url} over limit: ${_this4.size}`, 'max-size'));
+				return;
+			}
 
-            accumBytes += chunk.length;
-            accum.push(chunk);
-        });
+			accumBytes += chunk.length;
+			accum.push(chunk);
+		});
 
-        body.on('end', function () {
-            if (abort) {
-                return;
-            }
+		body.on('end', function () {
+			if (abort) {
+				return;
+			}
 
-            clearTimeout(resTimeout);
+			clearTimeout(resTimeout);
 
-            try {
-                resolve(Buffer.concat(accum, accumBytes));
-            } catch (err) {
-                // handle streams that have accumulated too much data (issue #414)
-                reject(new FetchError(`Could not create Buffer from response body for ${_this4.url}: ${err.message}`, 'system', err));
-            }
-        });
-    });
+			try {
+				resolve(Buffer.concat(accum, accumBytes));
+			} catch (err) {
+				// handle streams that have accumulated too much data (issue #414)
+				reject(new FetchError(`Could not create Buffer from response body for ${_this4.url}: ${err.message}`, 'system', err));
+			}
+		});
+	});
 }
 
 /**
@@ -12147,60 +12147,60 @@ function consumeBody() {
  * @return  String
  */
 function convertBody(buffer, headers) {
-    if (typeof convert !== 'function') {
-        throw new Error('The package `encoding` must be installed to use the textConverted() function');
-    }
+	if (typeof convert !== 'function') {
+		throw new Error('The package `encoding` must be installed to use the textConverted() function');
+	}
 
-    const ct = headers.get('content-type');
-    let charset = 'utf-8';
-    let res, str;
+	const ct = headers.get('content-type');
+	let charset = 'utf-8';
+	let res, str;
 
-    // header
-    if (ct) {
-        res = /charset=([^;]*)/i.exec(ct);
-    }
+	// header
+	if (ct) {
+		res = /charset=([^;]*)/i.exec(ct);
+	}
 
-    // no charset in content type, peek at response body for at most 1024 bytes
-    str = buffer.slice(0, 1024).toString();
+	// no charset in content type, peek at response body for at most 1024 bytes
+	str = buffer.slice(0, 1024).toString();
 
-    // html5
-    if (!res && str) {
-        res = /<meta.+?charset=(['"])(.+?)\1/i.exec(str);
-    }
+	// html5
+	if (!res && str) {
+		res = /<meta.+?charset=(['"])(.+?)\1/i.exec(str);
+	}
 
-    // html4
-    if (!res && str) {
-        res = /<meta[\s]+?http-equiv=(['"])content-type\1[\s]+?content=(['"])(.+?)\2/i.exec(str);
-        if (!res) {
-            res = /<meta[\s]+?content=(['"])(.+?)\1[\s]+?http-equiv=(['"])content-type\3/i.exec(str);
-            if (res) {
-                res.pop(); // drop last quote
-            }
-        }
+	// html4
+	if (!res && str) {
+		res = /<meta[\s]+?http-equiv=(['"])content-type\1[\s]+?content=(['"])(.+?)\2/i.exec(str);
+		if (!res) {
+			res = /<meta[\s]+?content=(['"])(.+?)\1[\s]+?http-equiv=(['"])content-type\3/i.exec(str);
+			if (res) {
+				res.pop(); // drop last quote
+			}
+		}
 
-        if (res) {
-            res = /charset=(.*)/i.exec(res.pop());
-        }
-    }
+		if (res) {
+			res = /charset=(.*)/i.exec(res.pop());
+		}
+	}
 
-    // xml
-    if (!res && str) {
-        res = /<\?xml.+?encoding=(['"])(.+?)\1/i.exec(str);
-    }
+	// xml
+	if (!res && str) {
+		res = /<\?xml.+?encoding=(['"])(.+?)\1/i.exec(str);
+	}
 
-    // found charset
-    if (res) {
-        charset = res.pop();
+	// found charset
+	if (res) {
+		charset = res.pop();
 
-        // prevent decode issues when sites use incorrect encoding
-        // ref: https://hsivonen.fi/encoding-menu/
-        if (charset === 'gb2312' || charset === 'gbk') {
-            charset = 'gb18030';
-        }
-    }
+		// prevent decode issues when sites use incorrect encoding
+		// ref: https://hsivonen.fi/encoding-menu/
+		if (charset === 'gb2312' || charset === 'gbk') {
+			charset = 'gb18030';
+		}
+	}
 
-    // turn raw buffers into a single utf-8 buffer
-    return convert(buffer, 'UTF-8', charset).toString();
+	// turn raw buffers into a single utf-8 buffer
+	return convert(buffer, 'UTF-8', charset).toString();
 }
 
 /**
@@ -12211,13 +12211,13 @@ function convertBody(buffer, headers) {
  * @return  String
  */
 function isURLSearchParams(obj) {
-    // Duck-typing as a necessary condition.
-    if (typeof obj !== 'object' || typeof obj.append !== 'function' || typeof obj.delete !== 'function' || typeof obj.get !== 'function' || typeof obj.getAll !== 'function' || typeof obj.has !== 'function' || typeof obj.set !== 'function') {
-        return false;
-    }
+	// Duck-typing as a necessary condition.
+	if (typeof obj !== 'object' || typeof obj.append !== 'function' || typeof obj.delete !== 'function' || typeof obj.get !== 'function' || typeof obj.getAll !== 'function' || typeof obj.has !== 'function' || typeof obj.set !== 'function') {
+		return false;
+	}
 
-    // Brand-checking and more duck-typing as optional condition.
-    return obj.constructor.name === 'URLSearchParams' || Object.prototype.toString.call(obj) === '[object URLSearchParams]' || typeof obj.sort === 'function';
+	// Brand-checking and more duck-typing as optional condition.
+	return obj.constructor.name === 'URLSearchParams' || Object.prototype.toString.call(obj) === '[object URLSearchParams]' || typeof obj.sort === 'function';
 }
 
 /**
@@ -12226,7 +12226,7 @@ function isURLSearchParams(obj) {
  * @return {boolean}
  */
 function isBlob(obj) {
-    return typeof obj === 'object' && typeof obj.arrayBuffer === 'function' && typeof obj.type === 'string' && typeof obj.stream === 'function' && typeof obj.constructor === 'function' && typeof obj.constructor.name === 'string' && /^(Blob|File)$/.test(obj.constructor.name) && /^(Blob|File)$/.test(obj[Symbol.toStringTag]);
+	return typeof obj === 'object' && typeof obj.arrayBuffer === 'function' && typeof obj.type === 'string' && typeof obj.stream === 'function' && typeof obj.constructor === 'function' && typeof obj.constructor.name === 'string' && /^(Blob|File)$/.test(obj.constructor.name) && /^(Blob|File)$/.test(obj[Symbol.toStringTag]);
 }
 
 /**
@@ -12236,28 +12236,28 @@ function isBlob(obj) {
  * @return  Mixed
  */
 function clone(instance) {
-    let p1, p2;
-    let body = instance.body;
+	let p1, p2;
+	let body = instance.body;
 
-    // don't allow cloning a used body
-    if (instance.bodyUsed) {
-        throw new Error('cannot clone body after it is used');
-    }
+	// don't allow cloning a used body
+	if (instance.bodyUsed) {
+		throw new Error('cannot clone body after it is used');
+	}
 
-    // check that body is a stream and not form-data object
-    // note: we can't clone the form-data object without having it as a dependency
-    if (body instanceof Stream && typeof body.getBoundary !== 'function') {
-        // tee instance body
-        p1 = new PassThrough();
-        p2 = new PassThrough();
-        body.pipe(p1);
-        body.pipe(p2);
-        // set instance body to teed body and return the other teed body
-        instance[INTERNALS].body = p1;
-        body = p2;
-    }
+	// check that body is a stream and not form-data object
+	// note: we can't clone the form-data object without having it as a dependency
+	if (body instanceof Stream && typeof body.getBoundary !== 'function') {
+		// tee instance body
+		p1 = new PassThrough();
+		p2 = new PassThrough();
+		body.pipe(p1);
+		body.pipe(p2);
+		// set instance body to teed body and return the other teed body
+		instance[INTERNALS].body = p1;
+		body = p2;
+	}
 
-    return body;
+	return body;
 }
 
 /**
@@ -12270,38 +12270,38 @@ function clone(instance) {
  * @param   Mixed  instance  Any options.body input
  */
 function extractContentType(body) {
-    if (body === null) {
-        // body is null
-        return null;
-    } else if (typeof body === 'string') {
-        // body is string
-        return 'text/plain;charset=UTF-8';
-    } else if (isURLSearchParams(body)) {
-        // body is a URLSearchParams
-        return 'application/x-www-form-urlencoded;charset=UTF-8';
-    } else if (isBlob(body)) {
-        // body is blob
-        return body.type || null;
-    } else if (Buffer.isBuffer(body)) {
-        // body is buffer
-        return null;
-    } else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-        // body is ArrayBuffer
-        return null;
-    } else if (ArrayBuffer.isView(body)) {
-        // body is ArrayBufferView
-        return null;
-    } else if (typeof body.getBoundary === 'function') {
-        // detect form data input from form-data module
-        return `multipart/form-data;boundary=${body.getBoundary()}`;
-    } else if (body instanceof Stream) {
-        // body is stream
-        // can't really do much about this
-        return null;
-    } else {
-        // Body constructor defaults other things to string
-        return 'text/plain;charset=UTF-8';
-    }
+	if (body === null) {
+		// body is null
+		return null;
+	} else if (typeof body === 'string') {
+		// body is string
+		return 'text/plain;charset=UTF-8';
+	} else if (isURLSearchParams(body)) {
+		// body is a URLSearchParams
+		return 'application/x-www-form-urlencoded;charset=UTF-8';
+	} else if (isBlob(body)) {
+		// body is blob
+		return body.type || null;
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		return null;
+	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
+		// body is ArrayBuffer
+		return null;
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
+		return null;
+	} else if (typeof body.getBoundary === 'function') {
+		// detect form data input from form-data module
+		return `multipart/form-data;boundary=${body.getBoundary()}`;
+	} else if (body instanceof Stream) {
+		// body is stream
+		// can't really do much about this
+		return null;
+	} else {
+		// Body constructor defaults other things to string
+		return 'text/plain;charset=UTF-8';
+	}
 }
 
 /**
@@ -12314,29 +12314,29 @@ function extractContentType(body) {
  * @return  Number?            Number of bytes, or null if not possible
  */
 function getTotalBytes(instance) {
-    const body = instance.body;
+	const body = instance.body;
 
 
-    if (body === null) {
-        // body is null
-        return 0;
-    } else if (isBlob(body)) {
-        return body.size;
-    } else if (Buffer.isBuffer(body)) {
-        // body is buffer
-        return body.length;
-    } else if (body && typeof body.getLengthSync === 'function') {
-        // detect form data input from form-data module
-        if (body._lengthRetrievers && body._lengthRetrievers.length == 0 || // 1.x
-        body.hasKnownLength && body.hasKnownLength()) {
-            // 2.x
-            return body.getLengthSync();
-        }
-        return null;
-    } else {
-        // body is stream
-        return null;
-    }
+	if (body === null) {
+		// body is null
+		return 0;
+	} else if (isBlob(body)) {
+		return body.size;
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		return body.length;
+	} else if (body && typeof body.getLengthSync === 'function') {
+		// detect form data input from form-data module
+		if (body._lengthRetrievers && body._lengthRetrievers.length == 0 || // 1.x
+		body.hasKnownLength && body.hasKnownLength()) {
+			// 2.x
+			return body.getLengthSync();
+		}
+		return null;
+	} else {
+		// body is stream
+		return null;
+	}
 }
 
 /**
@@ -12346,22 +12346,22 @@ function getTotalBytes(instance) {
  * @return  Void
  */
 function writeToStream(dest, instance) {
-    const body = instance.body;
+	const body = instance.body;
 
 
-    if (body === null) {
-        // body is null
-        dest.end();
-    } else if (isBlob(body)) {
-        body.stream().pipe(dest);
-    } else if (Buffer.isBuffer(body)) {
-        // body is buffer
-        dest.write(body);
-        dest.end();
-    } else {
-        // body is stream
-        body.pipe(dest);
-    }
+	if (body === null) {
+		// body is null
+		dest.end();
+	} else if (isBlob(body)) {
+		body.stream().pipe(dest);
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		dest.write(body);
+		dest.end();
+	} else {
+		// body is stream
+		body.pipe(dest);
+	}
 }
 
 // expose Promise
@@ -12377,17 +12377,17 @@ const invalidTokenRegex = /[^\^_`a-zA-Z\-0-9!#$%&'*+.|~]/;
 const invalidHeaderCharRegex = /[^\t\x20-\x7e\x80-\xff]/;
 
 function validateName(name) {
-    name = `${name}`;
-    if (invalidTokenRegex.test(name) || name === '') {
-        throw new TypeError(`${name} is not a legal HTTP header name`);
-    }
+	name = `${name}`;
+	if (invalidTokenRegex.test(name) || name === '') {
+		throw new TypeError(`${name} is not a legal HTTP header name`);
+	}
 }
 
 function validateValue(value) {
-    value = `${value}`;
-    if (invalidHeaderCharRegex.test(value)) {
-        throw new TypeError(`${value} is not a legal HTTP header value`);
-    }
+	value = `${value}`;
+	if (invalidHeaderCharRegex.test(value)) {
+		throw new TypeError(`${value} is not a legal HTTP header value`);
+	}
 }
 
 /**
@@ -12399,300 +12399,300 @@ function validateValue(value) {
  * @return  String|Undefined
  */
 function find(map, name) {
-    name = name.toLowerCase();
-    for (const key in map) {
-        if (key.toLowerCase() === name) {
-            return key;
-        }
-    }
-    return undefined;
+	name = name.toLowerCase();
+	for (const key in map) {
+		if (key.toLowerCase() === name) {
+			return key;
+		}
+	}
+	return undefined;
 }
 
 const MAP = Symbol('map');
 class Headers {
-    /**
-     * Headers class
-     *
-     * @param   Object  headers  Response headers
-     * @return  Void
-     */
-    constructor() {
-        let init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+	/**
+  * Headers class
+  *
+  * @param   Object  headers  Response headers
+  * @return  Void
+  */
+	constructor() {
+		let init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
-        this[MAP] = Object.create(null);
+		this[MAP] = Object.create(null);
 
-        if (init instanceof Headers) {
-            const rawHeaders = init.raw();
-            const headerNames = Object.keys(rawHeaders);
+		if (init instanceof Headers) {
+			const rawHeaders = init.raw();
+			const headerNames = Object.keys(rawHeaders);
 
-            for (const headerName of headerNames) {
-                for (const value of rawHeaders[headerName]) {
-                    this.append(headerName, value);
-                }
-            }
+			for (const headerName of headerNames) {
+				for (const value of rawHeaders[headerName]) {
+					this.append(headerName, value);
+				}
+			}
 
-            return;
-        }
+			return;
+		}
 
-        // We don't worry about converting prop to ByteString here as append()
-        // will handle it.
-        if (init == null) ; else if (typeof init === 'object') {
-            const method = init[Symbol.iterator];
-            if (method != null) {
-                if (typeof method !== 'function') {
-                    throw new TypeError('Header pairs must be iterable');
-                }
+		// We don't worry about converting prop to ByteString here as append()
+		// will handle it.
+		if (init == null) ; else if (typeof init === 'object') {
+			const method = init[Symbol.iterator];
+			if (method != null) {
+				if (typeof method !== 'function') {
+					throw new TypeError('Header pairs must be iterable');
+				}
 
-                // sequence<sequence<ByteString>>
-                // Note: per spec we have to first exhaust the lists then process them
-                const pairs = [];
-                for (const pair of init) {
-                    if (typeof pair !== 'object' || typeof pair[Symbol.iterator] !== 'function') {
-                        throw new TypeError('Each header pair must be iterable');
-                    }
-                    pairs.push(Array.from(pair));
-                }
+				// sequence<sequence<ByteString>>
+				// Note: per spec we have to first exhaust the lists then process them
+				const pairs = [];
+				for (const pair of init) {
+					if (typeof pair !== 'object' || typeof pair[Symbol.iterator] !== 'function') {
+						throw new TypeError('Each header pair must be iterable');
+					}
+					pairs.push(Array.from(pair));
+				}
 
-                for (const pair of pairs) {
-                    if (pair.length !== 2) {
-                        throw new TypeError('Each header pair must be a name/value tuple');
-                    }
-                    this.append(pair[0], pair[1]);
-                }
-            } else {
-                // record<ByteString, ByteString>
-                for (const key of Object.keys(init)) {
-                    const value = init[key];
-                    this.append(key, value);
-                }
-            }
-        } else {
-            throw new TypeError('Provided initializer must be an object');
-        }
-    }
+				for (const pair of pairs) {
+					if (pair.length !== 2) {
+						throw new TypeError('Each header pair must be a name/value tuple');
+					}
+					this.append(pair[0], pair[1]);
+				}
+			} else {
+				// record<ByteString, ByteString>
+				for (const key of Object.keys(init)) {
+					const value = init[key];
+					this.append(key, value);
+				}
+			}
+		} else {
+			throw new TypeError('Provided initializer must be an object');
+		}
+	}
 
-    /**
-     * Return combined header value given name
-     *
-     * @param   String  name  Header name
-     * @return  Mixed
-     */
-    get(name) {
-        name = `${name}`;
-        validateName(name);
-        const key = find(this[MAP], name);
-        if (key === undefined) {
-            return null;
-        }
+	/**
+  * Return combined header value given name
+  *
+  * @param   String  name  Header name
+  * @return  Mixed
+  */
+	get(name) {
+		name = `${name}`;
+		validateName(name);
+		const key = find(this[MAP], name);
+		if (key === undefined) {
+			return null;
+		}
 
-        return this[MAP][key].join(', ');
-    }
+		return this[MAP][key].join(', ');
+	}
 
-    /**
-     * Iterate over all headers
-     *
-     * @param   Function  callback  Executed for each item with parameters (value, name, thisArg)
-     * @param   Boolean   thisArg   `this` context for callback function
-     * @return  Void
-     */
-    forEach(callback) {
-        let thisArg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+	/**
+  * Iterate over all headers
+  *
+  * @param   Function  callback  Executed for each item with parameters (value, name, thisArg)
+  * @param   Boolean   thisArg   `this` context for callback function
+  * @return  Void
+  */
+	forEach(callback) {
+		let thisArg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
 
-        let pairs = getHeaders(this);
-        let i = 0;
-        while (i < pairs.length) {
-            var _pairs$i = pairs[i];
-            const name = _pairs$i[0],
-                    value = _pairs$i[1];
+		let pairs = getHeaders(this);
+		let i = 0;
+		while (i < pairs.length) {
+			var _pairs$i = pairs[i];
+			const name = _pairs$i[0],
+			      value = _pairs$i[1];
 
-            callback.call(thisArg, value, name, this);
-            pairs = getHeaders(this);
-            i++;
-        }
-    }
+			callback.call(thisArg, value, name, this);
+			pairs = getHeaders(this);
+			i++;
+		}
+	}
 
-    /**
-     * Overwrite header values given name
-     *
-     * @param   String  name   Header name
-     * @param   String  value  Header value
-     * @return  Void
-     */
-    set(name, value) {
-        name = `${name}`;
-        value = `${value}`;
-        validateName(name);
-        validateValue(value);
-        const key = find(this[MAP], name);
-        this[MAP][key !== undefined ? key : name] = [value];
-    }
+	/**
+  * Overwrite header values given name
+  *
+  * @param   String  name   Header name
+  * @param   String  value  Header value
+  * @return  Void
+  */
+	set(name, value) {
+		name = `${name}`;
+		value = `${value}`;
+		validateName(name);
+		validateValue(value);
+		const key = find(this[MAP], name);
+		this[MAP][key !== undefined ? key : name] = [value];
+	}
 
-    /**
-     * Append a value onto existing header
-     *
-     * @param   String  name   Header name
-     * @param   String  value  Header value
-     * @return  Void
-     */
-    append(name, value) {
-        name = `${name}`;
-        value = `${value}`;
-        validateName(name);
-        validateValue(value);
-        const key = find(this[MAP], name);
-        if (key !== undefined) {
-            this[MAP][key].push(value);
-        } else {
-            this[MAP][name] = [value];
-        }
-    }
+	/**
+  * Append a value onto existing header
+  *
+  * @param   String  name   Header name
+  * @param   String  value  Header value
+  * @return  Void
+  */
+	append(name, value) {
+		name = `${name}`;
+		value = `${value}`;
+		validateName(name);
+		validateValue(value);
+		const key = find(this[MAP], name);
+		if (key !== undefined) {
+			this[MAP][key].push(value);
+		} else {
+			this[MAP][name] = [value];
+		}
+	}
 
-    /**
-     * Check for header name existence
-     *
-     * @param   String   name  Header name
-     * @return  Boolean
-     */
-    has(name) {
-        name = `${name}`;
-        validateName(name);
-        return find(this[MAP], name) !== undefined;
-    }
+	/**
+  * Check for header name existence
+  *
+  * @param   String   name  Header name
+  * @return  Boolean
+  */
+	has(name) {
+		name = `${name}`;
+		validateName(name);
+		return find(this[MAP], name) !== undefined;
+	}
 
-    /**
-     * Delete all header values given name
-     *
-     * @param   String  name  Header name
-     * @return  Void
-     */
-    delete(name) {
-        name = `${name}`;
-        validateName(name);
-        const key = find(this[MAP], name);
-        if (key !== undefined) {
-            delete this[MAP][key];
-        }
-    }
+	/**
+  * Delete all header values given name
+  *
+  * @param   String  name  Header name
+  * @return  Void
+  */
+	delete(name) {
+		name = `${name}`;
+		validateName(name);
+		const key = find(this[MAP], name);
+		if (key !== undefined) {
+			delete this[MAP][key];
+		}
+	}
 
-    /**
-     * Return raw headers (non-spec api)
-     *
-     * @return  Object
-     */
-    raw() {
-        return this[MAP];
-    }
+	/**
+  * Return raw headers (non-spec api)
+  *
+  * @return  Object
+  */
+	raw() {
+		return this[MAP];
+	}
 
-    /**
-     * Get an iterator on keys.
-     *
-     * @return  Iterator
-     */
-    keys() {
-        return createHeadersIterator(this, 'key');
-    }
+	/**
+  * Get an iterator on keys.
+  *
+  * @return  Iterator
+  */
+	keys() {
+		return createHeadersIterator(this, 'key');
+	}
 
-    /**
-     * Get an iterator on values.
-     *
-     * @return  Iterator
-     */
-    values() {
-        return createHeadersIterator(this, 'value');
-    }
+	/**
+  * Get an iterator on values.
+  *
+  * @return  Iterator
+  */
+	values() {
+		return createHeadersIterator(this, 'value');
+	}
 
-    /**
-     * Get an iterator on entries.
-     *
-     * This is the default iterator of the Headers object.
-     *
-     * @return  Iterator
-     */
-    [Symbol.iterator]() {
-        return createHeadersIterator(this, 'key+value');
-    }
+	/**
+  * Get an iterator on entries.
+  *
+  * This is the default iterator of the Headers object.
+  *
+  * @return  Iterator
+  */
+	[Symbol.iterator]() {
+		return createHeadersIterator(this, 'key+value');
+	}
 }
 Headers.prototype.entries = Headers.prototype[Symbol.iterator];
 
 Object.defineProperty(Headers.prototype, Symbol.toStringTag, {
-    value: 'Headers',
-    writable: false,
-    enumerable: false,
-    configurable: true
+	value: 'Headers',
+	writable: false,
+	enumerable: false,
+	configurable: true
 });
 
 Object.defineProperties(Headers.prototype, {
-    get: { enumerable: true },
-    forEach: { enumerable: true },
-    set: { enumerable: true },
-    append: { enumerable: true },
-    has: { enumerable: true },
-    delete: { enumerable: true },
-    keys: { enumerable: true },
-    values: { enumerable: true },
-    entries: { enumerable: true }
+	get: { enumerable: true },
+	forEach: { enumerable: true },
+	set: { enumerable: true },
+	append: { enumerable: true },
+	has: { enumerable: true },
+	delete: { enumerable: true },
+	keys: { enumerable: true },
+	values: { enumerable: true },
+	entries: { enumerable: true }
 });
 
 function getHeaders(headers) {
-    let kind = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'key+value';
+	let kind = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'key+value';
 
-    const keys = Object.keys(headers[MAP]).sort();
-    return keys.map(kind === 'key' ? function (k) {
-        return k.toLowerCase();
-    } : kind === 'value' ? function (k) {
-        return headers[MAP][k].join(', ');
-    } : function (k) {
-        return [k.toLowerCase(), headers[MAP][k].join(', ')];
-    });
+	const keys = Object.keys(headers[MAP]).sort();
+	return keys.map(kind === 'key' ? function (k) {
+		return k.toLowerCase();
+	} : kind === 'value' ? function (k) {
+		return headers[MAP][k].join(', ');
+	} : function (k) {
+		return [k.toLowerCase(), headers[MAP][k].join(', ')];
+	});
 }
 
 const INTERNAL = Symbol('internal');
 
 function createHeadersIterator(target, kind) {
-    const iterator = Object.create(HeadersIteratorPrototype);
-    iterator[INTERNAL] = {
-        target,
-        kind,
-        index: 0
-    };
-    return iterator;
+	const iterator = Object.create(HeadersIteratorPrototype);
+	iterator[INTERNAL] = {
+		target,
+		kind,
+		index: 0
+	};
+	return iterator;
 }
 
 const HeadersIteratorPrototype = Object.setPrototypeOf({
-    next() {
-        // istanbul ignore if
-        if (!this || Object.getPrototypeOf(this) !== HeadersIteratorPrototype) {
-            throw new TypeError('Value of `this` is not a HeadersIterator');
-        }
+	next() {
+		// istanbul ignore if
+		if (!this || Object.getPrototypeOf(this) !== HeadersIteratorPrototype) {
+			throw new TypeError('Value of `this` is not a HeadersIterator');
+		}
 
-        var _INTERNAL = this[INTERNAL];
-        const target = _INTERNAL.target,
-                kind = _INTERNAL.kind,
-                index = _INTERNAL.index;
+		var _INTERNAL = this[INTERNAL];
+		const target = _INTERNAL.target,
+		      kind = _INTERNAL.kind,
+		      index = _INTERNAL.index;
 
-        const values = getHeaders(target, kind);
-        const len = values.length;
-        if (index >= len) {
-            return {
-                value: undefined,
-                done: true
-            };
-        }
+		const values = getHeaders(target, kind);
+		const len = values.length;
+		if (index >= len) {
+			return {
+				value: undefined,
+				done: true
+			};
+		}
 
-        this[INTERNAL].index = index + 1;
+		this[INTERNAL].index = index + 1;
 
-        return {
-            value: values[index],
-            done: false
-        };
-    }
+		return {
+			value: values[index],
+			done: false
+		};
+	}
 }, Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]())));
 
 Object.defineProperty(HeadersIteratorPrototype, Symbol.toStringTag, {
-    value: 'HeadersIterator',
-    writable: false,
-    enumerable: false,
-    configurable: true
+	value: 'HeadersIterator',
+	writable: false,
+	enumerable: false,
+	configurable: true
 });
 
 /**
@@ -12702,16 +12702,16 @@ Object.defineProperty(HeadersIteratorPrototype, Symbol.toStringTag, {
  * @return  Object
  */
 function exportNodeCompatibleHeaders(headers) {
-    const obj = Object.assign({ __proto__: null }, headers[MAP]);
+	const obj = Object.assign({ __proto__: null }, headers[MAP]);
 
-    // http.request() only supports string as Host header. This hack makes
-    // specifying custom Host header possible.
-    const hostHeaderKey = find(headers[MAP], 'Host');
-    if (hostHeaderKey !== undefined) {
-        obj[hostHeaderKey] = obj[hostHeaderKey][0];
-    }
+	// http.request() only supports string as Host header. This hack makes
+	// specifying custom Host header possible.
+	const hostHeaderKey = find(headers[MAP], 'Host');
+	if (hostHeaderKey !== undefined) {
+		obj[hostHeaderKey] = obj[hostHeaderKey][0];
+	}
 
-    return obj;
+	return obj;
 }
 
 /**
@@ -12722,27 +12722,27 @@ function exportNodeCompatibleHeaders(headers) {
  * @return  Headers
  */
 function createHeadersLenient(obj) {
-    const headers = new Headers();
-    for (const name of Object.keys(obj)) {
-        if (invalidTokenRegex.test(name)) {
-            continue;
-        }
-        if (Array.isArray(obj[name])) {
-            for (const val of obj[name]) {
-                if (invalidHeaderCharRegex.test(val)) {
-                    continue;
-                }
-                if (headers[MAP][name] === undefined) {
-                    headers[MAP][name] = [val];
-                } else {
-                    headers[MAP][name].push(val);
-                }
-            }
-        } else if (!invalidHeaderCharRegex.test(obj[name])) {
-            headers[MAP][name] = [obj[name]];
-        }
-    }
-    return headers;
+	const headers = new Headers();
+	for (const name of Object.keys(obj)) {
+		if (invalidTokenRegex.test(name)) {
+			continue;
+		}
+		if (Array.isArray(obj[name])) {
+			for (const val of obj[name]) {
+				if (invalidHeaderCharRegex.test(val)) {
+					continue;
+				}
+				if (headers[MAP][name] === undefined) {
+					headers[MAP][name] = [val];
+				} else {
+					headers[MAP][name].push(val);
+				}
+			}
+		} else if (!invalidHeaderCharRegex.test(obj[name])) {
+			headers[MAP][name] = [obj[name]];
+		}
+	}
+	return headers;
 }
 
 const INTERNALS$1 = Symbol('Response internals');
@@ -12758,92 +12758,92 @@ const STATUS_CODES = http.STATUS_CODES;
  * @return  Void
  */
 class Response {
-    constructor() {
-        let body = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-        let opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	constructor() {
+		let body = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+		let opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-        Body.call(this, body, opts);
+		Body.call(this, body, opts);
 
-        const status = opts.status || 200;
-        const headers = new Headers(opts.headers);
+		const status = opts.status || 200;
+		const headers = new Headers(opts.headers);
 
-        if (body != null && !headers.has('Content-Type')) {
-            const contentType = extractContentType(body);
-            if (contentType) {
-                headers.append('Content-Type', contentType);
-            }
-        }
+		if (body != null && !headers.has('Content-Type')) {
+			const contentType = extractContentType(body);
+			if (contentType) {
+				headers.append('Content-Type', contentType);
+			}
+		}
 
-        this[INTERNALS$1] = {
-            url: opts.url,
-            status,
-            statusText: opts.statusText || STATUS_CODES[status],
-            headers,
-            counter: opts.counter
-        };
-    }
+		this[INTERNALS$1] = {
+			url: opts.url,
+			status,
+			statusText: opts.statusText || STATUS_CODES[status],
+			headers,
+			counter: opts.counter
+		};
+	}
 
-    get url() {
-        return this[INTERNALS$1].url || '';
-    }
+	get url() {
+		return this[INTERNALS$1].url || '';
+	}
 
-    get status() {
-        return this[INTERNALS$1].status;
-    }
+	get status() {
+		return this[INTERNALS$1].status;
+	}
 
-    /**
-     * Convenience property representing if the request ended normally
-     */
-    get ok() {
-        return this[INTERNALS$1].status >= 200 && this[INTERNALS$1].status < 300;
-    }
+	/**
+  * Convenience property representing if the request ended normally
+  */
+	get ok() {
+		return this[INTERNALS$1].status >= 200 && this[INTERNALS$1].status < 300;
+	}
 
-    get redirected() {
-        return this[INTERNALS$1].counter > 0;
-    }
+	get redirected() {
+		return this[INTERNALS$1].counter > 0;
+	}
 
-    get statusText() {
-        return this[INTERNALS$1].statusText;
-    }
+	get statusText() {
+		return this[INTERNALS$1].statusText;
+	}
 
-    get headers() {
-        return this[INTERNALS$1].headers;
-    }
+	get headers() {
+		return this[INTERNALS$1].headers;
+	}
 
-    /**
-     * Clone this response
-     *
-     * @return  Response
-     */
-    clone() {
-        return new Response(clone(this), {
-            url: this.url,
-            status: this.status,
-            statusText: this.statusText,
-            headers: this.headers,
-            ok: this.ok,
-            redirected: this.redirected
-        });
-    }
+	/**
+  * Clone this response
+  *
+  * @return  Response
+  */
+	clone() {
+		return new Response(clone(this), {
+			url: this.url,
+			status: this.status,
+			statusText: this.statusText,
+			headers: this.headers,
+			ok: this.ok,
+			redirected: this.redirected
+		});
+	}
 }
 
 Body.mixIn(Response.prototype);
 
 Object.defineProperties(Response.prototype, {
-    url: { enumerable: true },
-    status: { enumerable: true },
-    ok: { enumerable: true },
-    redirected: { enumerable: true },
-    statusText: { enumerable: true },
-    headers: { enumerable: true },
-    clone: { enumerable: true }
+	url: { enumerable: true },
+	status: { enumerable: true },
+	ok: { enumerable: true },
+	redirected: { enumerable: true },
+	statusText: { enumerable: true },
+	headers: { enumerable: true },
+	clone: { enumerable: true }
 });
 
 Object.defineProperty(Response.prototype, Symbol.toStringTag, {
-    value: 'Response',
-    writable: false,
-    enumerable: false,
-    configurable: true
+	value: 'Response',
+	writable: false,
+	enumerable: false,
+	configurable: true
 });
 
 const INTERNALS$2 = Symbol('Request internals');
@@ -12860,17 +12860,17 @@ const format_url = Url.format;
  * @return {void}
  */
 function parseURL(urlStr) {
-    /*
-        Check whether the URL is absolute or not
-            Scheme: https://tools.ietf.org/html/rfc3986#section-3.1
-        Absolute URL: https://tools.ietf.org/html/rfc3986#section-4.3
-    */
-    if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.exec(urlStr)) {
-        urlStr = new URL(urlStr).toString();
-    }
+	/*
+ 	Check whether the URL is absolute or not
+ 		Scheme: https://tools.ietf.org/html/rfc3986#section-3.1
+ 	Absolute URL: https://tools.ietf.org/html/rfc3986#section-4.3
+ */
+	if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.exec(urlStr)) {
+		urlStr = new URL(urlStr).toString();
+	}
 
-    // Fallback to old implementation for arbitrary URLs
-    return parse_url(urlStr);
+	// Fallback to old implementation for arbitrary URLs
+	return parse_url(urlStr);
 }
 
 const streamDestructionSupported = 'destroy' in Stream.Readable.prototype;
@@ -12882,12 +12882,12 @@ const streamDestructionSupported = 'destroy' in Stream.Readable.prototype;
  * @return  Boolean
  */
 function isRequest(input) {
-    return typeof input === 'object' && typeof input[INTERNALS$2] === 'object';
+	return typeof input === 'object' && typeof input[INTERNALS$2] === 'object';
 }
 
 function isAbortSignal(signal) {
-    const proto = signal && typeof signal === 'object' && Object.getPrototypeOf(signal);
-    return !!(proto && proto.constructor.name === 'AbortSignal');
+	const proto = signal && typeof signal === 'object' && Object.getPrototypeOf(signal);
+	return !!(proto && proto.constructor.name === 'AbortSignal');
 }
 
 /**
@@ -12898,118 +12898,118 @@ function isAbortSignal(signal) {
  * @return  Void
  */
 class Request {
-    constructor(input) {
-        let init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	constructor(input) {
+		let init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-        let parsedURL;
+		let parsedURL;
 
-        // normalize input
-        if (!isRequest(input)) {
-            if (input && input.href) {
-                // in order to support Node.js' Url objects; though WHATWG's URL objects
-                // will fall into this branch also (since their `toString()` will return
-                // `href` property anyway)
-                parsedURL = parseURL(input.href);
-            } else {
-                // coerce input to a string before attempting to parse
-                parsedURL = parseURL(`${input}`);
-            }
-            input = {};
-        } else {
-            parsedURL = parseURL(input.url);
-        }
+		// normalize input
+		if (!isRequest(input)) {
+			if (input && input.href) {
+				// in order to support Node.js' Url objects; though WHATWG's URL objects
+				// will fall into this branch also (since their `toString()` will return
+				// `href` property anyway)
+				parsedURL = parseURL(input.href);
+			} else {
+				// coerce input to a string before attempting to parse
+				parsedURL = parseURL(`${input}`);
+			}
+			input = {};
+		} else {
+			parsedURL = parseURL(input.url);
+		}
 
-        let method = init.method || input.method || 'GET';
-        method = method.toUpperCase();
+		let method = init.method || input.method || 'GET';
+		method = method.toUpperCase();
 
-        if ((init.body != null || isRequest(input) && input.body !== null) && (method === 'GET' || method === 'HEAD')) {
-            throw new TypeError('Request with GET/HEAD method cannot have body');
-        }
+		if ((init.body != null || isRequest(input) && input.body !== null) && (method === 'GET' || method === 'HEAD')) {
+			throw new TypeError('Request with GET/HEAD method cannot have body');
+		}
 
-        let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
+		let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
 
-        Body.call(this, inputBody, {
-            timeout: init.timeout || input.timeout || 0,
-            size: init.size || input.size || 0
-        });
+		Body.call(this, inputBody, {
+			timeout: init.timeout || input.timeout || 0,
+			size: init.size || input.size || 0
+		});
 
-        const headers = new Headers(init.headers || input.headers || {});
+		const headers = new Headers(init.headers || input.headers || {});
 
-        if (inputBody != null && !headers.has('Content-Type')) {
-            const contentType = extractContentType(inputBody);
-            if (contentType) {
-                headers.append('Content-Type', contentType);
-            }
-        }
+		if (inputBody != null && !headers.has('Content-Type')) {
+			const contentType = extractContentType(inputBody);
+			if (contentType) {
+				headers.append('Content-Type', contentType);
+			}
+		}
 
-        let signal = isRequest(input) ? input.signal : null;
-        if ('signal' in init) signal = init.signal;
+		let signal = isRequest(input) ? input.signal : null;
+		if ('signal' in init) signal = init.signal;
 
-        if (signal != null && !isAbortSignal(signal)) {
-            throw new TypeError('Expected signal to be an instanceof AbortSignal');
-        }
+		if (signal != null && !isAbortSignal(signal)) {
+			throw new TypeError('Expected signal to be an instanceof AbortSignal');
+		}
 
-        this[INTERNALS$2] = {
-            method,
-            redirect: init.redirect || input.redirect || 'follow',
-            headers,
-            parsedURL,
-            signal
-        };
+		this[INTERNALS$2] = {
+			method,
+			redirect: init.redirect || input.redirect || 'follow',
+			headers,
+			parsedURL,
+			signal
+		};
 
-        // node-fetch-only options
-        this.follow = init.follow !== undefined ? init.follow : input.follow !== undefined ? input.follow : 20;
-        this.compress = init.compress !== undefined ? init.compress : input.compress !== undefined ? input.compress : true;
-        this.counter = init.counter || input.counter || 0;
-        this.agent = init.agent || input.agent;
-    }
+		// node-fetch-only options
+		this.follow = init.follow !== undefined ? init.follow : input.follow !== undefined ? input.follow : 20;
+		this.compress = init.compress !== undefined ? init.compress : input.compress !== undefined ? input.compress : true;
+		this.counter = init.counter || input.counter || 0;
+		this.agent = init.agent || input.agent;
+	}
 
-    get method() {
-        return this[INTERNALS$2].method;
-    }
+	get method() {
+		return this[INTERNALS$2].method;
+	}
 
-    get url() {
-        return format_url(this[INTERNALS$2].parsedURL);
-    }
+	get url() {
+		return format_url(this[INTERNALS$2].parsedURL);
+	}
 
-    get headers() {
-        return this[INTERNALS$2].headers;
-    }
+	get headers() {
+		return this[INTERNALS$2].headers;
+	}
 
-    get redirect() {
-        return this[INTERNALS$2].redirect;
-    }
+	get redirect() {
+		return this[INTERNALS$2].redirect;
+	}
 
-    get signal() {
-        return this[INTERNALS$2].signal;
-    }
+	get signal() {
+		return this[INTERNALS$2].signal;
+	}
 
-    /**
-     * Clone this request
-     *
-     * @return  Request
-     */
-    clone() {
-        return new Request(this);
-    }
+	/**
+  * Clone this request
+  *
+  * @return  Request
+  */
+	clone() {
+		return new Request(this);
+	}
 }
 
 Body.mixIn(Request.prototype);
 
 Object.defineProperty(Request.prototype, Symbol.toStringTag, {
-    value: 'Request',
-    writable: false,
-    enumerable: false,
-    configurable: true
+	value: 'Request',
+	writable: false,
+	enumerable: false,
+	configurable: true
 });
 
 Object.defineProperties(Request.prototype, {
-    method: { enumerable: true },
-    url: { enumerable: true },
-    headers: { enumerable: true },
-    redirect: { enumerable: true },
-    clone: { enumerable: true },
-    signal: { enumerable: true }
+	method: { enumerable: true },
+	url: { enumerable: true },
+	headers: { enumerable: true },
+	redirect: { enumerable: true },
+	clone: { enumerable: true },
+	signal: { enumerable: true }
 });
 
 /**
@@ -13019,69 +13019,69 @@ Object.defineProperties(Request.prototype, {
  * @return  Object   The options object to be passed to http.request
  */
 function getNodeRequestOptions(request) {
-    const parsedURL = request[INTERNALS$2].parsedURL;
-    const headers = new Headers(request[INTERNALS$2].headers);
+	const parsedURL = request[INTERNALS$2].parsedURL;
+	const headers = new Headers(request[INTERNALS$2].headers);
 
-    // fetch step 1.3
-    if (!headers.has('Accept')) {
-        headers.set('Accept', '*/*');
-    }
+	// fetch step 1.3
+	if (!headers.has('Accept')) {
+		headers.set('Accept', '*/*');
+	}
 
-    // Basic fetch
-    if (!parsedURL.protocol || !parsedURL.hostname) {
-        throw new TypeError('Only absolute URLs are supported');
-    }
+	// Basic fetch
+	if (!parsedURL.protocol || !parsedURL.hostname) {
+		throw new TypeError('Only absolute URLs are supported');
+	}
 
-    if (!/^https?:$/.test(parsedURL.protocol)) {
-        throw new TypeError('Only HTTP(S) protocols are supported');
-    }
+	if (!/^https?:$/.test(parsedURL.protocol)) {
+		throw new TypeError('Only HTTP(S) protocols are supported');
+	}
 
-    if (request.signal && request.body instanceof Stream.Readable && !streamDestructionSupported) {
-        throw new Error('Cancellation of streamed requests with AbortSignal is not supported in node < 8');
-    }
+	if (request.signal && request.body instanceof Stream.Readable && !streamDestructionSupported) {
+		throw new Error('Cancellation of streamed requests with AbortSignal is not supported in node < 8');
+	}
 
-    // HTTP-network-or-cache fetch steps 2.4-2.7
-    let contentLengthValue = null;
-    if (request.body == null && /^(POST|PUT)$/i.test(request.method)) {
-        contentLengthValue = '0';
-    }
-    if (request.body != null) {
-        const totalBytes = getTotalBytes(request);
-        if (typeof totalBytes === 'number') {
-            contentLengthValue = String(totalBytes);
-        }
-    }
-    if (contentLengthValue) {
-        headers.set('Content-Length', contentLengthValue);
-    }
+	// HTTP-network-or-cache fetch steps 2.4-2.7
+	let contentLengthValue = null;
+	if (request.body == null && /^(POST|PUT)$/i.test(request.method)) {
+		contentLengthValue = '0';
+	}
+	if (request.body != null) {
+		const totalBytes = getTotalBytes(request);
+		if (typeof totalBytes === 'number') {
+			contentLengthValue = String(totalBytes);
+		}
+	}
+	if (contentLengthValue) {
+		headers.set('Content-Length', contentLengthValue);
+	}
 
-    // HTTP-network-or-cache fetch step 2.11
-    if (!headers.has('User-Agent')) {
-        headers.set('User-Agent', 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)');
-    }
+	// HTTP-network-or-cache fetch step 2.11
+	if (!headers.has('User-Agent')) {
+		headers.set('User-Agent', 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)');
+	}
 
-    // HTTP-network-or-cache fetch step 2.15
-    if (request.compress && !headers.has('Accept-Encoding')) {
-        headers.set('Accept-Encoding', 'gzip,deflate');
-    }
+	// HTTP-network-or-cache fetch step 2.15
+	if (request.compress && !headers.has('Accept-Encoding')) {
+		headers.set('Accept-Encoding', 'gzip,deflate');
+	}
 
-    let agent = request.agent;
-    if (typeof agent === 'function') {
-        agent = agent(parsedURL);
-    }
+	let agent = request.agent;
+	if (typeof agent === 'function') {
+		agent = agent(parsedURL);
+	}
 
-    if (!headers.has('Connection') && !agent) {
-        headers.set('Connection', 'close');
-    }
+	if (!headers.has('Connection') && !agent) {
+		headers.set('Connection', 'close');
+	}
 
-    // HTTP-network fetch step 4.2
-    // chunked encoding is handled by Node.js
+	// HTTP-network fetch step 4.2
+	// chunked encoding is handled by Node.js
 
-    return Object.assign({}, parsedURL, {
-        method: request.method,
-        headers: exportNodeCompatibleHeaders(headers),
-        agent
-    });
+	return Object.assign({}, parsedURL, {
+		method: request.method,
+		headers: exportNodeCompatibleHeaders(headers),
+		agent
+	});
 }
 
 /**
@@ -13097,13 +13097,13 @@ function getNodeRequestOptions(request) {
  * @return  AbortError
  */
 function AbortError(message) {
-    Error.call(this, message);
+  Error.call(this, message);
 
-    this.type = 'aborted';
-    this.message = message;
+  this.type = 'aborted';
+  this.message = message;
 
-    // hide custom error implementation details from end-users
-    Error.captureStackTrace(this, this.constructor);
+  // hide custom error implementation details from end-users
+  Error.captureStackTrace(this, this.constructor);
 }
 
 AbortError.prototype = Object.create(Error.prototype);
@@ -13116,10 +13116,10 @@ const URL$1 = Url.URL || whatwgUrl.URL;
 const PassThrough$1 = Stream.PassThrough;
 
 const isDomainOrSubdomain = function isDomainOrSubdomain(destination, original) {
-    const orig = new URL$1(original).hostname;
-    const dest = new URL$1(destination).hostname;
+	const orig = new URL$1(original).hostname;
+	const dest = new URL$1(destination).hostname;
 
-    return orig === dest || orig[orig.length - dest.length - 1] === '.' && orig.endsWith(dest);
+	return orig === dest || orig[orig.length - dest.length - 1] === '.' && orig.endsWith(dest);
 };
 
 /**
@@ -13131,254 +13131,254 @@ const isDomainOrSubdomain = function isDomainOrSubdomain(destination, original) 
  */
 function fetch(url, opts) {
 
-    // allow custom promise
-    if (!fetch.Promise) {
-        throw new Error('native promise missing, set fetch.Promise to your favorite alternative');
-    }
+	// allow custom promise
+	if (!fetch.Promise) {
+		throw new Error('native promise missing, set fetch.Promise to your favorite alternative');
+	}
 
-    Body.Promise = fetch.Promise;
+	Body.Promise = fetch.Promise;
 
-    // wrap http.request into fetch
-    return new fetch.Promise(function (resolve, reject) {
-        // build request object
-        const request = new Request(url, opts);
-        const options = getNodeRequestOptions(request);
+	// wrap http.request into fetch
+	return new fetch.Promise(function (resolve, reject) {
+		// build request object
+		const request = new Request(url, opts);
+		const options = getNodeRequestOptions(request);
 
-        const send = (options.protocol === 'https:' ? https : http).request;
-        const signal = request.signal;
+		const send = (options.protocol === 'https:' ? https : http).request;
+		const signal = request.signal;
 
-        let response = null;
+		let response = null;
 
-        const abort = function abort() {
-            let error = new AbortError('The user aborted a request.');
-            reject(error);
-            if (request.body && request.body instanceof Stream.Readable) {
-                request.body.destroy(error);
-            }
-            if (!response || !response.body) return;
-            response.body.emit('error', error);
-        };
+		const abort = function abort() {
+			let error = new AbortError('The user aborted a request.');
+			reject(error);
+			if (request.body && request.body instanceof Stream.Readable) {
+				request.body.destroy(error);
+			}
+			if (!response || !response.body) return;
+			response.body.emit('error', error);
+		};
 
-        if (signal && signal.aborted) {
-            abort();
-            return;
-        }
+		if (signal && signal.aborted) {
+			abort();
+			return;
+		}
 
-        const abortAndFinalize = function abortAndFinalize() {
-            abort();
-            finalize();
-        };
+		const abortAndFinalize = function abortAndFinalize() {
+			abort();
+			finalize();
+		};
 
-        // send request
-        const req = send(options);
-        let reqTimeout;
+		// send request
+		const req = send(options);
+		let reqTimeout;
 
-        if (signal) {
-            signal.addEventListener('abort', abortAndFinalize);
-        }
+		if (signal) {
+			signal.addEventListener('abort', abortAndFinalize);
+		}
 
-        function finalize() {
-            req.abort();
-            if (signal) signal.removeEventListener('abort', abortAndFinalize);
-            clearTimeout(reqTimeout);
-        }
+		function finalize() {
+			req.abort();
+			if (signal) signal.removeEventListener('abort', abortAndFinalize);
+			clearTimeout(reqTimeout);
+		}
 
-        if (request.timeout) {
-            req.once('socket', function (socket) {
-                reqTimeout = setTimeout(function () {
-                    reject(new FetchError(`network timeout at: ${request.url}`, 'request-timeout'));
-                    finalize();
-                }, request.timeout);
-            });
-        }
+		if (request.timeout) {
+			req.once('socket', function (socket) {
+				reqTimeout = setTimeout(function () {
+					reject(new FetchError(`network timeout at: ${request.url}`, 'request-timeout'));
+					finalize();
+				}, request.timeout);
+			});
+		}
 
-        req.on('error', function (err) {
-            reject(new FetchError(`request to ${request.url} failed, reason: ${err.message}`, 'system', err));
-            finalize();
-        });
+		req.on('error', function (err) {
+			reject(new FetchError(`request to ${request.url} failed, reason: ${err.message}`, 'system', err));
+			finalize();
+		});
 
-        req.on('response', function (res) {
-            clearTimeout(reqTimeout);
+		req.on('response', function (res) {
+			clearTimeout(reqTimeout);
 
-            const headers = createHeadersLenient(res.headers);
+			const headers = createHeadersLenient(res.headers);
 
-            // HTTP fetch step 5
-            if (fetch.isRedirect(res.statusCode)) {
-                // HTTP fetch step 5.2
-                const location = headers.get('Location');
+			// HTTP fetch step 5
+			if (fetch.isRedirect(res.statusCode)) {
+				// HTTP fetch step 5.2
+				const location = headers.get('Location');
 
-                // HTTP fetch step 5.3
-                let locationURL = null;
-                try {
-                    locationURL = location === null ? null : new URL$1(location, request.url).toString();
-                } catch (err) {
-                    // error here can only be invalid URL in Location: header
-                    // do not throw when options.redirect == manual
-                    // let the user extract the errorneous redirect URL
-                    if (request.redirect !== 'manual') {
-                        reject(new FetchError(`uri requested responds with an invalid redirect URL: ${location}`, 'invalid-redirect'));
-                        finalize();
-                        return;
-                    }
-                }
+				// HTTP fetch step 5.3
+				let locationURL = null;
+				try {
+					locationURL = location === null ? null : new URL$1(location, request.url).toString();
+				} catch (err) {
+					// error here can only be invalid URL in Location: header
+					// do not throw when options.redirect == manual
+					// let the user extract the errorneous redirect URL
+					if (request.redirect !== 'manual') {
+						reject(new FetchError(`uri requested responds with an invalid redirect URL: ${location}`, 'invalid-redirect'));
+						finalize();
+						return;
+					}
+				}
 
-                // HTTP fetch step 5.5
-                switch (request.redirect) {
-                    case 'error':
-                        reject(new FetchError(`uri requested responds with a redirect, redirect mode is set to error: ${request.url}`, 'no-redirect'));
-                        finalize();
-                        return;
-                    case 'manual':
-                        // node-fetch-specific step: make manual redirect a bit easier to use by setting the Location header value to the resolved URL.
-                        if (locationURL !== null) {
-                            // handle corrupted header
-                            try {
-                                headers.set('Location', locationURL);
-                            } catch (err) {
-                                // istanbul ignore next: nodejs server prevent invalid response headers, we can't test this through normal request
-                                reject(err);
-                            }
-                        }
-                        break;
-                    case 'follow':
-                        // HTTP-redirect fetch step 2
-                        if (locationURL === null) {
-                            break;
-                        }
+				// HTTP fetch step 5.5
+				switch (request.redirect) {
+					case 'error':
+						reject(new FetchError(`uri requested responds with a redirect, redirect mode is set to error: ${request.url}`, 'no-redirect'));
+						finalize();
+						return;
+					case 'manual':
+						// node-fetch-specific step: make manual redirect a bit easier to use by setting the Location header value to the resolved URL.
+						if (locationURL !== null) {
+							// handle corrupted header
+							try {
+								headers.set('Location', locationURL);
+							} catch (err) {
+								// istanbul ignore next: nodejs server prevent invalid response headers, we can't test this through normal request
+								reject(err);
+							}
+						}
+						break;
+					case 'follow':
+						// HTTP-redirect fetch step 2
+						if (locationURL === null) {
+							break;
+						}
 
-                        // HTTP-redirect fetch step 5
-                        if (request.counter >= request.follow) {
-                            reject(new FetchError(`maximum redirect reached at: ${request.url}`, 'max-redirect'));
-                            finalize();
-                            return;
-                        }
+						// HTTP-redirect fetch step 5
+						if (request.counter >= request.follow) {
+							reject(new FetchError(`maximum redirect reached at: ${request.url}`, 'max-redirect'));
+							finalize();
+							return;
+						}
 
-                        // HTTP-redirect fetch step 6 (counter increment)
-                        // Create a new Request object.
-                        const requestOpts = {
-                            headers: new Headers(request.headers),
-                            follow: request.follow,
-                            counter: request.counter + 1,
-                            agent: request.agent,
-                            compress: request.compress,
-                            method: request.method,
-                            body: request.body,
-                            signal: request.signal,
-                            timeout: request.timeout,
-                            size: request.size
-                        };
+						// HTTP-redirect fetch step 6 (counter increment)
+						// Create a new Request object.
+						const requestOpts = {
+							headers: new Headers(request.headers),
+							follow: request.follow,
+							counter: request.counter + 1,
+							agent: request.agent,
+							compress: request.compress,
+							method: request.method,
+							body: request.body,
+							signal: request.signal,
+							timeout: request.timeout,
+							size: request.size
+						};
 
-                        if (!isDomainOrSubdomain(request.url, locationURL)) {
-                            for (const name of ['authorization', 'www-authenticate', 'cookie', 'cookie2']) {
-                                requestOpts.headers.delete(name);
-                            }
-                        }
+						if (!isDomainOrSubdomain(request.url, locationURL)) {
+							for (const name of ['authorization', 'www-authenticate', 'cookie', 'cookie2']) {
+								requestOpts.headers.delete(name);
+							}
+						}
 
-                        // HTTP-redirect fetch step 9
-                        if (res.statusCode !== 303 && request.body && getTotalBytes(request) === null) {
-                            reject(new FetchError('Cannot follow redirect with body being a readable stream', 'unsupported-redirect'));
-                            finalize();
-                            return;
-                        }
+						// HTTP-redirect fetch step 9
+						if (res.statusCode !== 303 && request.body && getTotalBytes(request) === null) {
+							reject(new FetchError('Cannot follow redirect with body being a readable stream', 'unsupported-redirect'));
+							finalize();
+							return;
+						}
 
-                        // HTTP-redirect fetch step 11
-                        if (res.statusCode === 303 || (res.statusCode === 301 || res.statusCode === 302) && request.method === 'POST') {
-                            requestOpts.method = 'GET';
-                            requestOpts.body = undefined;
-                            requestOpts.headers.delete('content-length');
-                        }
+						// HTTP-redirect fetch step 11
+						if (res.statusCode === 303 || (res.statusCode === 301 || res.statusCode === 302) && request.method === 'POST') {
+							requestOpts.method = 'GET';
+							requestOpts.body = undefined;
+							requestOpts.headers.delete('content-length');
+						}
 
-                        // HTTP-redirect fetch step 15
-                        resolve(fetch(new Request(locationURL, requestOpts)));
-                        finalize();
-                        return;
-                }
-            }
+						// HTTP-redirect fetch step 15
+						resolve(fetch(new Request(locationURL, requestOpts)));
+						finalize();
+						return;
+				}
+			}
 
-            // prepare response
-            res.once('end', function () {
-                if (signal) signal.removeEventListener('abort', abortAndFinalize);
-            });
-            let body = res.pipe(new PassThrough$1());
+			// prepare response
+			res.once('end', function () {
+				if (signal) signal.removeEventListener('abort', abortAndFinalize);
+			});
+			let body = res.pipe(new PassThrough$1());
 
-            const response_options = {
-                url: request.url,
-                status: res.statusCode,
-                statusText: res.statusMessage,
-                headers: headers,
-                size: request.size,
-                timeout: request.timeout,
-                counter: request.counter
-            };
+			const response_options = {
+				url: request.url,
+				status: res.statusCode,
+				statusText: res.statusMessage,
+				headers: headers,
+				size: request.size,
+				timeout: request.timeout,
+				counter: request.counter
+			};
 
-            // HTTP-network fetch step 12.1.1.3
-            const codings = headers.get('Content-Encoding');
+			// HTTP-network fetch step 12.1.1.3
+			const codings = headers.get('Content-Encoding');
 
-            // HTTP-network fetch step 12.1.1.4: handle content codings
+			// HTTP-network fetch step 12.1.1.4: handle content codings
 
-            // in following scenarios we ignore compression support
-            // 1. compression support is disabled
-            // 2. HEAD request
-            // 3. no Content-Encoding header
-            // 4. no content response (204)
-            // 5. content not modified response (304)
-            if (!request.compress || request.method === 'HEAD' || codings === null || res.statusCode === 204 || res.statusCode === 304) {
-                response = new Response(body, response_options);
-                resolve(response);
-                return;
-            }
+			// in following scenarios we ignore compression support
+			// 1. compression support is disabled
+			// 2. HEAD request
+			// 3. no Content-Encoding header
+			// 4. no content response (204)
+			// 5. content not modified response (304)
+			if (!request.compress || request.method === 'HEAD' || codings === null || res.statusCode === 204 || res.statusCode === 304) {
+				response = new Response(body, response_options);
+				resolve(response);
+				return;
+			}
 
-            // For Node v6+
-            // Be less strict when decoding compressed responses, since sometimes
-            // servers send slightly invalid responses that are still accepted
-            // by common browsers.
-            // Always using Z_SYNC_FLUSH is what cURL does.
-            const zlibOptions = {
-                flush: zlib.Z_SYNC_FLUSH,
-                finishFlush: zlib.Z_SYNC_FLUSH
-            };
+			// For Node v6+
+			// Be less strict when decoding compressed responses, since sometimes
+			// servers send slightly invalid responses that are still accepted
+			// by common browsers.
+			// Always using Z_SYNC_FLUSH is what cURL does.
+			const zlibOptions = {
+				flush: zlib.Z_SYNC_FLUSH,
+				finishFlush: zlib.Z_SYNC_FLUSH
+			};
 
-            // for gzip
-            if (codings == 'gzip' || codings == 'x-gzip') {
-                body = body.pipe(zlib.createGunzip(zlibOptions));
-                response = new Response(body, response_options);
-                resolve(response);
-                return;
-            }
+			// for gzip
+			if (codings == 'gzip' || codings == 'x-gzip') {
+				body = body.pipe(zlib.createGunzip(zlibOptions));
+				response = new Response(body, response_options);
+				resolve(response);
+				return;
+			}
 
-            // for deflate
-            if (codings == 'deflate' || codings == 'x-deflate') {
-                // handle the infamous raw deflate response from old servers
-                // a hack for old IIS and Apache servers
-                const raw = res.pipe(new PassThrough$1());
-                raw.once('data', function (chunk) {
-                    // see http://stackoverflow.com/questions/37519828
-                    if ((chunk[0] & 0x0F) === 0x08) {
-                        body = body.pipe(zlib.createInflate());
-                    } else {
-                        body = body.pipe(zlib.createInflateRaw());
-                    }
-                    response = new Response(body, response_options);
-                    resolve(response);
-                });
-                return;
-            }
+			// for deflate
+			if (codings == 'deflate' || codings == 'x-deflate') {
+				// handle the infamous raw deflate response from old servers
+				// a hack for old IIS and Apache servers
+				const raw = res.pipe(new PassThrough$1());
+				raw.once('data', function (chunk) {
+					// see http://stackoverflow.com/questions/37519828
+					if ((chunk[0] & 0x0F) === 0x08) {
+						body = body.pipe(zlib.createInflate());
+					} else {
+						body = body.pipe(zlib.createInflateRaw());
+					}
+					response = new Response(body, response_options);
+					resolve(response);
+				});
+				return;
+			}
 
-            // for br
-            if (codings == 'br' && typeof zlib.createBrotliDecompress === 'function') {
-                body = body.pipe(zlib.createBrotliDecompress());
-                response = new Response(body, response_options);
-                resolve(response);
-                return;
-            }
+			// for br
+			if (codings == 'br' && typeof zlib.createBrotliDecompress === 'function') {
+				body = body.pipe(zlib.createBrotliDecompress());
+				response = new Response(body, response_options);
+				resolve(response);
+				return;
+			}
 
-            // otherwise, use response as-is
-            response = new Response(body, response_options);
-            resolve(response);
-        });
+			// otherwise, use response as-is
+			response = new Response(body, response_options);
+			resolve(response);
+		});
 
-        writeToStream(req, request);
-    });
+		writeToStream(req, request);
+	});
 }
 /**
  * Redirect code matching
@@ -13387,7 +13387,7 @@ function fetch(url, opts) {
  * @return  Boolean
  */
 fetch.isRedirect = function (code) {
-    return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
+	return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
 };
 
 // expose Promise
@@ -13412,42 +13412,42 @@ module.exports = wrappy(once)
 module.exports.strict = wrappy(onceStrict)
 
 once.proto = once(function () {
-    Object.defineProperty(Function.prototype, 'once', {
+  Object.defineProperty(Function.prototype, 'once', {
     value: function () {
-        return once(this)
+      return once(this)
     },
     configurable: true
-    })
+  })
 
-    Object.defineProperty(Function.prototype, 'onceStrict', {
+  Object.defineProperty(Function.prototype, 'onceStrict', {
     value: function () {
-        return onceStrict(this)
+      return onceStrict(this)
     },
     configurable: true
-    })
+  })
 })
 
 function once (fn) {
-    var f = function () {
+  var f = function () {
     if (f.called) return f.value
     f.called = true
     return f.value = fn.apply(this, arguments)
-    }
-    f.called = false
-    return f
+  }
+  f.called = false
+  return f
 }
 
 function onceStrict (fn) {
-    var f = function () {
+  var f = function () {
     if (f.called)
-        throw new Error(f.onceError)
+      throw new Error(f.onceError)
     f.called = true
     return f.value = fn.apply(this, arguments)
-    }
-    var name = fn.name || 'Function wrapped with `once`'
-    f.onceError = name + " shouldn't be called more than once"
-    f.called = false
-    return f
+  }
+  var name = fn.name || 'Function wrapped with `once`'
+  f.onceError = name + " shouldn't be called more than once"
+  f.called = false
+  return f
 }
 
 
@@ -13463,38 +13463,38 @@ var punycode = __nccwpck_require__(5477);
 var mappingTable = __nccwpck_require__(2020);
 
 var PROCESSING_OPTIONS = {
-    TRANSITIONAL: 0,
-    NONTRANSITIONAL: 1
+  TRANSITIONAL: 0,
+  NONTRANSITIONAL: 1
 };
 
 function normalize(str) { // fix bug in v8
-    return str.split('\u0000').map(function (s) { return s.normalize('NFC'); }).join('\u0000');
+  return str.split('\u0000').map(function (s) { return s.normalize('NFC'); }).join('\u0000');
 }
 
 function findStatus(val) {
-    var start = 0;
-    var end = mappingTable.length - 1;
+  var start = 0;
+  var end = mappingTable.length - 1;
 
-    while (start <= end) {
+  while (start <= end) {
     var mid = Math.floor((start + end) / 2);
 
     var target = mappingTable[mid];
     if (target[0][0] <= val && target[0][1] >= val) {
-        return target;
+      return target;
     } else if (target[0][0] > val) {
-        end = mid - 1;
+      end = mid - 1;
     } else {
-        start = mid + 1;
+      start = mid + 1;
     }
-    }
+  }
 
-    return null;
+  return null;
 }
 
 var regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 
 function countSymbols(string) {
-    return string
+  return string
     // replace every surrogate pair with a BMP symbol
     .replace(regexAstralSymbols, '_')
     // then get the length
@@ -13502,151 +13502,151 @@ function countSymbols(string) {
 }
 
 function mapChars(domain_name, useSTD3, processing_option) {
-    var hasError = false;
-    var processed = "";
+  var hasError = false;
+  var processed = "";
 
-    var len = countSymbols(domain_name);
-    for (var i = 0; i < len; ++i) {
+  var len = countSymbols(domain_name);
+  for (var i = 0; i < len; ++i) {
     var codePoint = domain_name.codePointAt(i);
     var status = findStatus(codePoint);
 
     switch (status[1]) {
-        case "disallowed":
+      case "disallowed":
         hasError = true;
         processed += String.fromCodePoint(codePoint);
         break;
-        case "ignored":
+      case "ignored":
         break;
-        case "mapped":
+      case "mapped":
         processed += String.fromCodePoint.apply(String, status[2]);
         break;
-        case "deviation":
+      case "deviation":
         if (processing_option === PROCESSING_OPTIONS.TRANSITIONAL) {
-            processed += String.fromCodePoint.apply(String, status[2]);
+          processed += String.fromCodePoint.apply(String, status[2]);
         } else {
-            processed += String.fromCodePoint(codePoint);
+          processed += String.fromCodePoint(codePoint);
         }
         break;
-        case "valid":
+      case "valid":
         processed += String.fromCodePoint(codePoint);
         break;
-        case "disallowed_STD3_mapped":
+      case "disallowed_STD3_mapped":
         if (useSTD3) {
-            hasError = true;
-            processed += String.fromCodePoint(codePoint);
+          hasError = true;
+          processed += String.fromCodePoint(codePoint);
         } else {
-            processed += String.fromCodePoint.apply(String, status[2]);
+          processed += String.fromCodePoint.apply(String, status[2]);
         }
         break;
-        case "disallowed_STD3_valid":
+      case "disallowed_STD3_valid":
         if (useSTD3) {
-            hasError = true;
+          hasError = true;
         }
 
         processed += String.fromCodePoint(codePoint);
         break;
     }
-    }
+  }
 
-    return {
+  return {
     string: processed,
     error: hasError
-    };
+  };
 }
 
 var combiningMarksRegex = /[\u0300-\u036F\u0483-\u0489\u0591-\u05BD\u05BF\u05C1\u05C2\u05C4\u05C5\u05C7\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED\u0711\u0730-\u074A\u07A6-\u07B0\u07EB-\u07F3\u0816-\u0819\u081B-\u0823\u0825-\u0827\u0829-\u082D\u0859-\u085B\u08E4-\u0903\u093A-\u093C\u093E-\u094F\u0951-\u0957\u0962\u0963\u0981-\u0983\u09BC\u09BE-\u09C4\u09C7\u09C8\u09CB-\u09CD\u09D7\u09E2\u09E3\u0A01-\u0A03\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A70\u0A71\u0A75\u0A81-\u0A83\u0ABC\u0ABE-\u0AC5\u0AC7-\u0AC9\u0ACB-\u0ACD\u0AE2\u0AE3\u0B01-\u0B03\u0B3C\u0B3E-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B56\u0B57\u0B62\u0B63\u0B82\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD7\u0C00-\u0C03\u0C3E-\u0C44\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C62\u0C63\u0C81-\u0C83\u0CBC\u0CBE-\u0CC4\u0CC6-\u0CC8\u0CCA-\u0CCD\u0CD5\u0CD6\u0CE2\u0CE3\u0D01-\u0D03\u0D3E-\u0D44\u0D46-\u0D48\u0D4A-\u0D4D\u0D57\u0D62\u0D63\u0D82\u0D83\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DF2\u0DF3\u0E31\u0E34-\u0E3A\u0E47-\u0E4E\u0EB1\u0EB4-\u0EB9\u0EBB\u0EBC\u0EC8-\u0ECD\u0F18\u0F19\u0F35\u0F37\u0F39\u0F3E\u0F3F\u0F71-\u0F84\u0F86\u0F87\u0F8D-\u0F97\u0F99-\u0FBC\u0FC6\u102B-\u103E\u1056-\u1059\u105E-\u1060\u1062-\u1064\u1067-\u106D\u1071-\u1074\u1082-\u108D\u108F\u109A-\u109D\u135D-\u135F\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17B4-\u17D3\u17DD\u180B-\u180D\u18A9\u1920-\u192B\u1930-\u193B\u19B0-\u19C0\u19C8\u19C9\u1A17-\u1A1B\u1A55-\u1A5E\u1A60-\u1A7C\u1A7F\u1AB0-\u1ABE\u1B00-\u1B04\u1B34-\u1B44\u1B6B-\u1B73\u1B80-\u1B82\u1BA1-\u1BAD\u1BE6-\u1BF3\u1C24-\u1C37\u1CD0-\u1CD2\u1CD4-\u1CE8\u1CED\u1CF2-\u1CF4\u1CF8\u1CF9\u1DC0-\u1DF5\u1DFC-\u1DFF\u20D0-\u20F0\u2CEF-\u2CF1\u2D7F\u2DE0-\u2DFF\u302A-\u302F\u3099\u309A\uA66F-\uA672\uA674-\uA67D\uA69F\uA6F0\uA6F1\uA802\uA806\uA80B\uA823-\uA827\uA880\uA881\uA8B4-\uA8C4\uA8E0-\uA8F1\uA926-\uA92D\uA947-\uA953\uA980-\uA983\uA9B3-\uA9C0\uA9E5\uAA29-\uAA36\uAA43\uAA4C\uAA4D\uAA7B-\uAA7D\uAAB0\uAAB2-\uAAB4\uAAB7\uAAB8\uAABE\uAABF\uAAC1\uAAEB-\uAAEF\uAAF5\uAAF6\uABE3-\uABEA\uABEC\uABED\uFB1E\uFE00-\uFE0F\uFE20-\uFE2D]|\uD800[\uDDFD\uDEE0\uDF76-\uDF7A]|\uD802[\uDE01-\uDE03\uDE05\uDE06\uDE0C-\uDE0F\uDE38-\uDE3A\uDE3F\uDEE5\uDEE6]|\uD804[\uDC00-\uDC02\uDC38-\uDC46\uDC7F-\uDC82\uDCB0-\uDCBA\uDD00-\uDD02\uDD27-\uDD34\uDD73\uDD80-\uDD82\uDDB3-\uDDC0\uDE2C-\uDE37\uDEDF-\uDEEA\uDF01-\uDF03\uDF3C\uDF3E-\uDF44\uDF47\uDF48\uDF4B-\uDF4D\uDF57\uDF62\uDF63\uDF66-\uDF6C\uDF70-\uDF74]|\uD805[\uDCB0-\uDCC3\uDDAF-\uDDB5\uDDB8-\uDDC0\uDE30-\uDE40\uDEAB-\uDEB7]|\uD81A[\uDEF0-\uDEF4\uDF30-\uDF36]|\uD81B[\uDF51-\uDF7E\uDF8F-\uDF92]|\uD82F[\uDC9D\uDC9E]|\uD834[\uDD65-\uDD69\uDD6D-\uDD72\uDD7B-\uDD82\uDD85-\uDD8B\uDDAA-\uDDAD\uDE42-\uDE44]|\uD83A[\uDCD0-\uDCD6]|\uDB40[\uDD00-\uDDEF]/;
 
 function validateLabel(label, processing_option) {
-    if (label.substr(0, 4) === "xn--") {
+  if (label.substr(0, 4) === "xn--") {
     label = punycode.toUnicode(label);
     processing_option = PROCESSING_OPTIONS.NONTRANSITIONAL;
-    }
+  }
 
-    var error = false;
+  var error = false;
 
-    if (normalize(label) !== label ||
-        (label[3] === "-" && label[4] === "-") ||
-        label[0] === "-" || label[label.length - 1] === "-" ||
-        label.indexOf(".") !== -1 ||
-        label.search(combiningMarksRegex) === 0) {
+  if (normalize(label) !== label ||
+      (label[3] === "-" && label[4] === "-") ||
+      label[0] === "-" || label[label.length - 1] === "-" ||
+      label.indexOf(".") !== -1 ||
+      label.search(combiningMarksRegex) === 0) {
     error = true;
-    }
+  }
 
-    var len = countSymbols(label);
-    for (var i = 0; i < len; ++i) {
+  var len = countSymbols(label);
+  for (var i = 0; i < len; ++i) {
     var status = findStatus(label.codePointAt(i));
     if ((processing === PROCESSING_OPTIONS.TRANSITIONAL && status[1] !== "valid") ||
         (processing === PROCESSING_OPTIONS.NONTRANSITIONAL &&
-            status[1] !== "valid" && status[1] !== "deviation")) {
-        error = true;
-        break;
+         status[1] !== "valid" && status[1] !== "deviation")) {
+      error = true;
+      break;
     }
-    }
+  }
 
-    return {
+  return {
     label: label,
     error: error
-    };
+  };
 }
 
 function processing(domain_name, useSTD3, processing_option) {
-    var result = mapChars(domain_name, useSTD3, processing_option);
-    result.string = normalize(result.string);
+  var result = mapChars(domain_name, useSTD3, processing_option);
+  result.string = normalize(result.string);
 
-    var labels = result.string.split(".");
-    for (var i = 0; i < labels.length; ++i) {
+  var labels = result.string.split(".");
+  for (var i = 0; i < labels.length; ++i) {
     try {
-        var validation = validateLabel(labels[i]);
-        labels[i] = validation.label;
-        result.error = result.error || validation.error;
+      var validation = validateLabel(labels[i]);
+      labels[i] = validation.label;
+      result.error = result.error || validation.error;
     } catch(e) {
-        result.error = true;
+      result.error = true;
     }
-    }
+  }
 
-    return {
+  return {
     string: labels.join("."),
     error: result.error
-    };
+  };
 }
 
 module.exports.toASCII = function(domain_name, useSTD3, processing_option, verifyDnsLength) {
-    var result = processing(domain_name, useSTD3, processing_option);
-    var labels = result.string.split(".");
-    labels = labels.map(function(l) {
+  var result = processing(domain_name, useSTD3, processing_option);
+  var labels = result.string.split(".");
+  labels = labels.map(function(l) {
     try {
-        return punycode.toASCII(l);
+      return punycode.toASCII(l);
     } catch(e) {
-        result.error = true;
-        return l;
+      result.error = true;
+      return l;
     }
-    });
+  });
 
-    if (verifyDnsLength) {
+  if (verifyDnsLength) {
     var total = labels.slice(0, labels.length - 1).join(".").length;
     if (total.length > 253 || total.length === 0) {
-        result.error = true;
+      result.error = true;
     }
 
     for (var i=0; i < labels.length; ++i) {
-        if (labels.length > 63 || labels.length === 0) {
+      if (labels.length > 63 || labels.length === 0) {
         result.error = true;
         break;
-        }
+      }
     }
-    }
+  }
 
-    if (result.error) return null;
-    return labels.join(".");
+  if (result.error) return null;
+  return labels.join(".");
 };
 
 module.exports.toUnicode = function(domain_name, useSTD3) {
-    var result = processing(domain_name, useSTD3, PROCESSING_OPTIONS.NONTRANSITIONAL);
+  var result = processing(domain_name, useSTD3, PROCESSING_OPTIONS.NONTRANSITIONAL);
 
-    return {
+  return {
     domain: result.string,
     error: result.error
-    };
+  };
 };
 
 module.exports.PROCESSING_OPTIONS = PROCESSING_OPTIONS;
@@ -13684,250 +13684,250 @@ exports.httpsOverHttps = httpsOverHttps;
 
 
 function httpOverHttp(options) {
-    var agent = new TunnelingAgent(options);
-    agent.request = http.request;
-    return agent;
+  var agent = new TunnelingAgent(options);
+  agent.request = http.request;
+  return agent;
 }
 
 function httpsOverHttp(options) {
-    var agent = new TunnelingAgent(options);
-    agent.request = http.request;
-    agent.createSocket = createSecureSocket;
-    agent.defaultPort = 443;
-    return agent;
+  var agent = new TunnelingAgent(options);
+  agent.request = http.request;
+  agent.createSocket = createSecureSocket;
+  agent.defaultPort = 443;
+  return agent;
 }
 
 function httpOverHttps(options) {
-    var agent = new TunnelingAgent(options);
-    agent.request = https.request;
-    return agent;
+  var agent = new TunnelingAgent(options);
+  agent.request = https.request;
+  return agent;
 }
 
 function httpsOverHttps(options) {
-    var agent = new TunnelingAgent(options);
-    agent.request = https.request;
-    agent.createSocket = createSecureSocket;
-    agent.defaultPort = 443;
-    return agent;
+  var agent = new TunnelingAgent(options);
+  agent.request = https.request;
+  agent.createSocket = createSecureSocket;
+  agent.defaultPort = 443;
+  return agent;
 }
 
 
 function TunnelingAgent(options) {
-    var self = this;
-    self.options = options || {};
-    self.proxyOptions = self.options.proxy || {};
-    self.maxSockets = self.options.maxSockets || http.Agent.defaultMaxSockets;
-    self.requests = [];
-    self.sockets = [];
+  var self = this;
+  self.options = options || {};
+  self.proxyOptions = self.options.proxy || {};
+  self.maxSockets = self.options.maxSockets || http.Agent.defaultMaxSockets;
+  self.requests = [];
+  self.sockets = [];
 
-    self.on('free', function onFree(socket, host, port, localAddress) {
+  self.on('free', function onFree(socket, host, port, localAddress) {
     var options = toOptions(host, port, localAddress);
     for (var i = 0, len = self.requests.length; i < len; ++i) {
-        var pending = self.requests[i];
-        if (pending.host === options.host && pending.port === options.port) {
+      var pending = self.requests[i];
+      if (pending.host === options.host && pending.port === options.port) {
         // Detect the request to connect same origin server,
         // reuse the connection.
         self.requests.splice(i, 1);
         pending.request.onSocket(socket);
         return;
-        }
+      }
     }
     socket.destroy();
     self.removeSocket(socket);
-    });
+  });
 }
 util.inherits(TunnelingAgent, events.EventEmitter);
 
 TunnelingAgent.prototype.addRequest = function addRequest(req, host, port, localAddress) {
-    var self = this;
-    var options = mergeOptions({request: req}, self.options, toOptions(host, port, localAddress));
+  var self = this;
+  var options = mergeOptions({request: req}, self.options, toOptions(host, port, localAddress));
 
-    if (self.sockets.length >= this.maxSockets) {
+  if (self.sockets.length >= this.maxSockets) {
     // We are over limit so we'll add it to the queue.
     self.requests.push(options);
     return;
-    }
+  }
 
-    // If we are under maxSockets create a new one.
-    self.createSocket(options, function(socket) {
+  // If we are under maxSockets create a new one.
+  self.createSocket(options, function(socket) {
     socket.on('free', onFree);
     socket.on('close', onCloseOrRemove);
     socket.on('agentRemove', onCloseOrRemove);
     req.onSocket(socket);
 
     function onFree() {
-        self.emit('free', socket, options);
+      self.emit('free', socket, options);
     }
 
     function onCloseOrRemove(err) {
-        self.removeSocket(socket);
-        socket.removeListener('free', onFree);
-        socket.removeListener('close', onCloseOrRemove);
-        socket.removeListener('agentRemove', onCloseOrRemove);
+      self.removeSocket(socket);
+      socket.removeListener('free', onFree);
+      socket.removeListener('close', onCloseOrRemove);
+      socket.removeListener('agentRemove', onCloseOrRemove);
     }
-    });
+  });
 };
 
 TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
-    var self = this;
-    var placeholder = {};
-    self.sockets.push(placeholder);
+  var self = this;
+  var placeholder = {};
+  self.sockets.push(placeholder);
 
-    var connectOptions = mergeOptions({}, self.proxyOptions, {
+  var connectOptions = mergeOptions({}, self.proxyOptions, {
     method: 'CONNECT',
     path: options.host + ':' + options.port,
     agent: false,
     headers: {
-        host: options.host + ':' + options.port
+      host: options.host + ':' + options.port
     }
-    });
-    if (options.localAddress) {
+  });
+  if (options.localAddress) {
     connectOptions.localAddress = options.localAddress;
-    }
-    if (connectOptions.proxyAuth) {
+  }
+  if (connectOptions.proxyAuth) {
     connectOptions.headers = connectOptions.headers || {};
     connectOptions.headers['Proxy-Authorization'] = 'Basic ' +
         new Buffer(connectOptions.proxyAuth).toString('base64');
-    }
+  }
 
-    debug('making CONNECT request');
-    var connectReq = self.request(connectOptions);
-    connectReq.useChunkedEncodingByDefault = false; // for v0.6
-    connectReq.once('response', onResponse); // for v0.6
-    connectReq.once('upgrade', onUpgrade);   // for v0.6
-    connectReq.once('connect', onConnect);   // for v0.7 or later
-    connectReq.once('error', onError);
-    connectReq.end();
+  debug('making CONNECT request');
+  var connectReq = self.request(connectOptions);
+  connectReq.useChunkedEncodingByDefault = false; // for v0.6
+  connectReq.once('response', onResponse); // for v0.6
+  connectReq.once('upgrade', onUpgrade);   // for v0.6
+  connectReq.once('connect', onConnect);   // for v0.7 or later
+  connectReq.once('error', onError);
+  connectReq.end();
 
-    function onResponse(res) {
+  function onResponse(res) {
     // Very hacky. This is necessary to avoid http-parser leaks.
     res.upgrade = true;
-    }
+  }
 
-    function onUpgrade(res, socket, head) {
+  function onUpgrade(res, socket, head) {
     // Hacky.
     process.nextTick(function() {
-        onConnect(res, socket, head);
+      onConnect(res, socket, head);
     });
-    }
+  }
 
-    function onConnect(res, socket, head) {
+  function onConnect(res, socket, head) {
     connectReq.removeAllListeners();
     socket.removeAllListeners();
 
     if (res.statusCode !== 200) {
-        debug('tunneling socket could not be established, statusCode=%d',
+      debug('tunneling socket could not be established, statusCode=%d',
         res.statusCode);
-        socket.destroy();
-        var error = new Error('tunneling socket could not be established, ' +
+      socket.destroy();
+      var error = new Error('tunneling socket could not be established, ' +
         'statusCode=' + res.statusCode);
-        error.code = 'ECONNRESET';
-        options.request.emit('error', error);
-        self.removeSocket(placeholder);
-        return;
+      error.code = 'ECONNRESET';
+      options.request.emit('error', error);
+      self.removeSocket(placeholder);
+      return;
     }
     if (head.length > 0) {
-        debug('got illegal response body from proxy');
-        socket.destroy();
-        var error = new Error('got illegal response body from proxy');
-        error.code = 'ECONNRESET';
-        options.request.emit('error', error);
-        self.removeSocket(placeholder);
-        return;
+      debug('got illegal response body from proxy');
+      socket.destroy();
+      var error = new Error('got illegal response body from proxy');
+      error.code = 'ECONNRESET';
+      options.request.emit('error', error);
+      self.removeSocket(placeholder);
+      return;
     }
     debug('tunneling connection has established');
     self.sockets[self.sockets.indexOf(placeholder)] = socket;
     return cb(socket);
-    }
+  }
 
-    function onError(cause) {
+  function onError(cause) {
     connectReq.removeAllListeners();
 
     debug('tunneling socket could not be established, cause=%s\n',
-            cause.message, cause.stack);
+          cause.message, cause.stack);
     var error = new Error('tunneling socket could not be established, ' +
-                            'cause=' + cause.message);
+                          'cause=' + cause.message);
     error.code = 'ECONNRESET';
     options.request.emit('error', error);
     self.removeSocket(placeholder);
-    }
+  }
 };
 
 TunnelingAgent.prototype.removeSocket = function removeSocket(socket) {
-    var pos = this.sockets.indexOf(socket)
-    if (pos === -1) {
+  var pos = this.sockets.indexOf(socket)
+  if (pos === -1) {
     return;
-    }
-    this.sockets.splice(pos, 1);
+  }
+  this.sockets.splice(pos, 1);
 
-    var pending = this.requests.shift();
-    if (pending) {
+  var pending = this.requests.shift();
+  if (pending) {
     // If we have pending requests and a socket gets closed a new one
     // needs to be created to take over in the pool for the one that closed.
     this.createSocket(pending, function(socket) {
-        pending.request.onSocket(socket);
+      pending.request.onSocket(socket);
     });
-    }
+  }
 };
 
 function createSecureSocket(options, cb) {
-    var self = this;
-    TunnelingAgent.prototype.createSocket.call(self, options, function(socket) {
+  var self = this;
+  TunnelingAgent.prototype.createSocket.call(self, options, function(socket) {
     var hostHeader = options.request.getHeader('host');
     var tlsOptions = mergeOptions({}, self.options, {
-        socket: socket,
-        servername: hostHeader ? hostHeader.replace(/:.*$/, '') : options.host
+      socket: socket,
+      servername: hostHeader ? hostHeader.replace(/:.*$/, '') : options.host
     });
 
     // 0 is dummy port for v0.6
     var secureSocket = tls.connect(0, tlsOptions);
     self.sockets[self.sockets.indexOf(socket)] = secureSocket;
     cb(secureSocket);
-    });
+  });
 }
 
 
 function toOptions(host, port, localAddress) {
-    if (typeof host === 'string') { // since v0.10
+  if (typeof host === 'string') { // since v0.10
     return {
-        host: host,
-        port: port,
-        localAddress: localAddress
+      host: host,
+      port: port,
+      localAddress: localAddress
     };
-    }
-    return host; // for v0.11 or later
+  }
+  return host; // for v0.11 or later
 }
 
 function mergeOptions(target) {
-    for (var i = 1, len = arguments.length; i < len; ++i) {
+  for (var i = 1, len = arguments.length; i < len; ++i) {
     var overrides = arguments[i];
     if (typeof overrides === 'object') {
-        var keys = Object.keys(overrides);
-        for (var j = 0, keyLen = keys.length; j < keyLen; ++j) {
+      var keys = Object.keys(overrides);
+      for (var j = 0, keyLen = keys.length; j < keyLen; ++j) {
         var k = keys[j];
         if (overrides[k] !== undefined) {
-            target[k] = overrides[k];
+          target[k] = overrides[k];
         }
-        }
+      }
     }
-    }
-    return target;
+  }
+  return target;
 }
 
 
 var debug;
 if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
-    debug = function() {
+  debug = function() {
     var args = Array.prototype.slice.call(arguments);
     if (typeof args[0] === 'string') {
-        args[0] = 'TUNNEL: ' + args[0];
+      args[0] = 'TUNNEL: ' + args[0];
     } else {
-        args.unshift('TUNNEL:');
+      args.unshift('TUNNEL:');
     }
     console.error.apply(console, args);
-    }
+  }
 } else {
-    debug = function() {};
+  debug = function() {};
 }
 exports.debug = debug; // for test
 
@@ -13943,15 +13943,15 @@ exports.debug = debug; // for test
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 function getUserAgent() {
-    if (typeof navigator === "object" && "userAgent" in navigator) {
+  if (typeof navigator === "object" && "userAgent" in navigator) {
     return navigator.userAgent;
-    }
+  }
 
-    if (typeof process === "object" && "version" in process) {
+  if (typeof process === "object" && "version" in process) {
     return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
-    }
+  }
 
-    return "<environment undetectable>";
+  return "<environment undetectable>";
 }
 
 exports.getUserAgent = getUserAgent;
@@ -13965,8 +13965,8 @@ exports.getUserAgent = getUserAgent;
 
 /** @license URI.js v4.4.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
 (function (global, factory) {
-        true ? factory(exports) :
-    0;
+	 true ? factory(exports) :
+	0;
 }(this, (function (exports) { 'use strict';
 
 function merge() {
@@ -14114,41 +14114,41 @@ var URI_PROTOCOL = buildExps(false);
 var IRI_PROTOCOL = buildExps(true);
 
 var slicedToArray = function () {
-    function sliceIterator(arr, i) {
+  function sliceIterator(arr, i) {
     var _arr = [];
     var _n = true;
     var _d = false;
     var _e = undefined;
 
     try {
-        for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
         _arr.push(_s.value);
 
         if (i && _arr.length === i) break;
-        }
+      }
     } catch (err) {
-        _d = true;
-        _e = err;
+      _d = true;
+      _e = err;
     } finally {
-        try {
+      try {
         if (!_n && _i["return"]) _i["return"]();
-        } finally {
+      } finally {
         if (_d) throw _e;
-        }
+      }
     }
 
     return _arr;
-    }
+  }
 
-    return function (arr, i) {
+  return function (arr, i) {
     if (Array.isArray(arr)) {
-        return arr;
+      return arr;
     } else if (Symbol.iterator in Object(arr)) {
-        return sliceIterator(arr, i);
+      return sliceIterator(arr, i);
     } else {
-        throw new TypeError("Invalid attempt to destructure non-iterable instance");
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
     }
-    };
+  };
 }();
 
 
@@ -14164,13 +14164,13 @@ var slicedToArray = function () {
 
 
 var toConsumableArray = function (arr) {
-    if (Array.isArray(arr)) {
+  if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
 
     return arr2;
-    } else {
+  } else {
     return Array.from(arr);
-    }
+  }
 };
 
 /** Highest positive signed 32-bit float value */
@@ -14194,9 +14194,9 @@ var regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g; // RFC 3490 separators
 
 /** Error messages */
 var errors = {
-    'overflow': 'Overflow: input needs wider integers to process',
-    'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-    'invalid-input': 'Invalid input'
+	'overflow': 'Overflow: input needs wider integers to process',
+	'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+	'invalid-input': 'Invalid input'
 };
 
 /** Convenience shortcuts */
@@ -14213,7 +14213,7 @@ var stringFromCharCode = String.fromCharCode;
  * @returns {Error} Throws a `RangeError` with the applicable error message.
  */
 function error$1(type) {
-    throw new RangeError(errors[type]);
+	throw new RangeError(errors[type]);
 }
 
 /**
@@ -14225,12 +14225,12 @@ function error$1(type) {
  * @returns {Array} A new array of values returned by the callback function.
  */
 function map(array, fn) {
-    var result = [];
-    var length = array.length;
-    while (length--) {
-        result[length] = fn(array[length]);
-    }
-    return result;
+	var result = [];
+	var length = array.length;
+	while (length--) {
+		result[length] = fn(array[length]);
+	}
+	return result;
 }
 
 /**
@@ -14244,19 +14244,19 @@ function map(array, fn) {
  * function.
  */
 function mapDomain(string, fn) {
-    var parts = string.split('@');
-    var result = '';
-    if (parts.length > 1) {
-        // In email addresses, only the domain name should be punycoded. Leave
-        // the local part (i.e. everything up to `@`) intact.
-        result = parts[0] + '@';
-        string = parts[1];
-    }
-    // Avoid `split(regex)` for IE8 compatibility. See #17.
-    string = string.replace(regexSeparators, '\x2E');
-    var labels = string.split('.');
-    var encoded = map(labels, fn).join('.');
-    return result + encoded;
+	var parts = string.split('@');
+	var result = '';
+	if (parts.length > 1) {
+		// In email addresses, only the domain name should be punycoded. Leave
+		// the local part (i.e. everything up to `@`) intact.
+		result = parts[0] + '@';
+		string = parts[1];
+	}
+	// Avoid `split(regex)` for IE8 compatibility. See #17.
+	string = string.replace(regexSeparators, '\x2E');
+	var labels = string.split('.');
+	var encoded = map(labels, fn).join('.');
+	return result + encoded;
 }
 
 /**
@@ -14273,28 +14273,28 @@ function mapDomain(string, fn) {
  * @returns {Array} The new array of code points.
  */
 function ucs2decode(string) {
-    var output = [];
-    var counter = 0;
-    var length = string.length;
-    while (counter < length) {
-        var value = string.charCodeAt(counter++);
-        if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-            // It's a high surrogate, and there is a next character.
-            var extra = string.charCodeAt(counter++);
-            if ((extra & 0xFC00) == 0xDC00) {
-                // Low surrogate.
-                output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-            } else {
-                // It's an unmatched surrogate; only append this code unit, in case the
-                // next code unit is the high surrogate of a surrogate pair.
-                output.push(value);
-                counter--;
-            }
-        } else {
-            output.push(value);
-        }
-    }
-    return output;
+	var output = [];
+	var counter = 0;
+	var length = string.length;
+	while (counter < length) {
+		var value = string.charCodeAt(counter++);
+		if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+			// It's a high surrogate, and there is a next character.
+			var extra = string.charCodeAt(counter++);
+			if ((extra & 0xFC00) == 0xDC00) {
+				// Low surrogate.
+				output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+			} else {
+				// It's an unmatched surrogate; only append this code unit, in case the
+				// next code unit is the high surrogate of a surrogate pair.
+				output.push(value);
+				counter--;
+			}
+		} else {
+			output.push(value);
+		}
+	}
+	return output;
 }
 
 /**
@@ -14306,7 +14306,7 @@ function ucs2decode(string) {
  * @returns {String} The new Unicode string (UCS-2).
  */
 var ucs2encode = function ucs2encode(array) {
-    return String.fromCodePoint.apply(String, toConsumableArray(array));
+	return String.fromCodePoint.apply(String, toConsumableArray(array));
 };
 
 /**
@@ -14319,16 +14319,16 @@ var ucs2encode = function ucs2encode(array) {
  * the code point does not represent a value.
  */
 var basicToDigit = function basicToDigit(codePoint) {
-    if (codePoint - 0x30 < 0x0A) {
-        return codePoint - 0x16;
-    }
-    if (codePoint - 0x41 < 0x1A) {
-        return codePoint - 0x41;
-    }
-    if (codePoint - 0x61 < 0x1A) {
-        return codePoint - 0x61;
-    }
-    return base;
+	if (codePoint - 0x30 < 0x0A) {
+		return codePoint - 0x16;
+	}
+	if (codePoint - 0x41 < 0x1A) {
+		return codePoint - 0x41;
+	}
+	if (codePoint - 0x61 < 0x1A) {
+		return codePoint - 0x61;
+	}
+	return base;
 };
 
 /**
@@ -14343,9 +14343,9 @@ var basicToDigit = function basicToDigit(codePoint) {
  * if `flag` is non-zero and `digit` has no uppercase form.
  */
 var digitToBasic = function digitToBasic(digit, flag) {
-    //  0..25 map to ASCII a..z or A..Z
-    // 26..35 map to ASCII 0..9
-    return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
+	//  0..25 map to ASCII a..z or A..Z
+	// 26..35 map to ASCII 0..9
+	return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
 };
 
 /**
@@ -14354,13 +14354,13 @@ var digitToBasic = function digitToBasic(digit, flag) {
  * @private
  */
 var adapt = function adapt(delta, numPoints, firstTime) {
-    var k = 0;
-    delta = firstTime ? floor(delta / damp) : delta >> 1;
-    delta += floor(delta / numPoints);
-    for (; /* no initialization */delta > baseMinusTMin * tMax >> 1; k += base) {
-        delta = floor(delta / baseMinusTMin);
-    }
-    return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+	var k = 0;
+	delta = firstTime ? floor(delta / damp) : delta >> 1;
+	delta += floor(delta / numPoints);
+	for (; /* no initialization */delta > baseMinusTMin * tMax >> 1; k += base) {
+		delta = floor(delta / baseMinusTMin);
+	}
+	return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
 };
 
 /**
@@ -14371,85 +14371,85 @@ var adapt = function adapt(delta, numPoints, firstTime) {
  * @returns {String} The resulting string of Unicode symbols.
  */
 var decode = function decode(input) {
-    // Don't use UCS-2.
-    var output = [];
-    var inputLength = input.length;
-    var i = 0;
-    var n = initialN;
-    var bias = initialBias;
+	// Don't use UCS-2.
+	var output = [];
+	var inputLength = input.length;
+	var i = 0;
+	var n = initialN;
+	var bias = initialBias;
 
-    // Handle the basic code points: let `basic` be the number of input code
-    // points before the last delimiter, or `0` if there is none, then copy
-    // the first basic code points to the output.
+	// Handle the basic code points: let `basic` be the number of input code
+	// points before the last delimiter, or `0` if there is none, then copy
+	// the first basic code points to the output.
 
-    var basic = input.lastIndexOf(delimiter);
-    if (basic < 0) {
-        basic = 0;
-    }
+	var basic = input.lastIndexOf(delimiter);
+	if (basic < 0) {
+		basic = 0;
+	}
 
-    for (var j = 0; j < basic; ++j) {
-        // if it's not a basic code point
-        if (input.charCodeAt(j) >= 0x80) {
-            error$1('not-basic');
-        }
-        output.push(input.charCodeAt(j));
-    }
+	for (var j = 0; j < basic; ++j) {
+		// if it's not a basic code point
+		if (input.charCodeAt(j) >= 0x80) {
+			error$1('not-basic');
+		}
+		output.push(input.charCodeAt(j));
+	}
 
-    // Main decoding loop: start just after the last delimiter if any basic code
-    // points were copied; start at the beginning otherwise.
+	// Main decoding loop: start just after the last delimiter if any basic code
+	// points were copied; start at the beginning otherwise.
 
-    for (var index = basic > 0 ? basic + 1 : 0; index < inputLength;) /* no final expression */{
+	for (var index = basic > 0 ? basic + 1 : 0; index < inputLength;) /* no final expression */{
 
-        // `index` is the index of the next character to be consumed.
-        // Decode a generalized variable-length integer into `delta`,
-        // which gets added to `i`. The overflow checking is easier
-        // if we increase `i` as we go, then subtract off its starting
-        // value at the end to obtain `delta`.
-        var oldi = i;
-        for (var w = 1, k = base;; /* no condition */k += base) {
+		// `index` is the index of the next character to be consumed.
+		// Decode a generalized variable-length integer into `delta`,
+		// which gets added to `i`. The overflow checking is easier
+		// if we increase `i` as we go, then subtract off its starting
+		// value at the end to obtain `delta`.
+		var oldi = i;
+		for (var w = 1, k = base;; /* no condition */k += base) {
 
-            if (index >= inputLength) {
-                error$1('invalid-input');
-            }
+			if (index >= inputLength) {
+				error$1('invalid-input');
+			}
 
-            var digit = basicToDigit(input.charCodeAt(index++));
+			var digit = basicToDigit(input.charCodeAt(index++));
 
-            if (digit >= base || digit > floor((maxInt - i) / w)) {
-                error$1('overflow');
-            }
+			if (digit >= base || digit > floor((maxInt - i) / w)) {
+				error$1('overflow');
+			}
 
-            i += digit * w;
-            var t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+			i += digit * w;
+			var t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
 
-            if (digit < t) {
-                break;
-            }
+			if (digit < t) {
+				break;
+			}
 
-            var baseMinusT = base - t;
-            if (w > floor(maxInt / baseMinusT)) {
-                error$1('overflow');
-            }
+			var baseMinusT = base - t;
+			if (w > floor(maxInt / baseMinusT)) {
+				error$1('overflow');
+			}
 
-            w *= baseMinusT;
-        }
+			w *= baseMinusT;
+		}
 
-        var out = output.length + 1;
-        bias = adapt(i - oldi, out, oldi == 0);
+		var out = output.length + 1;
+		bias = adapt(i - oldi, out, oldi == 0);
 
-        // `i` was supposed to wrap around from `out` to `0`,
-        // incrementing `n` each time, so we'll fix that now:
-        if (floor(i / out) > maxInt - n) {
-            error$1('overflow');
-        }
+		// `i` was supposed to wrap around from `out` to `0`,
+		// incrementing `n` each time, so we'll fix that now:
+		if (floor(i / out) > maxInt - n) {
+			error$1('overflow');
+		}
 
-        n += floor(i / out);
-        i %= out;
+		n += floor(i / out);
+		i %= out;
 
-        // Insert `n` at position `i` of the output.
-        output.splice(i++, 0, n);
-    }
+		// Insert `n` at position `i` of the output.
+		output.splice(i++, 0, n);
+	}
 
-    return String.fromCodePoint.apply(String, output);
+	return String.fromCodePoint.apply(String, output);
 };
 
 /**
@@ -14460,152 +14460,152 @@ var decode = function decode(input) {
  * @returns {String} The resulting Punycode string of ASCII-only symbols.
  */
 var encode = function encode(input) {
-    var output = [];
+	var output = [];
 
-    // Convert the input in UCS-2 to an array of Unicode code points.
-    input = ucs2decode(input);
+	// Convert the input in UCS-2 to an array of Unicode code points.
+	input = ucs2decode(input);
 
-    // Cache the length.
-    var inputLength = input.length;
+	// Cache the length.
+	var inputLength = input.length;
 
-    // Initialize the state.
-    var n = initialN;
-    var delta = 0;
-    var bias = initialBias;
+	// Initialize the state.
+	var n = initialN;
+	var delta = 0;
+	var bias = initialBias;
 
-    // Handle the basic code points.
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
+	// Handle the basic code points.
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
 
-    try {
-        for (var _iterator = input[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var _currentValue2 = _step.value;
+	try {
+		for (var _iterator = input[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var _currentValue2 = _step.value;
 
-            if (_currentValue2 < 0x80) {
-                output.push(stringFromCharCode(_currentValue2));
-            }
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
+			if (_currentValue2 < 0x80) {
+				output.push(stringFromCharCode(_currentValue2));
+			}
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
 
-    var basicLength = output.length;
-    var handledCPCount = basicLength;
+	var basicLength = output.length;
+	var handledCPCount = basicLength;
 
-    // `handledCPCount` is the number of code points that have been handled;
-    // `basicLength` is the number of basic code points.
+	// `handledCPCount` is the number of code points that have been handled;
+	// `basicLength` is the number of basic code points.
 
-    // Finish the basic string with a delimiter unless it's empty.
-    if (basicLength) {
-        output.push(delimiter);
-    }
+	// Finish the basic string with a delimiter unless it's empty.
+	if (basicLength) {
+		output.push(delimiter);
+	}
 
-    // Main encoding loop:
-    while (handledCPCount < inputLength) {
+	// Main encoding loop:
+	while (handledCPCount < inputLength) {
 
-        // All non-basic code points < n have been handled already. Find the next
-        // larger one:
-        var m = maxInt;
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
+		// All non-basic code points < n have been handled already. Find the next
+		// larger one:
+		var m = maxInt;
+		var _iteratorNormalCompletion2 = true;
+		var _didIteratorError2 = false;
+		var _iteratorError2 = undefined;
 
-        try {
-            for (var _iterator2 = input[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                var currentValue = _step2.value;
+		try {
+			for (var _iterator2 = input[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				var currentValue = _step2.value;
 
-                if (currentValue >= n && currentValue < m) {
-                    m = currentValue;
-                }
-            }
+				if (currentValue >= n && currentValue < m) {
+					m = currentValue;
+				}
+			}
 
-            // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
-            // but guard against overflow.
-        } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                    _iterator2.return();
-                }
-            } finally {
-                if (_didIteratorError2) {
-                    throw _iteratorError2;
-                }
-            }
-        }
+			// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+			// but guard against overflow.
+		} catch (err) {
+			_didIteratorError2 = true;
+			_iteratorError2 = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion2 && _iterator2.return) {
+					_iterator2.return();
+				}
+			} finally {
+				if (_didIteratorError2) {
+					throw _iteratorError2;
+				}
+			}
+		}
 
-        var handledCPCountPlusOne = handledCPCount + 1;
-        if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-            error$1('overflow');
-        }
+		var handledCPCountPlusOne = handledCPCount + 1;
+		if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+			error$1('overflow');
+		}
 
-        delta += (m - n) * handledCPCountPlusOne;
-        n = m;
+		delta += (m - n) * handledCPCountPlusOne;
+		n = m;
 
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
+		var _iteratorNormalCompletion3 = true;
+		var _didIteratorError3 = false;
+		var _iteratorError3 = undefined;
 
-        try {
-            for (var _iterator3 = input[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                var _currentValue = _step3.value;
+		try {
+			for (var _iterator3 = input[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+				var _currentValue = _step3.value;
 
-                if (_currentValue < n && ++delta > maxInt) {
-                    error$1('overflow');
-                }
-                if (_currentValue == n) {
-                    // Represent delta as a generalized variable-length integer.
-                    var q = delta;
-                    for (var k = base;; /* no condition */k += base) {
-                        var t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
-                        if (q < t) {
-                            break;
-                        }
-                        var qMinusT = q - t;
-                        var baseMinusT = base - t;
-                        output.push(stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0)));
-                        q = floor(qMinusT / baseMinusT);
-                    }
+				if (_currentValue < n && ++delta > maxInt) {
+					error$1('overflow');
+				}
+				if (_currentValue == n) {
+					// Represent delta as a generalized variable-length integer.
+					var q = delta;
+					for (var k = base;; /* no condition */k += base) {
+						var t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+						if (q < t) {
+							break;
+						}
+						var qMinusT = q - t;
+						var baseMinusT = base - t;
+						output.push(stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0)));
+						q = floor(qMinusT / baseMinusT);
+					}
 
-                    output.push(stringFromCharCode(digitToBasic(q, 0)));
-                    bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
-                    delta = 0;
-                    ++handledCPCount;
-                }
-            }
-        } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                    _iterator3.return();
-                }
-            } finally {
-                if (_didIteratorError3) {
-                    throw _iteratorError3;
-                }
-            }
-        }
+					output.push(stringFromCharCode(digitToBasic(q, 0)));
+					bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+					delta = 0;
+					++handledCPCount;
+				}
+			}
+		} catch (err) {
+			_didIteratorError3 = true;
+			_iteratorError3 = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion3 && _iterator3.return) {
+					_iterator3.return();
+				}
+			} finally {
+				if (_didIteratorError3) {
+					throw _iteratorError3;
+				}
+			}
+		}
 
-        ++delta;
-        ++n;
-    }
-    return output.join('');
+		++delta;
+		++n;
+	}
+	return output.join('');
 };
 
 /**
@@ -14620,9 +14620,9 @@ var encode = function encode(input) {
  * string.
  */
 var toUnicode = function toUnicode(input) {
-    return mapDomain(input, function (string) {
-        return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
-    });
+	return mapDomain(input, function (string) {
+		return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
+	});
 };
 
 /**
@@ -14637,36 +14637,36 @@ var toUnicode = function toUnicode(input) {
  * email address.
  */
 var toASCII = function toASCII(input) {
-    return mapDomain(input, function (string) {
-        return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
-    });
+	return mapDomain(input, function (string) {
+		return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
+	});
 };
 
 /*--------------------------------------------------------------------------*/
 
 /** Define the public API */
 var punycode = {
-    /**
-     * A string representing the current Punycode.js version number.
-     * @memberOf punycode
-     * @type String
-     */
-    'version': '2.1.0',
-    /**
-     * An object of methods to convert from JavaScript's internal character
-     * representation (UCS-2) to Unicode code points, and back.
-     * @see <https://mathiasbynens.be/notes/javascript-encoding>
-     * @memberOf punycode
-     * @type Object
-     */
-    'ucs2': {
-        'decode': ucs2decode,
-        'encode': ucs2encode
-    },
-    'decode': decode,
-    'encode': encode,
-    'toASCII': toASCII,
-    'toUnicode': toUnicode
+	/**
+  * A string representing the current Punycode.js version number.
+  * @memberOf punycode
+  * @type String
+  */
+	'version': '2.1.0',
+	/**
+  * An object of methods to convert from JavaScript's internal character
+  * representation (UCS-2) to Unicode code points, and back.
+  * @see <https://mathiasbynens.be/notes/javascript-encoding>
+  * @memberOf punycode
+  * @type Object
+  */
+	'ucs2': {
+		'decode': ucs2decode,
+		'encode': ucs2encode
+	},
+	'decode': decode,
+	'encode': encode,
+	'toASCII': toASCII,
+	'toUnicode': toUnicode
 };
 
 /**
@@ -15416,61 +15416,61 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 Object.defineProperty(exports, "v1", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _v.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "v3", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _v2.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "v4", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _v3.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "v5", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _v4.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "NIL", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _nil.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "version", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _version.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "validate", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _validate.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "stringify", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _stringify.default;
-    }
+  }
 }));
 Object.defineProperty(exports, "parse", ({
-    enumerable: true,
-    get: function () {
+  enumerable: true,
+  get: function () {
     return _parse.default;
-    }
+  }
 }));
 
 var _v = _interopRequireDefault(__nccwpck_require__(8628));
@@ -15502,7 +15502,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -15511,13 +15511,13 @@ var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function md5(bytes) {
-    if (Array.isArray(bytes)) {
+  if (Array.isArray(bytes)) {
     bytes = Buffer.from(bytes);
-    } else if (typeof bytes === 'string') {
+  } else if (typeof bytes === 'string') {
     bytes = Buffer.from(bytes, 'utf8');
-    }
+  }
 
-    return _crypto.default.createHash('md5').update(bytes).digest();
+  return _crypto.default.createHash('md5').update(bytes).digest();
 }
 
 var _default = md5;
@@ -15532,7 +15532,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 var _default = '00000000-0000-0000-0000-000000000000';
@@ -15547,7 +15547,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -15556,35 +15556,35 @@ var _validate = _interopRequireDefault(__nccwpck_require__(6900));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function parse(uuid) {
-    if (!(0, _validate.default)(uuid)) {
+  if (!(0, _validate.default)(uuid)) {
     throw TypeError('Invalid UUID');
-    }
+  }
 
-    let v;
-    const arr = new Uint8Array(16); // Parse ########-....-....-....-............
+  let v;
+  const arr = new Uint8Array(16); // Parse ########-....-....-....-............
 
-    arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
-    arr[1] = v >>> 16 & 0xff;
-    arr[2] = v >>> 8 & 0xff;
-    arr[3] = v & 0xff; // Parse ........-####-....-....-............
+  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
+  arr[1] = v >>> 16 & 0xff;
+  arr[2] = v >>> 8 & 0xff;
+  arr[3] = v & 0xff; // Parse ........-####-....-....-............
 
-    arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
-    arr[5] = v & 0xff; // Parse ........-....-####-....-............
+  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
+  arr[5] = v & 0xff; // Parse ........-....-####-....-............
 
-    arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
-    arr[7] = v & 0xff; // Parse ........-....-....-####-............
+  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
+  arr[7] = v & 0xff; // Parse ........-....-....-####-............
 
-    arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
-    arr[9] = v & 0xff; // Parse ........-....-....-....-############
-    // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
+  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
+  arr[9] = v & 0xff; // Parse ........-....-....-....-############
+  // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
 
-    arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
-    arr[11] = v / 0x100000000 & 0xff;
-    arr[12] = v >>> 24 & 0xff;
-    arr[13] = v >>> 16 & 0xff;
-    arr[14] = v >>> 8 & 0xff;
-    arr[15] = v & 0xff;
-    return arr;
+  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
+  arr[11] = v / 0x100000000 & 0xff;
+  arr[12] = v >>> 24 & 0xff;
+  arr[13] = v >>> 16 & 0xff;
+  arr[14] = v >>> 8 & 0xff;
+  arr[15] = v & 0xff;
+  return arr;
 }
 
 var _default = parse;
@@ -15599,7 +15599,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
@@ -15614,7 +15614,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = rng;
 
@@ -15627,13 +15627,13 @@ const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
 let poolPtr = rnds8Pool.length;
 
 function rng() {
-    if (poolPtr > rnds8Pool.length - 16) {
+  if (poolPtr > rnds8Pool.length - 16) {
     _crypto.default.randomFillSync(rnds8Pool);
 
     poolPtr = 0;
-    }
+  }
 
-    return rnds8Pool.slice(poolPtr, poolPtr += 16);
+  return rnds8Pool.slice(poolPtr, poolPtr += 16);
 }
 
 /***/ }),
@@ -15645,7 +15645,7 @@ function rng() {
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -15654,13 +15654,13 @@ var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function sha1(bytes) {
-    if (Array.isArray(bytes)) {
+  if (Array.isArray(bytes)) {
     bytes = Buffer.from(bytes);
-    } else if (typeof bytes === 'string') {
+  } else if (typeof bytes === 'string') {
     bytes = Buffer.from(bytes, 'utf8');
-    }
+  }
 
-    return _crypto.default.createHash('sha1').update(bytes).digest();
+  return _crypto.default.createHash('sha1').update(bytes).digest();
 }
 
 var _default = sha1;
@@ -15675,7 +15675,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -15690,23 +15690,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const byteToHex = [];
 
 for (let i = 0; i < 256; ++i) {
-    byteToHex.push((i + 0x100).toString(16).substr(1));
+  byteToHex.push((i + 0x100).toString(16).substr(1));
 }
 
 function stringify(arr, offset = 0) {
-    // Note: Be careful editing this code!  It's been tuned for performance
-    // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-    const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
-    // of the following:
-    // - One or more input array values don't map to a hex octet (leading to
-    // "undefined" in the uuid)
-    // - Invalid input values for the RFC `version` or `variant` fields
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
 
-    if (!(0, _validate.default)(uuid)) {
+  if (!(0, _validate.default)(uuid)) {
     throw TypeError('Stringified UUID is invalid');
-    }
+  }
 
-    return uuid;
+  return uuid;
 }
 
 var _default = stringify;
@@ -15721,7 +15721,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -15744,83 +15744,83 @@ let _lastMSecs = 0;
 let _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
 
 function v1(options, buf, offset) {
-    let i = buf && offset || 0;
-    const b = buf || new Array(16);
-    options = options || {};
-    let node = options.node || _nodeId;
-    let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
-    // specified.  We do this lazily to minimize issues related to insufficient
-    // system entropy.  See #189
+  let i = buf && offset || 0;
+  const b = buf || new Array(16);
+  options = options || {};
+  let node = options.node || _nodeId;
+  let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
 
-    if (node == null || clockseq == null) {
+  if (node == null || clockseq == null) {
     const seedBytes = options.random || (options.rng || _rng.default)();
 
     if (node == null) {
-        // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
-        node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
     }
 
     if (clockseq == null) {
-        // Per 4.2.2, randomize (14 bit) clockseq
-        clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
     }
-    } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
-    // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
-    // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
-    // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
 
 
-    let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
-    // cycle to simulate higher resolution clock
+  let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
 
-    let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
+  let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
 
-    const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
+  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
 
-    if (dt < 0 && options.clockseq === undefined) {
+  if (dt < 0 && options.clockseq === undefined) {
     clockseq = clockseq + 1 & 0x3fff;
-    } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
-    // time interval
+  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
 
 
-    if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
     nsecs = 0;
-    } // Per 4.2.1.2 Throw error if too many uuids are requested
+  } // Per 4.2.1.2 Throw error if too many uuids are requested
 
 
-    if (nsecs >= 10000) {
+  if (nsecs >= 10000) {
     throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
-    }
+  }
 
-    _lastMSecs = msecs;
-    _lastNSecs = nsecs;
-    _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
 
-    msecs += 12219292800000; // `time_low`
+  msecs += 12219292800000; // `time_low`
 
-    const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
-    b[i++] = tl >>> 24 & 0xff;
-    b[i++] = tl >>> 16 & 0xff;
-    b[i++] = tl >>> 8 & 0xff;
-    b[i++] = tl & 0xff; // `time_mid`
+  const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff; // `time_mid`
 
-    const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
-    b[i++] = tmh >>> 8 & 0xff;
-    b[i++] = tmh & 0xff; // `time_high_and_version`
+  const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff; // `time_high_and_version`
 
-    b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
 
-    b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
 
-    b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
+  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
 
-    b[i++] = clockseq & 0xff; // `node`
+  b[i++] = clockseq & 0xff; // `node`
 
-    for (let n = 0; n < 6; ++n) {
+  for (let n = 0; n < 6; ++n) {
     b[i + n] = node[n];
-    }
+  }
 
-    return buf || (0, _stringify.default)(b);
+  return buf || (0, _stringify.default)(b);
 }
 
 var _default = v1;
@@ -15835,7 +15835,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -15858,7 +15858,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = _default;
 exports.URL = exports.DNS = void 0;
@@ -15870,15 +15870,15 @@ var _parse = _interopRequireDefault(__nccwpck_require__(2746));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function stringToBytes(str) {
-    str = unescape(encodeURIComponent(str)); // UTF8 escape
+  str = unescape(encodeURIComponent(str)); // UTF8 escape
 
-    const bytes = [];
+  const bytes = [];
 
-    for (let i = 0; i < str.length; ++i) {
+  for (let i = 0; i < str.length; ++i) {
     bytes.push(str.charCodeAt(i));
-    }
+  }
 
-    return bytes;
+  return bytes;
 }
 
 const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
@@ -15887,17 +15887,17 @@ const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
 exports.URL = URL;
 
 function _default(name, version, hashfunc) {
-    function generateUUID(value, namespace, buf, offset) {
+  function generateUUID(value, namespace, buf, offset) {
     if (typeof value === 'string') {
-        value = stringToBytes(value);
+      value = stringToBytes(value);
     }
 
     if (typeof namespace === 'string') {
-        namespace = (0, _parse.default)(namespace);
+      namespace = (0, _parse.default)(namespace);
     }
 
     if (namespace.length !== 16) {
-        throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
+      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
     } // Compute hash of namespace and value, Per 4.3
     // Future: Use spread syntax when supported on all platforms, e.g. `bytes =
     // hashfunc([...namespace, ... value])`
@@ -15911,27 +15911,27 @@ function _default(name, version, hashfunc) {
     bytes[8] = bytes[8] & 0x3f | 0x80;
 
     if (buf) {
-        offset = offset || 0;
+      offset = offset || 0;
 
-        for (let i = 0; i < 16; ++i) {
+      for (let i = 0; i < 16; ++i) {
         buf[offset + i] = bytes[i];
-        }
+      }
 
-        return buf;
+      return buf;
     }
 
     return (0, _stringify.default)(bytes);
-    } // Function#name is not settable on some platforms (#270)
+  } // Function#name is not settable on some platforms (#270)
 
 
-    try {
+  try {
     generateUUID.name = name; // eslint-disable-next-line no-empty
-    } catch (err) {} // For CommonJS default export support
+  } catch (err) {} // For CommonJS default export support
 
 
-    generateUUID.DNS = DNS;
-    generateUUID.URL = URL;
-    return generateUUID;
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL;
+  return generateUUID;
 }
 
 /***/ }),
@@ -15943,7 +15943,7 @@ function _default(name, version, hashfunc) {
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -15954,25 +15954,25 @@ var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function v4(options, buf, offset) {
-    options = options || {};
+  options = options || {};
 
-    const rnds = options.random || (options.rng || _rng.default)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  const rnds = options.random || (options.rng || _rng.default)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
 
 
-    rnds[6] = rnds[6] & 0x0f | 0x40;
-    rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
 
-    if (buf) {
+  if (buf) {
     offset = offset || 0;
 
     for (let i = 0; i < 16; ++i) {
-        buf[offset + i] = rnds[i];
+      buf[offset + i] = rnds[i];
     }
 
     return buf;
-    }
+  }
 
-    return (0, _stringify.default)(rnds);
+  return (0, _stringify.default)(rnds);
 }
 
 var _default = v4;
@@ -15987,7 +15987,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -16010,7 +16010,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -16019,7 +16019,7 @@ var _regex = _interopRequireDefault(__nccwpck_require__(814));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function validate(uuid) {
-    return typeof uuid === 'string' && _regex.default.test(uuid);
+  return typeof uuid === 'string' && _regex.default.test(uuid);
 }
 
 var _default = validate;
@@ -16034,7 +16034,7 @@ exports["default"] = _default;
 
 
 Object.defineProperty(exports, "__esModule", ({
-    value: true
+  value: true
 }));
 exports["default"] = void 0;
 
@@ -16043,11 +16043,11 @@ var _validate = _interopRequireDefault(__nccwpck_require__(6900));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function version(uuid) {
-    if (!(0, _validate.default)(uuid)) {
+  if (!(0, _validate.default)(uuid)) {
     throw TypeError('Invalid UUID');
-    }
+  }
 
-    return parseInt(uuid.substr(14, 1), 16);
+  return parseInt(uuid.substr(14, 1), 16);
 }
 
 var _default = version;
@@ -16124,9 +16124,9 @@ function createNumberConversion(bitLength, typeOpts) {
             return x - moduloVal;
         } else if (typeOpts.unsigned) {
             if (x < 0) {
-                x += moduloVal;
+              x += moduloVal;
             } else if (x === -0) { // don't return negative zero
-                return 0;
+              return 0;
             }
         }
 
@@ -16260,201 +16260,201 @@ conversions["RegExp"] = function (V, opts) {
 const usm = __nccwpck_require__(2158);
 
 exports.implementation = class URLImpl {
-    constructor(constructorArgs) {
+  constructor(constructorArgs) {
     const url = constructorArgs[0];
     const base = constructorArgs[1];
 
     let parsedBase = null;
     if (base !== undefined) {
-        parsedBase = usm.basicURLParse(base);
-        if (parsedBase === "failure") {
+      parsedBase = usm.basicURLParse(base);
+      if (parsedBase === "failure") {
         throw new TypeError("Invalid base URL");
-        }
+      }
     }
 
     const parsedURL = usm.basicURLParse(url, { baseURL: parsedBase });
     if (parsedURL === "failure") {
-        throw new TypeError("Invalid URL");
+      throw new TypeError("Invalid URL");
     }
 
     this._url = parsedURL;
 
     // TODO: query stuff
-    }
+  }
 
-    get href() {
+  get href() {
     return usm.serializeURL(this._url);
-    }
+  }
 
-    set href(v) {
+  set href(v) {
     const parsedURL = usm.basicURLParse(v);
     if (parsedURL === "failure") {
-        throw new TypeError("Invalid URL");
+      throw new TypeError("Invalid URL");
     }
 
     this._url = parsedURL;
-    }
+  }
 
-    get origin() {
+  get origin() {
     return usm.serializeURLOrigin(this._url);
-    }
+  }
 
-    get protocol() {
+  get protocol() {
     return this._url.scheme + ":";
-    }
+  }
 
-    set protocol(v) {
+  set protocol(v) {
     usm.basicURLParse(v + ":", { url: this._url, stateOverride: "scheme start" });
-    }
+  }
 
-    get username() {
+  get username() {
     return this._url.username;
-    }
+  }
 
-    set username(v) {
+  set username(v) {
     if (usm.cannotHaveAUsernamePasswordPort(this._url)) {
-        return;
+      return;
     }
 
     usm.setTheUsername(this._url, v);
-    }
+  }
 
-    get password() {
+  get password() {
     return this._url.password;
-    }
+  }
 
-    set password(v) {
+  set password(v) {
     if (usm.cannotHaveAUsernamePasswordPort(this._url)) {
-        return;
+      return;
     }
 
     usm.setThePassword(this._url, v);
-    }
+  }
 
-    get host() {
+  get host() {
     const url = this._url;
 
     if (url.host === null) {
-        return "";
+      return "";
     }
 
     if (url.port === null) {
-        return usm.serializeHost(url.host);
+      return usm.serializeHost(url.host);
     }
 
     return usm.serializeHost(url.host) + ":" + usm.serializeInteger(url.port);
-    }
+  }
 
-    set host(v) {
+  set host(v) {
     if (this._url.cannotBeABaseURL) {
-        return;
+      return;
     }
 
     usm.basicURLParse(v, { url: this._url, stateOverride: "host" });
-    }
+  }
 
-    get hostname() {
+  get hostname() {
     if (this._url.host === null) {
-        return "";
+      return "";
     }
 
     return usm.serializeHost(this._url.host);
-    }
+  }
 
-    set hostname(v) {
+  set hostname(v) {
     if (this._url.cannotBeABaseURL) {
-        return;
+      return;
     }
 
     usm.basicURLParse(v, { url: this._url, stateOverride: "hostname" });
-    }
+  }
 
-    get port() {
+  get port() {
     if (this._url.port === null) {
-        return "";
+      return "";
     }
 
     return usm.serializeInteger(this._url.port);
-    }
+  }
 
-    set port(v) {
+  set port(v) {
     if (usm.cannotHaveAUsernamePasswordPort(this._url)) {
-        return;
+      return;
     }
 
     if (v === "") {
-        this._url.port = null;
+      this._url.port = null;
     } else {
-        usm.basicURLParse(v, { url: this._url, stateOverride: "port" });
+      usm.basicURLParse(v, { url: this._url, stateOverride: "port" });
     }
-    }
+  }
 
-    get pathname() {
+  get pathname() {
     if (this._url.cannotBeABaseURL) {
-        return this._url.path[0];
+      return this._url.path[0];
     }
 
     if (this._url.path.length === 0) {
-        return "";
+      return "";
     }
 
     return "/" + this._url.path.join("/");
-    }
+  }
 
-    set pathname(v) {
+  set pathname(v) {
     if (this._url.cannotBeABaseURL) {
-        return;
+      return;
     }
 
     this._url.path = [];
     usm.basicURLParse(v, { url: this._url, stateOverride: "path start" });
-    }
+  }
 
-    get search() {
+  get search() {
     if (this._url.query === null || this._url.query === "") {
-        return "";
+      return "";
     }
 
     return "?" + this._url.query;
-    }
+  }
 
-    set search(v) {
+  set search(v) {
     // TODO: query stuff
 
     const url = this._url;
 
     if (v === "") {
-        url.query = null;
-        return;
+      url.query = null;
+      return;
     }
 
     const input = v[0] === "?" ? v.substring(1) : v;
     url.query = "";
     usm.basicURLParse(input, { url, stateOverride: "query" });
-    }
+  }
 
-    get hash() {
+  get hash() {
     if (this._url.fragment === null || this._url.fragment === "") {
-        return "";
+      return "";
     }
 
     return "#" + this._url.fragment;
-    }
+  }
 
-    set hash(v) {
+  set hash(v) {
     if (v === "") {
-        this._url.fragment = null;
-        return;
+      this._url.fragment = null;
+      return;
     }
 
     const input = v[0] === "#" ? v.substring(1) : v;
     this._url.fragment = "";
     usm.basicURLParse(input, { url: this._url, stateOverride: "fragment" });
-    }
+  }
 
-    toJSON() {
+  toJSON() {
     return this.href;
-    }
+  }
 };
 
 
@@ -16473,191 +16473,191 @@ const Impl = __nccwpck_require__(7537);
 const impl = utils.implSymbol;
 
 function URL(url) {
-    if (!this || this[impl] || !(this instanceof URL)) {
+  if (!this || this[impl] || !(this instanceof URL)) {
     throw new TypeError("Failed to construct 'URL': Please use the 'new' operator, this DOM object constructor cannot be called as a function.");
-    }
-    if (arguments.length < 1) {
+  }
+  if (arguments.length < 1) {
     throw new TypeError("Failed to construct 'URL': 1 argument required, but only " + arguments.length + " present.");
-    }
-    const args = [];
-    for (let i = 0; i < arguments.length && i < 2; ++i) {
+  }
+  const args = [];
+  for (let i = 0; i < arguments.length && i < 2; ++i) {
     args[i] = arguments[i];
-    }
-    args[0] = conversions["USVString"](args[0]);
-    if (args[1] !== undefined) {
-    args[1] = conversions["USVString"](args[1]);
-    }
+  }
+  args[0] = conversions["USVString"](args[0]);
+  if (args[1] !== undefined) {
+  args[1] = conversions["USVString"](args[1]);
+  }
 
-    module.exports.setup(this, args);
+  module.exports.setup(this, args);
 }
 
 URL.prototype.toJSON = function toJSON() {
-    if (!this || !module.exports.is(this)) {
+  if (!this || !module.exports.is(this)) {
     throw new TypeError("Illegal invocation");
-    }
-    const args = [];
-    for (let i = 0; i < arguments.length && i < 0; ++i) {
+  }
+  const args = [];
+  for (let i = 0; i < arguments.length && i < 0; ++i) {
     args[i] = arguments[i];
-    }
-    return this[impl].toJSON.apply(this[impl], args);
+  }
+  return this[impl].toJSON.apply(this[impl], args);
 };
 Object.defineProperty(URL.prototype, "href", {
-    get() {
+  get() {
     return this[impl].href;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].href = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 URL.prototype.toString = function () {
-    if (!this || !module.exports.is(this)) {
+  if (!this || !module.exports.is(this)) {
     throw new TypeError("Illegal invocation");
-    }
-    return this.href;
+  }
+  return this.href;
 };
 
 Object.defineProperty(URL.prototype, "origin", {
-    get() {
+  get() {
     return this[impl].origin;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "protocol", {
-    get() {
+  get() {
     return this[impl].protocol;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].protocol = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "username", {
-    get() {
+  get() {
     return this[impl].username;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].username = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "password", {
-    get() {
+  get() {
     return this[impl].password;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].password = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "host", {
-    get() {
+  get() {
     return this[impl].host;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].host = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "hostname", {
-    get() {
+  get() {
     return this[impl].hostname;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].hostname = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "port", {
-    get() {
+  get() {
     return this[impl].port;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].port = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "pathname", {
-    get() {
+  get() {
     return this[impl].pathname;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].pathname = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "search", {
-    get() {
+  get() {
     return this[impl].search;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].search = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 Object.defineProperty(URL.prototype, "hash", {
-    get() {
+  get() {
     return this[impl].hash;
-    },
-    set(V) {
+  },
+  set(V) {
     V = conversions["USVString"](V);
     this[impl].hash = V;
-    },
-    enumerable: true,
-    configurable: true
+  },
+  enumerable: true,
+  configurable: true
 });
 
 
 module.exports = {
-    is(obj) {
+  is(obj) {
     return !!obj && obj[impl] instanceof Impl.implementation;
-    },
-    create(constructorArgs, privateData) {
+  },
+  create(constructorArgs, privateData) {
     let obj = Object.create(URL.prototype);
     this.setup(obj, constructorArgs, privateData);
     return obj;
-    },
-    setup(obj, constructorArgs, privateData) {
+  },
+  setup(obj, constructorArgs, privateData) {
     if (!privateData) privateData = {};
     privateData.wrapper = obj;
 
     obj[impl] = new Impl.implementation(constructorArgs, privateData);
     obj[impl][utils.wrapperSymbol] = obj;
-    },
-    interface: URL,
-    expose: {
+  },
+  interface: URL,
+  expose: {
     Window: { URL: URL },
     Worker: { URL: URL }
-    }
+  }
 };
 
 
@@ -16692,311 +16692,311 @@ const punycode = __nccwpck_require__(5477);
 const tr46 = __nccwpck_require__(4256);
 
 const specialSchemes = {
-    ftp: 21,
-    file: null,
-    gopher: 70,
-    http: 80,
-    https: 443,
-    ws: 80,
-    wss: 443
+  ftp: 21,
+  file: null,
+  gopher: 70,
+  http: 80,
+  https: 443,
+  ws: 80,
+  wss: 443
 };
 
 const failure = Symbol("failure");
 
 function countSymbols(str) {
-    return punycode.ucs2.decode(str).length;
+  return punycode.ucs2.decode(str).length;
 }
 
 function at(input, idx) {
-    const c = input[idx];
-    return isNaN(c) ? undefined : String.fromCodePoint(c);
+  const c = input[idx];
+  return isNaN(c) ? undefined : String.fromCodePoint(c);
 }
 
 function isASCIIDigit(c) {
-    return c >= 0x30 && c <= 0x39;
+  return c >= 0x30 && c <= 0x39;
 }
 
 function isASCIIAlpha(c) {
-    return (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A);
+  return (c >= 0x41 && c <= 0x5A) || (c >= 0x61 && c <= 0x7A);
 }
 
 function isASCIIAlphanumeric(c) {
-    return isASCIIAlpha(c) || isASCIIDigit(c);
+  return isASCIIAlpha(c) || isASCIIDigit(c);
 }
 
 function isASCIIHex(c) {
-    return isASCIIDigit(c) || (c >= 0x41 && c <= 0x46) || (c >= 0x61 && c <= 0x66);
+  return isASCIIDigit(c) || (c >= 0x41 && c <= 0x46) || (c >= 0x61 && c <= 0x66);
 }
 
 function isSingleDot(buffer) {
-    return buffer === "." || buffer.toLowerCase() === "%2e";
+  return buffer === "." || buffer.toLowerCase() === "%2e";
 }
 
 function isDoubleDot(buffer) {
-    buffer = buffer.toLowerCase();
-    return buffer === ".." || buffer === "%2e." || buffer === ".%2e" || buffer === "%2e%2e";
+  buffer = buffer.toLowerCase();
+  return buffer === ".." || buffer === "%2e." || buffer === ".%2e" || buffer === "%2e%2e";
 }
 
 function isWindowsDriveLetterCodePoints(cp1, cp2) {
-    return isASCIIAlpha(cp1) && (cp2 === 58 || cp2 === 124);
+  return isASCIIAlpha(cp1) && (cp2 === 58 || cp2 === 124);
 }
 
 function isWindowsDriveLetterString(string) {
-    return string.length === 2 && isASCIIAlpha(string.codePointAt(0)) && (string[1] === ":" || string[1] === "|");
+  return string.length === 2 && isASCIIAlpha(string.codePointAt(0)) && (string[1] === ":" || string[1] === "|");
 }
 
 function isNormalizedWindowsDriveLetterString(string) {
-    return string.length === 2 && isASCIIAlpha(string.codePointAt(0)) && string[1] === ":";
+  return string.length === 2 && isASCIIAlpha(string.codePointAt(0)) && string[1] === ":";
 }
 
 function containsForbiddenHostCodePoint(string) {
-    return string.search(/\u0000|\u0009|\u000A|\u000D|\u0020|#|%|\/|:|\?|@|\[|\\|\]/) !== -1;
+  return string.search(/\u0000|\u0009|\u000A|\u000D|\u0020|#|%|\/|:|\?|@|\[|\\|\]/) !== -1;
 }
 
 function containsForbiddenHostCodePointExcludingPercent(string) {
-    return string.search(/\u0000|\u0009|\u000A|\u000D|\u0020|#|\/|:|\?|@|\[|\\|\]/) !== -1;
+  return string.search(/\u0000|\u0009|\u000A|\u000D|\u0020|#|\/|:|\?|@|\[|\\|\]/) !== -1;
 }
 
 function isSpecialScheme(scheme) {
-    return specialSchemes[scheme] !== undefined;
+  return specialSchemes[scheme] !== undefined;
 }
 
 function isSpecial(url) {
-    return isSpecialScheme(url.scheme);
+  return isSpecialScheme(url.scheme);
 }
 
 function defaultPort(scheme) {
-    return specialSchemes[scheme];
+  return specialSchemes[scheme];
 }
 
 function percentEncode(c) {
-    let hex = c.toString(16).toUpperCase();
-    if (hex.length === 1) {
+  let hex = c.toString(16).toUpperCase();
+  if (hex.length === 1) {
     hex = "0" + hex;
-    }
+  }
 
-    return "%" + hex;
+  return "%" + hex;
 }
 
 function utf8PercentEncode(c) {
-    const buf = new Buffer(c);
+  const buf = new Buffer(c);
 
-    let str = "";
+  let str = "";
 
-    for (let i = 0; i < buf.length; ++i) {
+  for (let i = 0; i < buf.length; ++i) {
     str += percentEncode(buf[i]);
-    }
+  }
 
-    return str;
+  return str;
 }
 
 function utf8PercentDecode(str) {
-    const input = new Buffer(str);
-    const output = [];
-    for (let i = 0; i < input.length; ++i) {
+  const input = new Buffer(str);
+  const output = [];
+  for (let i = 0; i < input.length; ++i) {
     if (input[i] !== 37) {
-        output.push(input[i]);
+      output.push(input[i]);
     } else if (input[i] === 37 && isASCIIHex(input[i + 1]) && isASCIIHex(input[i + 2])) {
-        output.push(parseInt(input.slice(i + 1, i + 3).toString(), 16));
-        i += 2;
+      output.push(parseInt(input.slice(i + 1, i + 3).toString(), 16));
+      i += 2;
     } else {
-        output.push(input[i]);
+      output.push(input[i]);
     }
-    }
-    return new Buffer(output).toString();
+  }
+  return new Buffer(output).toString();
 }
 
 function isC0ControlPercentEncode(c) {
-    return c <= 0x1F || c > 0x7E;
+  return c <= 0x1F || c > 0x7E;
 }
 
 const extraPathPercentEncodeSet = new Set([32, 34, 35, 60, 62, 63, 96, 123, 125]);
 function isPathPercentEncode(c) {
-    return isC0ControlPercentEncode(c) || extraPathPercentEncodeSet.has(c);
+  return isC0ControlPercentEncode(c) || extraPathPercentEncodeSet.has(c);
 }
 
 const extraUserinfoPercentEncodeSet =
-    new Set([47, 58, 59, 61, 64, 91, 92, 93, 94, 124]);
+  new Set([47, 58, 59, 61, 64, 91, 92, 93, 94, 124]);
 function isUserinfoPercentEncode(c) {
-    return isPathPercentEncode(c) || extraUserinfoPercentEncodeSet.has(c);
+  return isPathPercentEncode(c) || extraUserinfoPercentEncodeSet.has(c);
 }
 
 function percentEncodeChar(c, encodeSetPredicate) {
-    const cStr = String.fromCodePoint(c);
+  const cStr = String.fromCodePoint(c);
 
-    if (encodeSetPredicate(c)) {
+  if (encodeSetPredicate(c)) {
     return utf8PercentEncode(cStr);
-    }
+  }
 
-    return cStr;
+  return cStr;
 }
 
 function parseIPv4Number(input) {
-    let R = 10;
+  let R = 10;
 
-    if (input.length >= 2 && input.charAt(0) === "0" && input.charAt(1).toLowerCase() === "x") {
+  if (input.length >= 2 && input.charAt(0) === "0" && input.charAt(1).toLowerCase() === "x") {
     input = input.substring(2);
     R = 16;
-    } else if (input.length >= 2 && input.charAt(0) === "0") {
+  } else if (input.length >= 2 && input.charAt(0) === "0") {
     input = input.substring(1);
     R = 8;
-    }
+  }
 
-    if (input === "") {
+  if (input === "") {
     return 0;
-    }
+  }
 
-    const regex = R === 10 ? /[^0-9]/ : (R === 16 ? /[^0-9A-Fa-f]/ : /[^0-7]/);
-    if (regex.test(input)) {
+  const regex = R === 10 ? /[^0-9]/ : (R === 16 ? /[^0-9A-Fa-f]/ : /[^0-7]/);
+  if (regex.test(input)) {
     return failure;
-    }
+  }
 
-    return parseInt(input, R);
+  return parseInt(input, R);
 }
 
 function parseIPv4(input) {
-    const parts = input.split(".");
-    if (parts[parts.length - 1] === "") {
+  const parts = input.split(".");
+  if (parts[parts.length - 1] === "") {
     if (parts.length > 1) {
-        parts.pop();
+      parts.pop();
     }
-    }
+  }
 
-    if (parts.length > 4) {
+  if (parts.length > 4) {
     return input;
-    }
+  }
 
-    const numbers = [];
-    for (const part of parts) {
+  const numbers = [];
+  for (const part of parts) {
     if (part === "") {
-        return input;
+      return input;
     }
     const n = parseIPv4Number(part);
     if (n === failure) {
-        return input;
+      return input;
     }
 
     numbers.push(n);
-    }
+  }
 
-    for (let i = 0; i < numbers.length - 1; ++i) {
+  for (let i = 0; i < numbers.length - 1; ++i) {
     if (numbers[i] > 255) {
-        return failure;
+      return failure;
     }
-    }
-    if (numbers[numbers.length - 1] >= Math.pow(256, 5 - numbers.length)) {
+  }
+  if (numbers[numbers.length - 1] >= Math.pow(256, 5 - numbers.length)) {
     return failure;
-    }
+  }
 
-    let ipv4 = numbers.pop();
-    let counter = 0;
+  let ipv4 = numbers.pop();
+  let counter = 0;
 
-    for (const n of numbers) {
+  for (const n of numbers) {
     ipv4 += n * Math.pow(256, 3 - counter);
     ++counter;
-    }
+  }
 
-    return ipv4;
+  return ipv4;
 }
 
 function serializeIPv4(address) {
-    let output = "";
-    let n = address;
+  let output = "";
+  let n = address;
 
-    for (let i = 1; i <= 4; ++i) {
+  for (let i = 1; i <= 4; ++i) {
     output = String(n % 256) + output;
     if (i !== 4) {
-        output = "." + output;
+      output = "." + output;
     }
     n = Math.floor(n / 256);
-    }
+  }
 
-    return output;
+  return output;
 }
 
 function parseIPv6(input) {
-    const address = [0, 0, 0, 0, 0, 0, 0, 0];
-    let pieceIndex = 0;
-    let compress = null;
-    let pointer = 0;
+  const address = [0, 0, 0, 0, 0, 0, 0, 0];
+  let pieceIndex = 0;
+  let compress = null;
+  let pointer = 0;
 
-    input = punycode.ucs2.decode(input);
+  input = punycode.ucs2.decode(input);
 
-    if (input[pointer] === 58) {
+  if (input[pointer] === 58) {
     if (input[pointer + 1] !== 58) {
-        return failure;
+      return failure;
     }
 
     pointer += 2;
     ++pieceIndex;
     compress = pieceIndex;
-    }
+  }
 
-    while (pointer < input.length) {
+  while (pointer < input.length) {
     if (pieceIndex === 8) {
-        return failure;
+      return failure;
     }
 
     if (input[pointer] === 58) {
-        if (compress !== null) {
+      if (compress !== null) {
         return failure;
-        }
-        ++pointer;
-        ++pieceIndex;
-        compress = pieceIndex;
-        continue;
+      }
+      ++pointer;
+      ++pieceIndex;
+      compress = pieceIndex;
+      continue;
     }
 
     let value = 0;
     let length = 0;
 
     while (length < 4 && isASCIIHex(input[pointer])) {
-        value = value * 0x10 + parseInt(at(input, pointer), 16);
-        ++pointer;
-        ++length;
+      value = value * 0x10 + parseInt(at(input, pointer), 16);
+      ++pointer;
+      ++length;
     }
 
     if (input[pointer] === 46) {
-        if (length === 0) {
+      if (length === 0) {
         return failure;
-        }
+      }
 
-        pointer -= length;
+      pointer -= length;
 
-        if (pieceIndex > 6) {
+      if (pieceIndex > 6) {
         return failure;
-        }
+      }
 
-        let numbersSeen = 0;
+      let numbersSeen = 0;
 
-        while (input[pointer] !== undefined) {
+      while (input[pointer] !== undefined) {
         let ipv4Piece = null;
 
         if (numbersSeen > 0) {
-            if (input[pointer] === 46 && numbersSeen < 4) {
+          if (input[pointer] === 46 && numbersSeen < 4) {
             ++pointer;
-            } else {
+          } else {
             return failure;
-            }
+          }
         }
 
         if (!isASCIIDigit(input[pointer])) {
-            return failure;
+          return failure;
         }
 
         while (isASCIIDigit(input[pointer])) {
-            const number = parseInt(at(input, pointer));
-            if (ipv4Piece === null) {
+          const number = parseInt(at(input, pointer));
+          if (ipv4Piece === null) {
             ipv4Piece = number;
-            } else if (ipv4Piece === 0) {
+          } else if (ipv4Piece === 0) {
             return failure;
-            } else {
+          } else {
             ipv4Piece = ipv4Piece * 10 + number;
-            }
-            if (ipv4Piece > 255) {
+          }
+          if (ipv4Piece > 255) {
             return failure;
-            }
-            ++pointer;
+          }
+          ++pointer;
         }
 
         address[pieceIndex] = address[pieceIndex] * 0x100 + ipv4Piece;
@@ -17004,387 +17004,387 @@ function parseIPv6(input) {
         ++numbersSeen;
 
         if (numbersSeen === 2 || numbersSeen === 4) {
-            ++pieceIndex;
+          ++pieceIndex;
         }
-        }
+      }
 
-        if (numbersSeen !== 4) {
+      if (numbersSeen !== 4) {
         return failure;
-        }
+      }
 
-        break;
+      break;
     } else if (input[pointer] === 58) {
-        ++pointer;
-        if (input[pointer] === undefined) {
+      ++pointer;
+      if (input[pointer] === undefined) {
         return failure;
-        }
+      }
     } else if (input[pointer] !== undefined) {
-        return failure;
+      return failure;
     }
 
     address[pieceIndex] = value;
     ++pieceIndex;
-    }
+  }
 
-    if (compress !== null) {
+  if (compress !== null) {
     let swaps = pieceIndex - compress;
     pieceIndex = 7;
     while (pieceIndex !== 0 && swaps > 0) {
-        const temp = address[compress + swaps - 1];
-        address[compress + swaps - 1] = address[pieceIndex];
-        address[pieceIndex] = temp;
-        --pieceIndex;
-        --swaps;
+      const temp = address[compress + swaps - 1];
+      address[compress + swaps - 1] = address[pieceIndex];
+      address[pieceIndex] = temp;
+      --pieceIndex;
+      --swaps;
     }
-    } else if (compress === null && pieceIndex !== 8) {
+  } else if (compress === null && pieceIndex !== 8) {
     return failure;
-    }
+  }
 
-    return address;
+  return address;
 }
 
 function serializeIPv6(address) {
-    let output = "";
-    const seqResult = findLongestZeroSequence(address);
-    const compress = seqResult.idx;
-    let ignore0 = false;
+  let output = "";
+  const seqResult = findLongestZeroSequence(address);
+  const compress = seqResult.idx;
+  let ignore0 = false;
 
-    for (let pieceIndex = 0; pieceIndex <= 7; ++pieceIndex) {
+  for (let pieceIndex = 0; pieceIndex <= 7; ++pieceIndex) {
     if (ignore0 && address[pieceIndex] === 0) {
-        continue;
+      continue;
     } else if (ignore0) {
-        ignore0 = false;
+      ignore0 = false;
     }
 
     if (compress === pieceIndex) {
-        const separator = pieceIndex === 0 ? "::" : ":";
-        output += separator;
-        ignore0 = true;
-        continue;
+      const separator = pieceIndex === 0 ? "::" : ":";
+      output += separator;
+      ignore0 = true;
+      continue;
     }
 
     output += address[pieceIndex].toString(16);
 
     if (pieceIndex !== 7) {
-        output += ":";
+      output += ":";
     }
-    }
+  }
 
-    return output;
+  return output;
 }
 
 function parseHost(input, isSpecialArg) {
-    if (input[0] === "[") {
+  if (input[0] === "[") {
     if (input[input.length - 1] !== "]") {
-        return failure;
+      return failure;
     }
 
     return parseIPv6(input.substring(1, input.length - 1));
-    }
+  }
 
-    if (!isSpecialArg) {
+  if (!isSpecialArg) {
     return parseOpaqueHost(input);
-    }
+  }
 
-    const domain = utf8PercentDecode(input);
-    const asciiDomain = tr46.toASCII(domain, false, tr46.PROCESSING_OPTIONS.NONTRANSITIONAL, false);
-    if (asciiDomain === null) {
+  const domain = utf8PercentDecode(input);
+  const asciiDomain = tr46.toASCII(domain, false, tr46.PROCESSING_OPTIONS.NONTRANSITIONAL, false);
+  if (asciiDomain === null) {
     return failure;
-    }
+  }
 
-    if (containsForbiddenHostCodePoint(asciiDomain)) {
+  if (containsForbiddenHostCodePoint(asciiDomain)) {
     return failure;
-    }
+  }
 
-    const ipv4Host = parseIPv4(asciiDomain);
-    if (typeof ipv4Host === "number" || ipv4Host === failure) {
+  const ipv4Host = parseIPv4(asciiDomain);
+  if (typeof ipv4Host === "number" || ipv4Host === failure) {
     return ipv4Host;
-    }
+  }
 
-    return asciiDomain;
+  return asciiDomain;
 }
 
 function parseOpaqueHost(input) {
-    if (containsForbiddenHostCodePointExcludingPercent(input)) {
+  if (containsForbiddenHostCodePointExcludingPercent(input)) {
     return failure;
-    }
+  }
 
-    let output = "";
-    const decoded = punycode.ucs2.decode(input);
-    for (let i = 0; i < decoded.length; ++i) {
+  let output = "";
+  const decoded = punycode.ucs2.decode(input);
+  for (let i = 0; i < decoded.length; ++i) {
     output += percentEncodeChar(decoded[i], isC0ControlPercentEncode);
-    }
-    return output;
+  }
+  return output;
 }
 
 function findLongestZeroSequence(arr) {
-    let maxIdx = null;
-    let maxLen = 1; // only find elements > 1
-    let currStart = null;
-    let currLen = 0;
+  let maxIdx = null;
+  let maxLen = 1; // only find elements > 1
+  let currStart = null;
+  let currLen = 0;
 
-    for (let i = 0; i < arr.length; ++i) {
+  for (let i = 0; i < arr.length; ++i) {
     if (arr[i] !== 0) {
-        if (currLen > maxLen) {
+      if (currLen > maxLen) {
         maxIdx = currStart;
         maxLen = currLen;
-        }
+      }
 
-        currStart = null;
-        currLen = 0;
+      currStart = null;
+      currLen = 0;
     } else {
-        if (currStart === null) {
+      if (currStart === null) {
         currStart = i;
-        }
-        ++currLen;
+      }
+      ++currLen;
     }
-    }
+  }
 
-    // if trailing zeros
-    if (currLen > maxLen) {
+  // if trailing zeros
+  if (currLen > maxLen) {
     maxIdx = currStart;
     maxLen = currLen;
-    }
+  }
 
-    return {
+  return {
     idx: maxIdx,
     len: maxLen
-    };
+  };
 }
 
 function serializeHost(host) {
-    if (typeof host === "number") {
+  if (typeof host === "number") {
     return serializeIPv4(host);
-    }
+  }
 
-    // IPv6 serializer
-    if (host instanceof Array) {
+  // IPv6 serializer
+  if (host instanceof Array) {
     return "[" + serializeIPv6(host) + "]";
-    }
+  }
 
-    return host;
+  return host;
 }
 
 function trimControlChars(url) {
-    return url.replace(/^[\u0000-\u001F\u0020]+|[\u0000-\u001F\u0020]+$/g, "");
+  return url.replace(/^[\u0000-\u001F\u0020]+|[\u0000-\u001F\u0020]+$/g, "");
 }
 
 function trimTabAndNewline(url) {
-    return url.replace(/\u0009|\u000A|\u000D/g, "");
+  return url.replace(/\u0009|\u000A|\u000D/g, "");
 }
 
 function shortenPath(url) {
-    const path = url.path;
-    if (path.length === 0) {
+  const path = url.path;
+  if (path.length === 0) {
     return;
-    }
-    if (url.scheme === "file" && path.length === 1 && isNormalizedWindowsDriveLetter(path[0])) {
+  }
+  if (url.scheme === "file" && path.length === 1 && isNormalizedWindowsDriveLetter(path[0])) {
     return;
-    }
+  }
 
-    path.pop();
+  path.pop();
 }
 
 function includesCredentials(url) {
-    return url.username !== "" || url.password !== "";
+  return url.username !== "" || url.password !== "";
 }
 
 function cannotHaveAUsernamePasswordPort(url) {
-    return url.host === null || url.host === "" || url.cannotBeABaseURL || url.scheme === "file";
+  return url.host === null || url.host === "" || url.cannotBeABaseURL || url.scheme === "file";
 }
 
 function isNormalizedWindowsDriveLetter(string) {
-    return /^[A-Za-z]:$/.test(string);
+  return /^[A-Za-z]:$/.test(string);
 }
 
 function URLStateMachine(input, base, encodingOverride, url, stateOverride) {
-    this.pointer = 0;
-    this.input = input;
-    this.base = base || null;
-    this.encodingOverride = encodingOverride || "utf-8";
-    this.stateOverride = stateOverride;
-    this.url = url;
-    this.failure = false;
-    this.parseError = false;
+  this.pointer = 0;
+  this.input = input;
+  this.base = base || null;
+  this.encodingOverride = encodingOverride || "utf-8";
+  this.stateOverride = stateOverride;
+  this.url = url;
+  this.failure = false;
+  this.parseError = false;
 
-    if (!this.url) {
+  if (!this.url) {
     this.url = {
-        scheme: "",
-        username: "",
-        password: "",
-        host: null,
-        port: null,
-        path: [],
-        query: null,
-        fragment: null,
+      scheme: "",
+      username: "",
+      password: "",
+      host: null,
+      port: null,
+      path: [],
+      query: null,
+      fragment: null,
 
-        cannotBeABaseURL: false
+      cannotBeABaseURL: false
     };
 
     const res = trimControlChars(this.input);
     if (res !== this.input) {
-        this.parseError = true;
+      this.parseError = true;
     }
     this.input = res;
-    }
+  }
 
-    const res = trimTabAndNewline(this.input);
-    if (res !== this.input) {
+  const res = trimTabAndNewline(this.input);
+  if (res !== this.input) {
     this.parseError = true;
-    }
-    this.input = res;
+  }
+  this.input = res;
 
-    this.state = stateOverride || "scheme start";
+  this.state = stateOverride || "scheme start";
 
-    this.buffer = "";
-    this.atFlag = false;
-    this.arrFlag = false;
-    this.passwordTokenSeenFlag = false;
+  this.buffer = "";
+  this.atFlag = false;
+  this.arrFlag = false;
+  this.passwordTokenSeenFlag = false;
 
-    this.input = punycode.ucs2.decode(this.input);
+  this.input = punycode.ucs2.decode(this.input);
 
-    for (; this.pointer <= this.input.length; ++this.pointer) {
+  for (; this.pointer <= this.input.length; ++this.pointer) {
     const c = this.input[this.pointer];
     const cStr = isNaN(c) ? undefined : String.fromCodePoint(c);
 
     // exec state machine
     const ret = this["parse " + this.state](c, cStr);
     if (!ret) {
-        break; // terminate algorithm
+      break; // terminate algorithm
     } else if (ret === failure) {
-        this.failure = true;
-        break;
+      this.failure = true;
+      break;
     }
-    }
+  }
 }
 
 URLStateMachine.prototype["parse scheme start"] = function parseSchemeStart(c, cStr) {
-    if (isASCIIAlpha(c)) {
+  if (isASCIIAlpha(c)) {
     this.buffer += cStr.toLowerCase();
     this.state = "scheme";
-    } else if (!this.stateOverride) {
+  } else if (!this.stateOverride) {
     this.state = "no scheme";
     --this.pointer;
-    } else {
+  } else {
     this.parseError = true;
     return failure;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse scheme"] = function parseScheme(c, cStr) {
-    if (isASCIIAlphanumeric(c) || c === 43 || c === 45 || c === 46) {
+  if (isASCIIAlphanumeric(c) || c === 43 || c === 45 || c === 46) {
     this.buffer += cStr.toLowerCase();
-    } else if (c === 58) {
+  } else if (c === 58) {
     if (this.stateOverride) {
-        if (isSpecial(this.url) && !isSpecialScheme(this.buffer)) {
+      if (isSpecial(this.url) && !isSpecialScheme(this.buffer)) {
         return false;
-        }
+      }
 
-        if (!isSpecial(this.url) && isSpecialScheme(this.buffer)) {
+      if (!isSpecial(this.url) && isSpecialScheme(this.buffer)) {
         return false;
-        }
+      }
 
-        if ((includesCredentials(this.url) || this.url.port !== null) && this.buffer === "file") {
+      if ((includesCredentials(this.url) || this.url.port !== null) && this.buffer === "file") {
         return false;
-        }
+      }
 
-        if (this.url.scheme === "file" && (this.url.host === "" || this.url.host === null)) {
+      if (this.url.scheme === "file" && (this.url.host === "" || this.url.host === null)) {
         return false;
-        }
+      }
     }
     this.url.scheme = this.buffer;
     this.buffer = "";
     if (this.stateOverride) {
-        return false;
+      return false;
     }
     if (this.url.scheme === "file") {
-        if (this.input[this.pointer + 1] !== 47 || this.input[this.pointer + 2] !== 47) {
+      if (this.input[this.pointer + 1] !== 47 || this.input[this.pointer + 2] !== 47) {
         this.parseError = true;
-        }
-        this.state = "file";
+      }
+      this.state = "file";
     } else if (isSpecial(this.url) && this.base !== null && this.base.scheme === this.url.scheme) {
-        this.state = "special relative or authority";
+      this.state = "special relative or authority";
     } else if (isSpecial(this.url)) {
-        this.state = "special authority slashes";
+      this.state = "special authority slashes";
     } else if (this.input[this.pointer + 1] === 47) {
-        this.state = "path or authority";
-        ++this.pointer;
+      this.state = "path or authority";
+      ++this.pointer;
     } else {
-        this.url.cannotBeABaseURL = true;
-        this.url.path.push("");
-        this.state = "cannot-be-a-base-URL path";
+      this.url.cannotBeABaseURL = true;
+      this.url.path.push("");
+      this.state = "cannot-be-a-base-URL path";
     }
-    } else if (!this.stateOverride) {
+  } else if (!this.stateOverride) {
     this.buffer = "";
     this.state = "no scheme";
     this.pointer = -1;
-    } else {
+  } else {
     this.parseError = true;
     return failure;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse no scheme"] = function parseNoScheme(c) {
-    if (this.base === null || (this.base.cannotBeABaseURL && c !== 35)) {
+  if (this.base === null || (this.base.cannotBeABaseURL && c !== 35)) {
     return failure;
-    } else if (this.base.cannotBeABaseURL && c === 35) {
+  } else if (this.base.cannotBeABaseURL && c === 35) {
     this.url.scheme = this.base.scheme;
     this.url.path = this.base.path.slice();
     this.url.query = this.base.query;
     this.url.fragment = "";
     this.url.cannotBeABaseURL = true;
     this.state = "fragment";
-    } else if (this.base.scheme === "file") {
+  } else if (this.base.scheme === "file") {
     this.state = "file";
     --this.pointer;
-    } else {
+  } else {
     this.state = "relative";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse special relative or authority"] = function parseSpecialRelativeOrAuthority(c) {
-    if (c === 47 && this.input[this.pointer + 1] === 47) {
+  if (c === 47 && this.input[this.pointer + 1] === 47) {
     this.state = "special authority ignore slashes";
     ++this.pointer;
-    } else {
+  } else {
     this.parseError = true;
     this.state = "relative";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse path or authority"] = function parsePathOrAuthority(c) {
-    if (c === 47) {
+  if (c === 47) {
     this.state = "authority";
-    } else {
+  } else {
     this.state = "path";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse relative"] = function parseRelative(c) {
-    this.url.scheme = this.base.scheme;
-    if (isNaN(c)) {
+  this.url.scheme = this.base.scheme;
+  if (isNaN(c)) {
     this.url.username = this.base.username;
     this.url.password = this.base.password;
     this.url.host = this.base.host;
     this.url.port = this.base.port;
     this.url.path = this.base.path.slice();
     this.url.query = this.base.query;
-    } else if (c === 47) {
+  } else if (c === 47) {
     this.state = "relative slash";
-    } else if (c === 63) {
+  } else if (c === 63) {
     this.url.username = this.base.username;
     this.url.password = this.base.password;
     this.url.host = this.base.host;
@@ -17392,7 +17392,7 @@ URLStateMachine.prototype["parse relative"] = function parseRelative(c) {
     this.url.path = this.base.path.slice();
     this.url.query = "";
     this.state = "query";
-    } else if (c === 35) {
+  } else if (c === 35) {
     this.url.username = this.base.username;
     this.url.password = this.base.password;
     this.url.host = this.base.host;
@@ -17401,10 +17401,10 @@ URLStateMachine.prototype["parse relative"] = function parseRelative(c) {
     this.url.query = this.base.query;
     this.url.fragment = "";
     this.state = "fragment";
-    } else if (isSpecial(this.url) && c === 92) {
+  } else if (isSpecial(this.url) && c === 92) {
     this.parseError = true;
     this.state = "relative slash";
-    } else {
+  } else {
     this.url.username = this.base.username;
     this.url.password = this.base.password;
     this.url.host = this.base.host;
@@ -17413,559 +17413,559 @@ URLStateMachine.prototype["parse relative"] = function parseRelative(c) {
 
     this.state = "path";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse relative slash"] = function parseRelativeSlash(c) {
-    if (isSpecial(this.url) && (c === 47 || c === 92)) {
+  if (isSpecial(this.url) && (c === 47 || c === 92)) {
     if (c === 92) {
-        this.parseError = true;
+      this.parseError = true;
     }
     this.state = "special authority ignore slashes";
-    } else if (c === 47) {
+  } else if (c === 47) {
     this.state = "authority";
-    } else {
+  } else {
     this.url.username = this.base.username;
     this.url.password = this.base.password;
     this.url.host = this.base.host;
     this.url.port = this.base.port;
     this.state = "path";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse special authority slashes"] = function parseSpecialAuthoritySlashes(c) {
-    if (c === 47 && this.input[this.pointer + 1] === 47) {
+  if (c === 47 && this.input[this.pointer + 1] === 47) {
     this.state = "special authority ignore slashes";
     ++this.pointer;
-    } else {
+  } else {
     this.parseError = true;
     this.state = "special authority ignore slashes";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse special authority ignore slashes"] = function parseSpecialAuthorityIgnoreSlashes(c) {
-    if (c !== 47 && c !== 92) {
+  if (c !== 47 && c !== 92) {
     this.state = "authority";
     --this.pointer;
-    } else {
+  } else {
     this.parseError = true;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse authority"] = function parseAuthority(c, cStr) {
-    if (c === 64) {
+  if (c === 64) {
     this.parseError = true;
     if (this.atFlag) {
-        this.buffer = "%40" + this.buffer;
+      this.buffer = "%40" + this.buffer;
     }
     this.atFlag = true;
 
     // careful, this is based on buffer and has its own pointer (this.pointer != pointer) and inner chars
     const len = countSymbols(this.buffer);
     for (let pointer = 0; pointer < len; ++pointer) {
-        const codePoint = this.buffer.codePointAt(pointer);
+      const codePoint = this.buffer.codePointAt(pointer);
 
-        if (codePoint === 58 && !this.passwordTokenSeenFlag) {
+      if (codePoint === 58 && !this.passwordTokenSeenFlag) {
         this.passwordTokenSeenFlag = true;
         continue;
-        }
-        const encodedCodePoints = percentEncodeChar(codePoint, isUserinfoPercentEncode);
-        if (this.passwordTokenSeenFlag) {
+      }
+      const encodedCodePoints = percentEncodeChar(codePoint, isUserinfoPercentEncode);
+      if (this.passwordTokenSeenFlag) {
         this.url.password += encodedCodePoints;
-        } else {
+      } else {
         this.url.username += encodedCodePoints;
-        }
+      }
     }
     this.buffer = "";
-    } else if (isNaN(c) || c === 47 || c === 63 || c === 35 ||
-                (isSpecial(this.url) && c === 92)) {
+  } else if (isNaN(c) || c === 47 || c === 63 || c === 35 ||
+             (isSpecial(this.url) && c === 92)) {
     if (this.atFlag && this.buffer === "") {
-        this.parseError = true;
-        return failure;
+      this.parseError = true;
+      return failure;
     }
     this.pointer -= countSymbols(this.buffer) + 1;
     this.buffer = "";
     this.state = "host";
-    } else {
+  } else {
     this.buffer += cStr;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse hostname"] =
 URLStateMachine.prototype["parse host"] = function parseHostName(c, cStr) {
-    if (this.stateOverride && this.url.scheme === "file") {
+  if (this.stateOverride && this.url.scheme === "file") {
     --this.pointer;
     this.state = "file host";
-    } else if (c === 58 && !this.arrFlag) {
+  } else if (c === 58 && !this.arrFlag) {
     if (this.buffer === "") {
-        this.parseError = true;
-        return failure;
+      this.parseError = true;
+      return failure;
     }
 
     const host = parseHost(this.buffer, isSpecial(this.url));
     if (host === failure) {
-        return failure;
+      return failure;
     }
 
     this.url.host = host;
     this.buffer = "";
     this.state = "port";
     if (this.stateOverride === "hostname") {
-        return false;
+      return false;
     }
-    } else if (isNaN(c) || c === 47 || c === 63 || c === 35 ||
-                (isSpecial(this.url) && c === 92)) {
+  } else if (isNaN(c) || c === 47 || c === 63 || c === 35 ||
+             (isSpecial(this.url) && c === 92)) {
     --this.pointer;
     if (isSpecial(this.url) && this.buffer === "") {
-        this.parseError = true;
-        return failure;
+      this.parseError = true;
+      return failure;
     } else if (this.stateOverride && this.buffer === "" &&
-                (includesCredentials(this.url) || this.url.port !== null)) {
-        this.parseError = true;
-        return false;
+               (includesCredentials(this.url) || this.url.port !== null)) {
+      this.parseError = true;
+      return false;
     }
 
     const host = parseHost(this.buffer, isSpecial(this.url));
     if (host === failure) {
-        return failure;
+      return failure;
     }
 
     this.url.host = host;
     this.buffer = "";
     this.state = "path start";
     if (this.stateOverride) {
-        return false;
+      return false;
     }
-    } else {
+  } else {
     if (c === 91) {
-        this.arrFlag = true;
+      this.arrFlag = true;
     } else if (c === 93) {
-        this.arrFlag = false;
+      this.arrFlag = false;
     }
     this.buffer += cStr;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse port"] = function parsePort(c, cStr) {
-    if (isASCIIDigit(c)) {
+  if (isASCIIDigit(c)) {
     this.buffer += cStr;
-    } else if (isNaN(c) || c === 47 || c === 63 || c === 35 ||
-                (isSpecial(this.url) && c === 92) ||
-                this.stateOverride) {
+  } else if (isNaN(c) || c === 47 || c === 63 || c === 35 ||
+             (isSpecial(this.url) && c === 92) ||
+             this.stateOverride) {
     if (this.buffer !== "") {
-        const port = parseInt(this.buffer);
-        if (port > Math.pow(2, 16) - 1) {
+      const port = parseInt(this.buffer);
+      if (port > Math.pow(2, 16) - 1) {
         this.parseError = true;
         return failure;
-        }
-        this.url.port = port === defaultPort(this.url.scheme) ? null : port;
-        this.buffer = "";
+      }
+      this.url.port = port === defaultPort(this.url.scheme) ? null : port;
+      this.buffer = "";
     }
     if (this.stateOverride) {
-        return false;
+      return false;
     }
     this.state = "path start";
     --this.pointer;
-    } else {
+  } else {
     this.parseError = true;
     return failure;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 const fileOtherwiseCodePoints = new Set([47, 92, 63, 35]);
 
 URLStateMachine.prototype["parse file"] = function parseFile(c) {
-    this.url.scheme = "file";
+  this.url.scheme = "file";
 
-    if (c === 47 || c === 92) {
+  if (c === 47 || c === 92) {
     if (c === 92) {
-        this.parseError = true;
+      this.parseError = true;
     }
     this.state = "file slash";
-    } else if (this.base !== null && this.base.scheme === "file") {
+  } else if (this.base !== null && this.base.scheme === "file") {
     if (isNaN(c)) {
-        this.url.host = this.base.host;
-        this.url.path = this.base.path.slice();
-        this.url.query = this.base.query;
+      this.url.host = this.base.host;
+      this.url.path = this.base.path.slice();
+      this.url.query = this.base.query;
     } else if (c === 63) {
-        this.url.host = this.base.host;
-        this.url.path = this.base.path.slice();
-        this.url.query = "";
-        this.state = "query";
+      this.url.host = this.base.host;
+      this.url.path = this.base.path.slice();
+      this.url.query = "";
+      this.state = "query";
     } else if (c === 35) {
-        this.url.host = this.base.host;
-        this.url.path = this.base.path.slice();
-        this.url.query = this.base.query;
-        this.url.fragment = "";
-        this.state = "fragment";
+      this.url.host = this.base.host;
+      this.url.path = this.base.path.slice();
+      this.url.query = this.base.query;
+      this.url.fragment = "";
+      this.state = "fragment";
     } else {
-        if (this.input.length - this.pointer - 1 === 0 || // remaining consists of 0 code points
-            !isWindowsDriveLetterCodePoints(c, this.input[this.pointer + 1]) ||
-            (this.input.length - this.pointer - 1 >= 2 && // remaining has at least 2 code points
-            !fileOtherwiseCodePoints.has(this.input[this.pointer + 2]))) {
+      if (this.input.length - this.pointer - 1 === 0 || // remaining consists of 0 code points
+          !isWindowsDriveLetterCodePoints(c, this.input[this.pointer + 1]) ||
+          (this.input.length - this.pointer - 1 >= 2 && // remaining has at least 2 code points
+           !fileOtherwiseCodePoints.has(this.input[this.pointer + 2]))) {
         this.url.host = this.base.host;
         this.url.path = this.base.path.slice();
         shortenPath(this.url);
-        } else {
+      } else {
         this.parseError = true;
-        }
+      }
 
-        this.state = "path";
-        --this.pointer;
+      this.state = "path";
+      --this.pointer;
     }
-    } else {
+  } else {
     this.state = "path";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse file slash"] = function parseFileSlash(c) {
-    if (c === 47 || c === 92) {
+  if (c === 47 || c === 92) {
     if (c === 92) {
-        this.parseError = true;
+      this.parseError = true;
     }
     this.state = "file host";
-    } else {
+  } else {
     if (this.base !== null && this.base.scheme === "file") {
-        if (isNormalizedWindowsDriveLetterString(this.base.path[0])) {
+      if (isNormalizedWindowsDriveLetterString(this.base.path[0])) {
         this.url.path.push(this.base.path[0]);
-        } else {
+      } else {
         this.url.host = this.base.host;
-        }
+      }
     }
     this.state = "path";
     --this.pointer;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse file host"] = function parseFileHost(c, cStr) {
-    if (isNaN(c) || c === 47 || c === 92 || c === 63 || c === 35) {
+  if (isNaN(c) || c === 47 || c === 92 || c === 63 || c === 35) {
     --this.pointer;
     if (!this.stateOverride && isWindowsDriveLetterString(this.buffer)) {
-        this.parseError = true;
-        this.state = "path";
+      this.parseError = true;
+      this.state = "path";
     } else if (this.buffer === "") {
-        this.url.host = "";
-        if (this.stateOverride) {
+      this.url.host = "";
+      if (this.stateOverride) {
         return false;
-        }
-        this.state = "path start";
+      }
+      this.state = "path start";
     } else {
-        let host = parseHost(this.buffer, isSpecial(this.url));
-        if (host === failure) {
+      let host = parseHost(this.buffer, isSpecial(this.url));
+      if (host === failure) {
         return failure;
-        }
-        if (host === "localhost") {
+      }
+      if (host === "localhost") {
         host = "";
-        }
-        this.url.host = host;
+      }
+      this.url.host = host;
 
-        if (this.stateOverride) {
+      if (this.stateOverride) {
         return false;
-        }
+      }
 
-        this.buffer = "";
-        this.state = "path start";
+      this.buffer = "";
+      this.state = "path start";
     }
-    } else {
+  } else {
     this.buffer += cStr;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse path start"] = function parsePathStart(c) {
-    if (isSpecial(this.url)) {
+  if (isSpecial(this.url)) {
     if (c === 92) {
-        this.parseError = true;
+      this.parseError = true;
     }
     this.state = "path";
 
     if (c !== 47 && c !== 92) {
-        --this.pointer;
+      --this.pointer;
     }
-    } else if (!this.stateOverride && c === 63) {
+  } else if (!this.stateOverride && c === 63) {
     this.url.query = "";
     this.state = "query";
-    } else if (!this.stateOverride && c === 35) {
+  } else if (!this.stateOverride && c === 35) {
     this.url.fragment = "";
     this.state = "fragment";
-    } else if (c !== undefined) {
+  } else if (c !== undefined) {
     this.state = "path";
     if (c !== 47) {
-        --this.pointer;
+      --this.pointer;
     }
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse path"] = function parsePath(c) {
-    if (isNaN(c) || c === 47 || (isSpecial(this.url) && c === 92) ||
-        (!this.stateOverride && (c === 63 || c === 35))) {
+  if (isNaN(c) || c === 47 || (isSpecial(this.url) && c === 92) ||
+      (!this.stateOverride && (c === 63 || c === 35))) {
     if (isSpecial(this.url) && c === 92) {
-        this.parseError = true;
+      this.parseError = true;
     }
 
     if (isDoubleDot(this.buffer)) {
-        shortenPath(this.url);
-        if (c !== 47 && !(isSpecial(this.url) && c === 92)) {
+      shortenPath(this.url);
+      if (c !== 47 && !(isSpecial(this.url) && c === 92)) {
         this.url.path.push("");
-        }
+      }
     } else if (isSingleDot(this.buffer) && c !== 47 &&
-                !(isSpecial(this.url) && c === 92)) {
-        this.url.path.push("");
+               !(isSpecial(this.url) && c === 92)) {
+      this.url.path.push("");
     } else if (!isSingleDot(this.buffer)) {
-        if (this.url.scheme === "file" && this.url.path.length === 0 && isWindowsDriveLetterString(this.buffer)) {
+      if (this.url.scheme === "file" && this.url.path.length === 0 && isWindowsDriveLetterString(this.buffer)) {
         if (this.url.host !== "" && this.url.host !== null) {
-            this.parseError = true;
-            this.url.host = "";
+          this.parseError = true;
+          this.url.host = "";
         }
         this.buffer = this.buffer[0] + ":";
-        }
-        this.url.path.push(this.buffer);
+      }
+      this.url.path.push(this.buffer);
     }
     this.buffer = "";
     if (this.url.scheme === "file" && (c === undefined || c === 63 || c === 35)) {
-        while (this.url.path.length > 1 && this.url.path[0] === "") {
+      while (this.url.path.length > 1 && this.url.path[0] === "") {
         this.parseError = true;
         this.url.path.shift();
-        }
+      }
     }
     if (c === 63) {
-        this.url.query = "";
-        this.state = "query";
+      this.url.query = "";
+      this.state = "query";
     }
     if (c === 35) {
-        this.url.fragment = "";
-        this.state = "fragment";
+      this.url.fragment = "";
+      this.state = "fragment";
     }
-    } else {
+  } else {
     // TODO: If c is not a URL code point and not "%", parse error.
 
     if (c === 37 &&
-        (!isASCIIHex(this.input[this.pointer + 1]) ||
+      (!isASCIIHex(this.input[this.pointer + 1]) ||
         !isASCIIHex(this.input[this.pointer + 2]))) {
-        this.parseError = true;
+      this.parseError = true;
     }
 
     this.buffer += percentEncodeChar(c, isPathPercentEncode);
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse cannot-be-a-base-URL path"] = function parseCannotBeABaseURLPath(c) {
-    if (c === 63) {
+  if (c === 63) {
     this.url.query = "";
     this.state = "query";
-    } else if (c === 35) {
+  } else if (c === 35) {
     this.url.fragment = "";
     this.state = "fragment";
-    } else {
+  } else {
     // TODO: Add: not a URL code point
     if (!isNaN(c) && c !== 37) {
-        this.parseError = true;
+      this.parseError = true;
     }
 
     if (c === 37 &&
         (!isASCIIHex(this.input[this.pointer + 1]) ||
-            !isASCIIHex(this.input[this.pointer + 2]))) {
-        this.parseError = true;
+         !isASCIIHex(this.input[this.pointer + 2]))) {
+      this.parseError = true;
     }
 
     if (!isNaN(c)) {
-        this.url.path[0] = this.url.path[0] + percentEncodeChar(c, isC0ControlPercentEncode);
+      this.url.path[0] = this.url.path[0] + percentEncodeChar(c, isC0ControlPercentEncode);
     }
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse query"] = function parseQuery(c, cStr) {
-    if (isNaN(c) || (!this.stateOverride && c === 35)) {
+  if (isNaN(c) || (!this.stateOverride && c === 35)) {
     if (!isSpecial(this.url) || this.url.scheme === "ws" || this.url.scheme === "wss") {
-        this.encodingOverride = "utf-8";
+      this.encodingOverride = "utf-8";
     }
 
     const buffer = new Buffer(this.buffer); // TODO: Use encoding override instead
     for (let i = 0; i < buffer.length; ++i) {
-        if (buffer[i] < 0x21 || buffer[i] > 0x7E || buffer[i] === 0x22 || buffer[i] === 0x23 ||
-            buffer[i] === 0x3C || buffer[i] === 0x3E) {
+      if (buffer[i] < 0x21 || buffer[i] > 0x7E || buffer[i] === 0x22 || buffer[i] === 0x23 ||
+          buffer[i] === 0x3C || buffer[i] === 0x3E) {
         this.url.query += percentEncode(buffer[i]);
-        } else {
+      } else {
         this.url.query += String.fromCodePoint(buffer[i]);
-        }
+      }
     }
 
     this.buffer = "";
     if (c === 35) {
-        this.url.fragment = "";
-        this.state = "fragment";
+      this.url.fragment = "";
+      this.state = "fragment";
     }
-    } else {
+  } else {
     // TODO: If c is not a URL code point and not "%", parse error.
     if (c === 37 &&
-        (!isASCIIHex(this.input[this.pointer + 1]) ||
+      (!isASCIIHex(this.input[this.pointer + 1]) ||
         !isASCIIHex(this.input[this.pointer + 2]))) {
-        this.parseError = true;
+      this.parseError = true;
     }
 
     this.buffer += cStr;
-    }
+  }
 
-    return true;
+  return true;
 };
 
 URLStateMachine.prototype["parse fragment"] = function parseFragment(c) {
-    if (isNaN(c)) { // do nothing
-    } else if (c === 0x0) {
+  if (isNaN(c)) { // do nothing
+  } else if (c === 0x0) {
     this.parseError = true;
-    } else {
+  } else {
     // TODO: If c is not a URL code point and not "%", parse error.
     if (c === 37 &&
-        (!isASCIIHex(this.input[this.pointer + 1]) ||
+      (!isASCIIHex(this.input[this.pointer + 1]) ||
         !isASCIIHex(this.input[this.pointer + 2]))) {
-        this.parseError = true;
+      this.parseError = true;
     }
 
     this.url.fragment += percentEncodeChar(c, isC0ControlPercentEncode);
-    }
+  }
 
-    return true;
+  return true;
 };
 
 function serializeURL(url, excludeFragment) {
-    let output = url.scheme + ":";
-    if (url.host !== null) {
+  let output = url.scheme + ":";
+  if (url.host !== null) {
     output += "//";
 
     if (url.username !== "" || url.password !== "") {
-        output += url.username;
-        if (url.password !== "") {
+      output += url.username;
+      if (url.password !== "") {
         output += ":" + url.password;
-        }
-        output += "@";
+      }
+      output += "@";
     }
 
     output += serializeHost(url.host);
 
     if (url.port !== null) {
-        output += ":" + url.port;
+      output += ":" + url.port;
     }
-    } else if (url.host === null && url.scheme === "file") {
+  } else if (url.host === null && url.scheme === "file") {
     output += "//";
-    }
+  }
 
-    if (url.cannotBeABaseURL) {
+  if (url.cannotBeABaseURL) {
     output += url.path[0];
-    } else {
+  } else {
     for (const string of url.path) {
-        output += "/" + string;
+      output += "/" + string;
     }
-    }
+  }
 
-    if (url.query !== null) {
+  if (url.query !== null) {
     output += "?" + url.query;
-    }
+  }
 
-    if (!excludeFragment && url.fragment !== null) {
+  if (!excludeFragment && url.fragment !== null) {
     output += "#" + url.fragment;
-    }
+  }
 
-    return output;
+  return output;
 }
 
 function serializeOrigin(tuple) {
-    let result = tuple.scheme + "://";
-    result += serializeHost(tuple.host);
+  let result = tuple.scheme + "://";
+  result += serializeHost(tuple.host);
 
-    if (tuple.port !== null) {
+  if (tuple.port !== null) {
     result += ":" + tuple.port;
-    }
+  }
 
-    return result;
+  return result;
 }
 
 module.exports.serializeURL = serializeURL;
 
 module.exports.serializeURLOrigin = function (url) {
-    // https://url.spec.whatwg.org/#concept-url-origin
-    switch (url.scheme) {
+  // https://url.spec.whatwg.org/#concept-url-origin
+  switch (url.scheme) {
     case "blob":
-        try {
+      try {
         return module.exports.serializeURLOrigin(module.exports.parseURL(url.path[0]));
-        } catch (e) {
+      } catch (e) {
         // serializing an opaque origin returns "null"
         return "null";
-        }
+      }
     case "ftp":
     case "gopher":
     case "http":
     case "https":
     case "ws":
     case "wss":
-        return serializeOrigin({
+      return serializeOrigin({
         scheme: url.scheme,
         host: url.host,
         port: url.port
-        });
+      });
     case "file":
-        // spec says "exercise to the reader", chrome says "file://"
-        return "file://";
+      // spec says "exercise to the reader", chrome says "file://"
+      return "file://";
     default:
-        // serializing an opaque origin returns "null"
-        return "null";
-    }
+      // serializing an opaque origin returns "null"
+      return "null";
+  }
 };
 
 module.exports.basicURLParse = function (input, options) {
-    if (options === undefined) {
+  if (options === undefined) {
     options = {};
-    }
+  }
 
-    const usm = new URLStateMachine(input, options.baseURL, options.encodingOverride, options.url, options.stateOverride);
-    if (usm.failure) {
+  const usm = new URLStateMachine(input, options.baseURL, options.encodingOverride, options.url, options.stateOverride);
+  if (usm.failure) {
     return "failure";
-    }
+  }
 
-    return usm.url;
+  return usm.url;
 };
 
 module.exports.setTheUsername = function (url, username) {
-    url.username = "";
-    const decoded = punycode.ucs2.decode(username);
-    for (let i = 0; i < decoded.length; ++i) {
+  url.username = "";
+  const decoded = punycode.ucs2.decode(username);
+  for (let i = 0; i < decoded.length; ++i) {
     url.username += percentEncodeChar(decoded[i], isUserinfoPercentEncode);
-    }
+  }
 };
 
 module.exports.setThePassword = function (url, password) {
-    url.password = "";
-    const decoded = punycode.ucs2.decode(password);
-    for (let i = 0; i < decoded.length; ++i) {
+  url.password = "";
+  const decoded = punycode.ucs2.decode(password);
+  for (let i = 0; i < decoded.length; ++i) {
     url.password += percentEncodeChar(decoded[i], isUserinfoPercentEncode);
-    }
+  }
 };
 
 module.exports.serializeHost = serializeHost;
@@ -17973,16 +17973,16 @@ module.exports.serializeHost = serializeHost;
 module.exports.cannotHaveAUsernamePasswordPort = cannotHaveAUsernamePasswordPort;
 
 module.exports.serializeInteger = function (integer) {
-    return String(integer);
+  return String(integer);
 };
 
 module.exports.parseURL = function (input, options) {
-    if (options === undefined) {
+  if (options === undefined) {
     options = {};
-    }
+  }
 
-    // We don't handle blobs, so this just delegates:
-    return module.exports.basicURLParse(input, { baseURL: options.baseURL, encodingOverride: options.encodingOverride });
+  // We don't handle blobs, so this just delegates:
+  return module.exports.basicURLParse(input, { baseURL: options.baseURL, encodingOverride: options.encodingOverride });
 };
 
 
@@ -17995,21 +17995,21 @@ module.exports.parseURL = function (input, options) {
 
 
 module.exports.mixin = function mixin(target, source) {
-    const keys = Object.getOwnPropertyNames(source);
-    for (let i = 0; i < keys.length; ++i) {
+  const keys = Object.getOwnPropertyNames(source);
+  for (let i = 0; i < keys.length; ++i) {
     Object.defineProperty(target, keys[i], Object.getOwnPropertyDescriptor(source, keys[i]));
-    }
+  }
 };
 
 module.exports.wrapperSymbol = Symbol("wrapper");
 module.exports.implSymbol = Symbol("impl");
 
 module.exports.wrapperForImpl = function (impl) {
-    return impl[module.exports.wrapperSymbol];
+  return impl[module.exports.wrapperSymbol];
 };
 
 module.exports.implForWrapper = function (wrapper) {
-    return wrapper[module.exports.implSymbol];
+  return wrapper[module.exports.implSymbol];
 };
 
 
@@ -18026,31 +18026,31 @@ module.exports.implForWrapper = function (wrapper) {
 // decorations and such are not lost along the way.
 module.exports = wrappy
 function wrappy (fn, cb) {
-    if (fn && cb) return wrappy(fn)(cb)
+  if (fn && cb) return wrappy(fn)(cb)
 
-    if (typeof fn !== 'function')
+  if (typeof fn !== 'function')
     throw new TypeError('need wrapper function')
 
-    Object.keys(fn).forEach(function (k) {
+  Object.keys(fn).forEach(function (k) {
     wrapper[k] = fn[k]
-    })
+  })
 
-    return wrapper
+  return wrapper
 
-    function wrapper() {
+  function wrapper() {
     var args = new Array(arguments.length)
     for (var i = 0; i < args.length; i++) {
-        args[i] = arguments[i]
+      args[i] = arguments[i]
     }
     var ret = fn.apply(this, args)
     var cb = args[args.length-1]
     if (typeof ret === 'function' && ret !== cb) {
-        Object.keys(cb).forEach(function (k) {
+      Object.keys(cb).forEach(function (k) {
         ret[k] = cb[k]
-        })
+      })
     }
     return ret
-    }
+  }
 }
 
 
@@ -18065,7 +18065,7 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-        desc = { enumerable: true, get: function() { return m[k]; } };
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
     Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
@@ -18113,7 +18113,7 @@ const FEATURES_README_TEMPLATE = `
 \`\`\`
 
 #{OptionsTable}
-#{Extensions}
+#{Customizations}
 #{Notes}
 
 ---
@@ -18222,7 +18222,7 @@ function _generateDocumentation(basePath, readmeTemplate, metadataFile, ociRegis
                 if ((_b = (_a = parsedJson === null || parsedJson === void 0 ? void 0 : parsedJson.customizations) === null || _a === void 0 ? void 0 : _a.vscode) === null || _b === void 0 ? void 0 : _b.extensions) {
                     const extensionsList = parsedJson.customizations.vscode.extensions;
                     if (extensionsList && extensionsList.length > 0) {
-                        extensions = '\n## Extensions\n\n' + extensionsList.map((ext) => `- ${ext}`).join('\n') + '\n';
+                        extensions = '\n## Customizations\n\n### VS Code' + extensionsList.map((ext) => `- ${ext}`).join('\n') + '\n';
                     }
                 }
                 let newReadme = readmeTemplate
@@ -18261,14 +18261,14 @@ function _generateDocumentation(basePath, readmeTemplate, metadataFile, ociRegis
 "use strict";
 
 /*--------------------------------------------------------------------------------------------------------------
-    *  Copyright (c) Microsoft Corporation. All rights reserved.
-    *  Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
-    *-------------------------------------------------------------------------------------------------------------*/
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
+ *-------------------------------------------------------------------------------------------------------------*/
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-        desc = { enumerable: true, get: function() { return m[k]; } };
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
     Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
@@ -18460,7 +18460,7 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-        desc = { enumerable: true, get: function() { return m[k]; } };
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
     Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
