@@ -1,7 +1,7 @@
 {
     "name": "Hello, World!",
     "id": "hello",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "A hello world feature",
     "options": {
         "greeting": {
@@ -18,12 +18,12 @@
     },
     "installsAfter": [
         "ghcr.io/devcontainers/features/common-utils"
-    ],
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "ms-vscode.azurecli"
-            ]
-        }
-    }
+    ]
+    // "customizations": {
+    //     "vscode": {
+    //         "extensions": [
+    //             "ms-vscode.azurecli"
+    //         ]
+    //     }
+    // }
 }
